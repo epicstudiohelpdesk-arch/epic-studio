@@ -1,0 +1,130 @@
+/* ==========================================================================
+   MINIMALIST MONOCHROME MARQUEE RIBBON (ENTERPRISE GRADE)
+   ========================================================================== */
+
+.mono-strip-wrapper {
+  position: relative;
+  z-index: 5;
+  background: #f8f9fa;
+  border-top: 1px solid #eaecf0;
+  border-bottom: 1px solid #eaecf0;
+  padding: 26px 0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.mono-strip-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 86px);
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+/* Left anchor collar */
+.mono-strip-label-col {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mono-strip-icon {
+  color: #111827;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mono-strip-kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  white-space: nowrap;
+}
+
+.mono-strip-divider {
+  width: 1px;
+  height: 28px;
+  background: #d1d5db;
+  display: inline-block;
+  margin-left: 6px;
+}
+
+/* Marquee track wrapper */
+.mono-strip-marquee-col {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Individual brand token - prominent monochrome glyph & clean typography */
+.mono-brand-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  color: #374151;
+  opacity: 0.76;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), color 0.22s ease, transform 0.22s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.mono-brand-item:hover {
+  opacity: 1;
+  color: #090a0f;
+  transform: translateY(-1px);
+}
+
+.mono-brand-icon {
+  font-size: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+}
+
+.mono-brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: currentColor;
+}
+
+@media (max-width: 992px) {
+  .mono-strip-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .mono-strip-divider {
+    display: none;
+  }
+
+  .mono-brand-icon {
+    font-size: 30px;
+  }
+
+  .mono-brand-name {
+    font-size: 16px;
+  }}
+
+@media (max-width: 600px) {
+  .mono-strip-wrapper {
+    padding: 20px 0;
+  }
+
+  .mono-brand-icon {
+    font-size: 26px;
+  }
+
+  .mono-brand-name {
+    font-size: 15px;
+  }}

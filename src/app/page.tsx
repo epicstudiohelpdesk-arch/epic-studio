@@ -1,65 +1,159 @@
-import Image from "next/image";
+import "./home.css";
+import HeroSection from "@/components/HeroSection";
+import WhoWeAreSection from "@/components/WhoWeAreSection";
+import TechStackStrip from "@/components/TechStackStrip";
+import CapabilitiesSection from "@/components/CapabilitiesSection";
+import WorkInMotionSection from "@/components/WorkInMotionSection";
+import IdeaImpactSection from "@/components/IdeaImpactSection";
+import PrinciplesSection from "@/components/PrinciplesSection";
+import IndustryUniverseSection from "@/components/IndustryUniverseSection";
+import GlanceSection from "@/components/GlanceSection";
+import EditorialWorkSection from "@/components/EditorialWorkSection";
+import PeopleSection from "@/components/PeopleSection";
+import LetsBuildSection from "@/components/LetsBuildSection";
+import SiteFooter from "@/components/SiteFooter";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://epic.studio";
+
+const jsonLdNavigation = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: [
+    {
+      "@type": "SiteNavigationElement",
+      position: 1,
+      name: "Software & Product Engineering",
+      url: `${siteUrl}/#capabilities`,
+      description: "Full-Stack Web & SaaS, enterprise software solutions, scalable APIs, and backend architectures.",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      position: 2,
+      name: "Mobile App Development",
+      url: `${siteUrl}/#mobile`,
+      description: "High-performance native iOS, Android, and cross-platform mobile apps engineered for fluid 60fps UI.",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      position: 3,
+      name: "Video Editing & Motion Production",
+      url: `${siteUrl}/#creative`,
+      description: "Cinematic commercial video editing, brand post-production, 3D motion design, and visual effects (VFX).",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      position: 4,
+      name: "UI/UX Design & Brand Systems",
+      url: `${siteUrl}/#who-we-are`,
+      description: "Award-winning design systems, human-centered UI/UX product interfaces, and interactive 3D web experiences.",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      position: 5,
+      name: "AI Engineering & Cloud Automation",
+      url: `${siteUrl}/#ai`,
+      description: "Enterprise AI workflows, custom LLM integrations, automated pipelines, and cloud DevOps infrastructure.",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      position: 6,
+      name: "Talk with Expert & Strategy",
+      url: `${siteUrl}/contact`,
+      description: "Schedule a direct technical strategy consultation with principal software architects and creative directors.",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      position: 7,
+      name: "Domain Search & Registration",
+      url: `${siteUrl}/domains`,
+      description: "Instant live domain name search, WHOIS privacy protection, and one-click Anycast DNS delegation.",
+    },
+  ],
+};
+
+const jsonLdBreadcrumbs = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: siteUrl,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Software & Mobile Development",
+      item: `${siteUrl}/#capabilities`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Video Editing & Creative Production",
+      item: `${siteUrl}/#creative`,
+    },
+    {
+      "@type": "ListItem",
+      position: 4,
+      name: "Contact Studio",
+      item: `${siteUrl}/contact`,
+    },
+  ],
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="site-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdNavigation) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
+      />
+
+      {/* WHAT IS EPIC? */}
+      <HeroSection />
+      <WhoWeAreSection />
+      <TechStackStrip />
+
+      {/* WHAT CAN EPIC DO? */}
+      <div id="capabilities">
+        <CapabilitiesSection />
+      </div>
+
+      {/* WHAT DOES EPIC CREATE? */}
+      <div id="mobile" />
+      <div id="creative" />
+      <WorkInMotionSection />
+
+      {/* WHAT CHANGES BECAUSE OF EPIC? */}
+      <div id="ai" />
+      <div id="cloud" />
+      <IdeaImpactSection />
+
+      {/* WHAT DOES EPIC BELIEVE? */}
+      <PrinciplesSection />
+
+      {/* WHERE DOES EPIC OPERATE? */}
+      <div id="govtech">
+        <IndustryUniverseSection />
+      </div>
+
+      {/* HOW IS EPIC STRUCTURED? */}
+      <GlanceSection />
+
+      {/* WHAT HAS EPIC BUILT? */}
+      <EditorialWorkSection />
+
+      {/* WHO BUILDS IT? */}
+      <PeopleSection />
+
+      {/* WHY START A CONVERSATION? */}
+      <LetsBuildSection />
+      <SiteFooter />
+    </main>
   );
 }
