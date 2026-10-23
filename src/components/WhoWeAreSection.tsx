@@ -132,60 +132,78 @@ export default function WhoWeAreSection() {
         {/* =========================================================================
             3. GLOBAL OPERATING FOOTPRINT & ACTION BAR
            ========================================================================= */}
-        <div className="who-classic-action-bar">
-          <div className="who-classic-action-hubs">
-            <div className="who-classic-action-hub-item">
-              <span className="classic-action-hub-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="4" y="4" width="16" height="16" rx="2" />
-                  <rect x="9" y="9" width="6" height="6" />
-                  <line x1="9" y1="1" x2="9" y2="4" />
-                  <line x1="15" y1="1" x2="15" y2="4" />
-                  <line x1="9" y1="20" x2="9" y2="23" />
-                  <line x1="15" y1="20" x2="15" y2="23" />
-                  <line x1="20" y1="9" x2="23" y2="9" />
-                  <line x1="20" y1="14" x2="23" y2="14" />
-                  <line x1="1" y1="9" x2="4" y2="9" />
-                  <line x1="1" y1="14" x2="4" y2="14" />
-                </svg>
-              </span>
-              <div className="classic-action-hub-text">
-                <strong>ENGINEERING LABS</strong>
-                <span>Kolkata, India</span>
+        <div className="who-classic-action-wrap">
+          <div className="who-classic-action-bar">
+            <div className="who-classic-action-hubs">
+              <div className="who-classic-action-hub-item">
+                <span className="classic-action-hub-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                    <rect x="9" y="9" width="6" height="6" />
+                    <line x1="9" y1="1" x2="9" y2="4" />
+                    <line x1="15" y1="1" x2="15" y2="4" />
+                    <line x1="9" y1="20" x2="9" y2="23" />
+                    <line x1="15" y1="20" x2="15" y2="23" />
+                    <line x1="20" y1="9" x2="23" y2="9" />
+                    <line x1="20" y1="14" x2="23" y2="14" />
+                    <line x1="1" y1="9" x2="4" y2="9" />
+                    <line x1="1" y1="14" x2="4" y2="14" />
+                  </svg>
+                </span>
+                <div className="classic-action-hub-text">
+                  <strong>ENGINEERING LABS</strong>
+                  <span>Kolkata, India</span>
+                </div>
+              </div>
+              <div className="who-classic-action-hub-divider" aria-hidden="true" />
+              <div className="who-classic-action-hub-item">
+                <span className="classic-action-hub-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                </span>
+                <div className="classic-action-hub-text">
+                  <strong>GLOBAL CLIENT HUBS</strong>
+                  <span>San Francisco · London · Singapore · India</span>
+                </div>
               </div>
             </div>
-            <div className="who-classic-action-hub-divider" aria-hidden="true" />
-            <div className="who-classic-action-hub-item">
-              <span className="classic-action-hub-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="2" y1="12" x2="22" y2="12" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+
+            <div className="who-classic-action-buttons">
+              <a href="#capabilities" className="who-classic-ghost-btn">
+                <span>EXPLORE ALL CAPABILITIES</span>
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
                 </svg>
-              </span>
-              <div className="classic-action-hub-text">
-                <strong>GLOBAL CLIENT HUBS</strong>
-                <span>San Francisco · London · Singapore · India</span>
-              </div>
+              </a>
+
+              <Link href="/contact" className="who-classic-cta-btn">
+                <span>BOOK ARCHITECTURE REVIEW</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Link>
             </div>
           </div>
 
-          <div className="who-classic-action-buttons">
-            <a href="#capabilities" className="who-classic-ghost-btn">
-              <span>EXPLORE ALL CAPABILITIES</span>
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
-                <line x1="7" y1="17" x2="17" y2="7" />
-                <polyline points="7 7 17 7 17 17" />
-              </svg>
-            </a>
-
-            <Link href="/contact" className="who-classic-cta-btn">
-              <span>BOOK ARCHITECTURE REVIEW</span>
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
+          <p className="who-classic-source-note">
+            Read the{" "}
+            <Link className="who-classic-source-link" href="/about">
+              studio profile
             </Link>
-          </div>
+            , the{" "}
+            <Link className="who-classic-source-link" href="/services">
+              six service areas
+            </Link>{" "}
+            or the{" "}
+            <Link className="who-classic-source-link" href="/work">
+              published case studies
+            </Link>
+            .
+          </p>
         </div>
 
       </div>

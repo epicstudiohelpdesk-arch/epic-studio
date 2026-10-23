@@ -1,17 +1,56 @@
 import type { Metadata } from "next";
 import ContactPage from "@/components/ContactPage";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildMetadata } from "@/lib/metadata";
+import { SITE } from "@/lib/site";
+import {
+  breadcrumbNode,
+  organizationNode,
+  schemaGraph,
+  webPageNode,
+} from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "Talk with Expert & Architecture Consultation | EPIC STUDIO",
-  description:
-    "Schedule a 30-minute direct strategy consultation with EPIC STUDIO's principal architects or submit a detailed technical project brief for software engineering, AI systems, GovTech, and cloud infrastructure.",
-  openGraph: {
-    title: "Talk with Expert & Technical Consultation | EPIC STUDIO",
-    description:
-      "Direct senior technical director access, zero sales gatekeepers, 2-hour SLA response commitment, and mutual NDA protection for enterprise software initiatives.",
-  },
-};
+const PATH = "/contact";
+const TITLE = "Contact & Architecture Consultation";
+const DESCRIPTION =
+  "Schedule a direct strategy consultation with EPIC STUDIO's principal architects, request a mutual NDA, or submit a software, mobile, AI or GovTech project brief.";
+
+export const metadata: Metadata = buildMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: PATH,
+});
+
+const crumbs = [
+  { name: "Home", path: "/" },
+  { name: "Contact", path: PATH },
+];
 
 export default function Contact() {
-  return <ContactPage isModalView={false} />;
+  return (
+    <>
+      <JsonLd
+        data={schemaGraph([
+          organizationNode(),
+          webPageNode({
+            path: PATH,
+            title: TITLE,
+            description: DESCRIPTION,
+            type: "WebPage",
+            crumbs,
+          }),
+          breadcrumbNode(crumbs, PATH),
+          {
+            "@type": "ContactPage",
+            "@id": `${SITE.url}/contact#contactpage`,
+            url: `${SITE.url}/contact`,
+            name: "Contact EPIC STUDIO",
+            description: DESCRIPTION,
+            mainEntity: { "@id": `${SITE.url}/#organization` },
+          },
+        ])}
+      />
+      <ContactPage isModalView={false} />
+    </>
+  );
 }

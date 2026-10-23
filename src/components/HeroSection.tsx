@@ -222,12 +222,34 @@ export default function HeroSection() {
       }
     };
 
-    runAnimationLoop(true);
+    const isSplashActive = () => {
+      if (typeof window === "undefined") return false;
+      return (
+        document.documentElement.getAttribute("data-splash-active") === "true" ||
+        document.body.classList.contains("splash-active") ||
+        (window as unknown as { __SPLASH_ACTIVE__?: boolean }).__SPLASH_ACTIVE__ === true ||
+        document.querySelector(".splash-overlay:not(.is-exiting)") !== null
+      );
+    };
+
+    let splashListenerAttached = false;
+    const startLoopOnSplashDismiss = () => {
+      splashListenerAttached = false;
+      runAnimationLoop(true);
+    };
+
+    if (isSplashActive()) {
+      splashListenerAttached = true;
+      window.addEventListener("splash:dismiss", startLoopOnSplashDismiss, { once: true });
+      window.addEventListener("splash:closed", startLoopOnSplashDismiss, { once: true });
+    } else {
+      runAnimationLoop(true);
+    }
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
         clearAllTimers();
-      } else {
+      } else if (!isSplashActive()) {
         runAnimationLoop(true);
       }
     };
@@ -236,6 +258,10 @@ export default function HeroSection() {
 
     return () => {
       clearAllTimers();
+      if (splashListenerAttached) {
+        window.removeEventListener("splash:dismiss", startLoopOnSplashDismiss);
+        window.removeEventListener("splash:closed", startLoopOnSplashDismiss);
+      }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [ENABLE_ACTS_LOOP]);
@@ -324,34 +350,34 @@ export default function HeroSection() {
                 </span>
               </div>
               <p>
-                We create
+                Senior
                 <br />
-                the services
+                engineers,
                 <br />
-                creative
+                designers &amp;
                 <br />
-                studio people.
+                AI builders.
               </p>
               <div className="hero-social-stats" aria-label="Key metrics">
                 <div className="social-stat-item">
                   <strong className="stat-value">
                     500<span className="stat-plus">+</span>
                   </strong>
-                  <span className="stat-label">Happy client</span>
+                  <span className="stat-label">Happy clients</span>
                   <div className="stat-underline" aria-hidden="true" />
                 </div>
                 <div className="social-stat-item">
                   <strong className="stat-value">
                     125<span className="stat-plus">+</span>
                   </strong>
-                  <span className="stat-label">Project done</span>
+                  <span className="stat-label">Projects shipped</span>
                   <div className="stat-underline" aria-hidden="true" />
                 </div>
                 <div className="social-stat-item">
                   <strong className="stat-value">
                     450<span className="stat-plus">+</span>
                   </strong>
-                  <span className="stat-label">Winning awards</span>
+                  <span className="stat-label">Awards won</span>
                 </div>
               </div>
             </aside>
@@ -370,7 +396,7 @@ export default function HeroSection() {
                 />
               </svg>
               <h1 id="hero-title" className={isPersonHidden ? "headline-sunk" : ""}>
-                <span className="hero-creative-eyebrow">We specialize in UX/UI, branding...</span>
+                <span className="hero-creative-eyebrow">Senior-only technology &amp; design studio</span>
                 <span className="hero-title-creative">Creative</span>
                 <span className="hero-title-agency-wrapper">
                   <span className="stroke">Agency</span>
@@ -385,12 +411,12 @@ export default function HeroSection() {
 
               {/* Front Outline Layer (overlays in front of the person with identical positioning) */}
               <div className="hero-outline-layer" aria-hidden="true">
-                <h1 className={`hero-outline ${isPersonHidden ? "headline-sunk" : ""}`}>
+                <div className={`hero-outline ${isPersonHidden ? "headline-sunk" : ""}`}>
                   <span className="hero-title-creative">Creative</span>
                   <span className="hero-title-agency-wrapper">
                     <span className="stroke">Agency</span>
                   </span>
-                </h1>
+                </div>
               </div>
             </div>
 
@@ -435,14 +461,14 @@ export default function HeroSection() {
                     isAgencyVisible ? "desc-active" : ""
                   } ${isAgencySinking ? "desc-sinking" : ""}`}
                 >
-                  <span>We specialize in UX/UI, branding or coll</span>
-                  <span>task support, add success with superb</span>
-                  <span>design.</span>
+                  <span>We design and engineer digital</span>
+                  <span>products end to end — strategy,</span>
+                  <span>interface and production code.</span>
                 </p>
               </div>
 
               <div className={`hero-buttons ${isPersonHidden ? "buttons-sunk" : ""}`}>
-                <a className="dark-button" href="#">
+                <a className="dark-button" href="/contact">
                   Get started
                   <span aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
@@ -573,7 +599,7 @@ export default function HeroSection() {
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
-                <span className="browser-url-text">epic.studio/design-system</span>
+                <span className="browser-url-text">epic-studio.in/design-system</span>
               </div>
               <div className="browser-actions-right">
                 <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -616,7 +642,7 @@ export default function HeroSection() {
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
-                <span className="browser-url-text">epic.studio/dashboard</span>
+                <span className="browser-url-text">epic-studio.in/dashboard</span>
               </div>
               <div className="browser-actions-right">
                 <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
@@ -659,7 +685,7 @@ export default function HeroSection() {
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
-                <span className="browser-url-text">epic.studio/work/pets-app</span>
+                <span className="browser-url-text">epic-studio.in/work/pets-app</span>
               </div>
               <div className="browser-actions-right">
                 <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">

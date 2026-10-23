@@ -968,6 +968,55 @@
 }
 
 /* ==========================================================================
+   FREE CONSULTATION PURE TEXTUAL CALLOUT (No Box, No Buttons)
+   ========================================================================== */
+.contact-free-consult-textual {
+  margin-top: 26px;
+  width: 100%;
+  max-width: 840px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+}
+
+.free-consult-pure-title {
+  margin: 0;
+  font-family: Impact, "Arial Narrow", -apple-system, sans-serif;
+  font-size: clamp(38px, 4.5vw, 58px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.free-consult-pure-desc {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.84);
+  max-width: 700px;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 640px) {
+  .contact-free-consult-textual {
+    margin-top: 20px;
+    gap: 8px;
+  }
+
+  .free-consult-pure-title {
+    font-size: 32px;
+  }
+
+  .free-consult-pure-desc {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+}
+
+/* ==========================================================================
    RIGHT SHOWCASE PANEL (Creative Tech Studio Technical Command Center)
    ========================================================================== */
 .contact-right-panel {

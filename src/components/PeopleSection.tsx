@@ -3,52 +3,34 @@
 import React, { useRef } from "react";
 import useRevealOnScroll from "./useRevealOnScroll";
 
-interface Person {
-  initials: string;
+interface PersonCard {
+  id: string;
   name: string;
   role: string;
-  discipline: "STRATEGY" | "DESIGN" | "ENGINEERING" | "AI" | "GROWTH";
-  location: string;
-  snippet: string;
-  tone: "blue" | "navy" | "ink" | "lime";
+  bio: string;
+  image: string;
+  followers: string;
+  projects: string;
 }
 
-const people: Person[] = [
+const people: PersonCard[] = [
   {
-    initials: "AS",
-    name: "A. SEN",
-    role: "PRINCIPAL ENGINEER",
-    discipline: "ENGINEERING",
-    location: "KOLKATA, IN",
-    snippet: "Architects systems that survive contact with real traffic.",
-    tone: "navy",
+    id: "alex",
+    name: "Alex Sen",
+    role: "Principal Engineer",
+    bio: "Principal Engineer who focuses on simplicity & scalability.",
+    image: "/assets/portrait-alex.jpg",
+    followers: "312",
+    projects: "48",
   },
   {
-    initials: "RM",
-    name: "R. MITRA",
-    role: "DESIGN DIRECTOR",
-    discipline: "DESIGN",
-    location: "BENGALURU, IN",
-    snippet: "Obsessed with type, grids and the last 2%.",
-    tone: "blue",
-  },
-  {
-    initials: "SK",
-    name: "S. KHAN",
-    role: "HEAD OF AI",
-    discipline: "AI",
-    location: "SAN FRANCISCO, US",
-    snippet: "Ships models that hold up outside the notebook.",
-    tone: "ink",
-  },
-  {
-    initials: "DV",
-    name: "D. VERMA",
-    role: "GROWTH LEAD",
-    discipline: "GROWTH",
-    location: "LONDON, UK",
-    snippet: "Turns product truth into pipeline.",
-    tone: "lime",
+    id: "sophie",
+    name: "Sophie Bennett",
+    role: "Product Designer",
+    bio: "Product Designer who focuses on simplicity & usability.",
+    image: "/assets/portrait-sophie.jpg",
+    followers: "312",
+    projects: "48",
   },
 ];
 
@@ -69,7 +51,7 @@ export default function PeopleSection() {
         {/* Header */}
         <header className="ppl-header" data-reveal>
           <div className="ppl-label-row">
-            <span className="ppl-section-label">09 // THE PEOPLE BEHIND THE SYSTEM</span>
+            <span className="ppl-section-label">07 // THE PEOPLE BEHIND THE SYSTEM</span>
           </div>
           <h2 id="ppl-title" className="ppl-headline">
             BUILT BY PEOPLE
@@ -81,39 +63,76 @@ export default function PeopleSection() {
           </p>
         </header>
 
-        {/* Editorial portrait spread */}
+        {/* Centered Profile Cards */}
         <div className="ppl-spread">
           {people.map((person, i) => (
-            <figure
-              key={person.initials}
+            <article
+              key={person.id}
               data-reveal
               style={{ transitionDelay: `${i * 110}ms` }}
-              className={`ppl-plate tone-${person.tone} ${i % 2 === 1 ? "is-raised" : ""}`}
+              className="ppl-ios-card"
             >
-              {/* Abstract portrait plate */}
-              <div className="ppl-portrait">
-                <span className="ppl-portrait-grid" aria-hidden="true" />
-                <span className="ppl-monogram">{person.initials}</span>
-                <span className="ppl-plate-code" aria-hidden="true">
-                  EP-{String(i + 1).padStart(2, "0")}
-                </span>
+              {/* Photo Background */}
+              <img
+                src={person.image}
+                alt={person.name}
+                className="ppl-ios-bg"
+                loading="lazy"
+                decoding="async"
+              />
+
+              {/* Frosted Glass Overlay */}
+              <div className="ppl-ios-glass">
+                {/* Name + Scalloped Green Verified Badge */}
+                <div className="ppl-ios-name-row">
+                  <h3 className="ppl-ios-name">{person.name}</h3>
+                  <span className="ppl-ios-badge" title="Verified Creator" aria-label="Verified">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                      <path
+                        fill="#15803d"
+                        d="M22.5 12.5c0-1.58-.8-2.95-2-3.6.1-.4.2-.9.2-1.4 0-2.2-1.8-4-4-4-.5 0-1 .1-1.4.2C14.6 2.5 13.2 1.6 11.6 1.6c-1.6 0-3 .9-3.6 2.1-.4-.1-.9-.2-1.4-.2-2.2 0-4 1.8-4 4 0 .5.1 1 .2 1.4-1.2.7-2 2-2 3.6 0 1.6.8 3 2 3.6-.1.4-.2.9-.2 1.4 0 2.2 1.8 4 4 4 .5 0 1-.1 1.4-.2.6 1.2 2 2.1 3.6 2.1 1.6 0 3-.9 3.6-2.1.4.1.9.2 1.4.2 2.2 0 4-1.8 4-4 0-.5-.1-1-.2-1.4 1.2-.6 2-2 2-3.6z"
+                      />
+                      <path
+                        fill="none"
+                        stroke="#ffffff"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8.5 12.5l2.5 2.5 5-5"
+                      />
+                    </svg>
+                  </span>
+                </div>
+
+                {/* Bio text */}
+                <p className="ppl-ios-bio">{person.bio}</p>
+
+                {/* Bottom Row: Stats + Follow Button */}
+                <div className="ppl-ios-bottom">
+                  <div className="ppl-ios-stats">
+                    <span className="ppl-ios-stat" title="Followers">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                      {person.followers}
+                    </span>
+
+                    <span className="ppl-ios-stat" title="Projects">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="m9 12 2 2 4-4" />
+                      </svg>
+                      {person.projects}
+                    </span>
+                  </div>
+
+                  <button type="button" className="ppl-ios-btn" aria-label={`Follow ${person.name}`}>
+                    Follow +
+                  </button>
+                </div>
               </div>
-
-              <figcaption className="ppl-meta">
-                <span className="ppl-discipline">{person.discipline}</span>
-                <strong className="ppl-name">{person.name}</strong>
-                <span className="ppl-role">{person.role}</span>
-                <span className="ppl-location">
-                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
-                    <path d="M12 21s-7-5.6-7-11a7 7 0 1 1 14 0c0 5.4-7 11-7 11z" />
-                    <circle cx="12" cy="10" r="2.5" />
-                  </svg>
-                  {person.location}
-                </span>
-
-                <span className="ppl-snippet">{person.snippet}</span>
-              </figcaption>
-            </figure>
+            </article>
           ))}
         </div>
 

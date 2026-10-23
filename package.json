@@ -6,7 +6,8 @@
     "dev": "next dev --webpack -H 127.0.0.1 -p 3000",
     "build": "next build",
     "start": "next start -H 127.0.0.1 -p 3000",
-    "lint": "eslint"
+    "lint": "eslint",
+    "geo:qa": "node scripts/geo-qa.mjs"
   },
   "dependencies": {
     "next": "16.2.12",

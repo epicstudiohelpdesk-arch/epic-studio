@@ -1,0 +1,560 @@
+/* ==========================================================================
+   AUTO CONTACT DRAWER — EXECUTIVE BOTTOM DOCKED MODAL
+   Fixed constant height that never shifts or resizes based on form content
+   ========================================================================== */
+
+/* Fullscreen Soft Dark & Blurry Backdrop */
+.auto-contact-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  background: rgba(6, 8, 14, 0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auto-contact-backdrop.is-visible {
+  opacity: 1;
+}
+
+/* Lock background scrolling completely while modal is active */
+html.contact-drawer-open,
+body.contact-drawer-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+/* Hide background sidebars and floating elements when modal is open */
+body.contact-drawer-open .hero-social-linesidebar,
+body.contact-drawer-open .floating-folder-root,
+body.contact-drawer-open .line-sidebar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.25s ease !important;
+}
+
+/* Bottom Docked Container — Horizontally Centered, Flush to the Floor */
+.auto-contact-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+  padding: 0 20px;
+}
+
+@media (max-width: 640px) {
+  .auto-contact-wrapper {
+    padding: 0;
+  }
+}
+
+/* Modal Sheet Card — FIXED CONSTANT HEIGHT (Never resizes on tab/content changes) */
+.auto-contact-sheet {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 890px;
+  height: 650px !important;
+  min-height: 650px !important;
+  max-height: calc(100vh - 20px) !important;
+  position: relative;
+  transform: translate3d(0, 100%, 0);
+  opacity: 0.7;
+  transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1), opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden !important;
+}
+
+.auto-contact-sheet.is-visible {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+/* Modal Shell — Constant 100% Height, No Shadow Artifact */
+.auto-contact-sheet .contact-hero-modal-shell {
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: hidden !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-bottom: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.auto-contact-sheet .contact-hero-modal-shell::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Professional & Catchy Modal Header Hero */
+.contact-modal-header-hero {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 30px 10px 30px;
+  flex-shrink: 0;
+}
+
+.contact-modal-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.contact-modal-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.contact-modal-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c9ff17;
+  box-shadow: 0 0 8px #c9ff17;
+  display: inline-block;
+}
+
+.contact-modal-headline {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(21px, 2.2vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.contact-modal-headline-highlight {
+  color: #c9ff17;
+  background: linear-gradient(135deg, #c9ff17 0%, #a4ff00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Redesigned Minimalist Studio Close (Cross) Button */
+.contact-modal-close-btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(4, 12, 38, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  margin-top: 2px;
+  padding: 0;
+}
+
+.contact-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.55);
+  transform: scale(1.08) rotate(90deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.contact-modal-close-btn:active {
+  transform: scale(0.94) rotate(90deg);
+}
+
+.contact-modal-close-btn svg {
+  display: block;
+  stroke: #ffffff;
+  transition: stroke 0.2s ease;
+}
+
+/* Interior Section & Content Layout — Rigid Flex-1 Structure */
+.auto-contact-sheet .hero-section.contact-hero-section {
+  flex: 1 !important;
+  min-height: 0 !important;
+  padding-top: 4px !important;
+  padding-bottom: 22px !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.auto-contact-sheet .hero-section.contact-hero-section::before,
+.auto-contact-sheet .hero-section.contact-hero-section::after {
+  display: none !important;
+}
+
+.auto-contact-sheet .contact-hero-content {
+  flex: 1 !important;
+  min-height: 0 !important;
+  padding: 0 clamp(16px, 2.5vw, 30px) !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.auto-contact-sheet .contact-split-layout.is-modal-layout {
+  flex: 1 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.auto-contact-sheet .contact-left-col {
+  flex: 1 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  gap: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.auto-contact-sheet .contact-console-stack {
+  flex: 1 !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.auto-contact-sheet .contact-mode-toggle {
+  flex-shrink: 0 !important;
+  margin-bottom: -1px !important;
+}
+
+/* Constant Console Card Height Across All Modes */
+.auto-contact-sheet .contact-card-box {
+  flex: 1 !important;
+  min-height: 0 !important;
+  padding: 22px 30px 24px 30px !important;
+  border-radius: 0 14px 14px 14px !important;
+  box-shadow: 0 16px 40px -10px rgba(0, 16, 50, 0.15) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.auto-contact-sheet .contact-card-box::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.auto-contact-sheet .contact-form-layout {
+  gap: 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  justify-content: space-between !important;
+}
+
+.auto-contact-sheet .contact-grid-3col {
+  gap: 12px !important;
+}
+
+.auto-contact-sheet .contact-grid-2col {
+  gap: 12px !important;
+}
+
+.auto-contact-sheet .contact-field-block {
+  margin-bottom: 0 !important;
+}
+
+.auto-contact-sheet .contact-field-label {
+  margin-bottom: 5px !important;
+  font-size: 11.5px !important;
+}
+
+.auto-contact-sheet .custom-dropdown-trigger {
+  min-height: 42px !important;
+  font-size: 13px !important;
+  padding: 0 12px !important;
+}
+
+.auto-contact-sheet .contact-native-input {
+  height: 42px !important;
+  font-size: 13.5px !important;
+  padding: 0 12px !important;
+}
+
+.auto-contact-sheet .contact-native-textarea {
+  height: 80px !important;
+  min-height: 80px !important;
+  max-height: 90px !important;
+  resize: none !important;
+  font-size: 13.5px !important;
+  padding: 10px 12px !important;
+  line-height: 1.45 !important;
+}
+
+.auto-contact-sheet .contact-submit-row {
+  margin-top: 4px !important;
+  padding-top: 8px !important;
+}
+
+.auto-contact-sheet .contact-main-submit-btn {
+  height: 44px !important;
+  padding: 0 28px !important;
+  font-size: 14px !important;
+}
+
+.auto-contact-sheet .contact-sla-badge {
+  font-size: 11.5px !important;
+}
+
+/* Schedule and Confirmation flex gracefully within fixed card */
+.auto-contact-sheet .schedule-grid-wrap,
+.auto-contact-sheet .contact-success-card {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  justify-content: flex-start !important;
+}
+
+.auto-contact-sheet .schedule-meta-bar {
+  padding: 5px 12px !important;
+  border-radius: 6px !important;
+  margin-bottom: 2px !important;
+}
+
+.auto-contact-sheet .schedule-meta-text {
+  font-size: 11.5px !important;
+}
+
+.auto-contact-sheet .schedule-meta-badge {
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+}
+
+.auto-contact-sheet .schedule-datetime-row {
+  display: grid !important;
+  grid-template-columns: 1.15fr 1fr !important;
+  gap: 12px !important;
+  align-items: flex-start !important;
+}
+
+.auto-contact-sheet .schedule-date-cards {
+  display: flex !important;
+  gap: 4px !important;
+}
+
+.auto-contact-sheet .date-selector-card {
+  flex: 1 !important;
+  min-width: 0 !important;
+  padding: 5px 2px !important;
+  gap: 1px !important;
+}
+
+.auto-contact-sheet .date-card-day {
+  font-size: 9px !important;
+}
+
+.auto-contact-sheet .date-card-num {
+  font-size: 14px !important;
+  line-height: 1.1 !important;
+}
+
+.auto-contact-sheet .date-card-month {
+  font-size: 8.5px !important;
+}
+
+.auto-contact-sheet .time-slots-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 5px !important;
+}
+
+.auto-contact-sheet .time-slot-btn {
+  height: 32px !important;
+  min-height: 32px !important;
+  font-size: 11px !important;
+  padding: 0 4px !important;
+}
+
+/* Direct Contacts Mode 2x2 Grid Optimization inside Modal */
+.auto-contact-sheet .direct-connect-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  align-content: start !important;
+  flex: 1 !important;
+}
+
+.auto-contact-sheet .hotline-card {
+  padding: 10px 12px !important;
+  gap: 8px !important;
+}
+
+.auto-contact-sheet .hotline-top {
+  gap: 8px !important;
+}
+
+.auto-contact-sheet .hotline-icon-box {
+  width: 26px !important;
+  height: 26px !important;
+}
+
+.auto-contact-sheet .hotline-icon-box svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.auto-contact-sheet .hotline-text h3 {
+  font-size: 12px !important;
+  margin-bottom: 2px !important;
+}
+
+.auto-contact-sheet .hotline-text p {
+  font-size: 10.5px !important;
+  line-height: 1.3 !important;
+}
+
+.auto-contact-sheet .hotline-action-btn {
+  height: 28px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+}
+
+.auto-contact-sheet .hotline-action-btn span:last-child {
+  font-size: 9.5px !important;
+}
+
+.auto-contact-sheet .direct-operations-bar {
+  grid-column: 1 / -1 !important;
+  padding: 10px 16px !important;
+  gap: 14px !important;
+  margin-top: 2px !important;
+}
+
+.auto-contact-sheet .op-label-row {
+  font-size: 8.5px !important;
+}
+
+.auto-contact-sheet .op-title {
+  font-size: 11px !important;
+}
+
+.auto-contact-sheet .op-subtitle {
+  font-size: 9.5px !important;
+}
+
+/* Hide bulky bottom trust cards & free textual in modal view so modal never scrolls */
+.auto-contact-sheet .contact-trust-strip,
+.auto-contact-sheet .contact-free-consult-textual {
+  display: none !important;
+}
+
+/* Mobile Responsive Optimization */
+@media (max-width: 640px) {
+  .auto-contact-sheet {
+    max-width: 100%;
+    height: 92vh !important;
+    min-height: 92vh !important;
+    max-height: 92vh !important;
+  }
+
+  .auto-contact-sheet .contact-hero-modal-shell {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+  }
+
+  .contact-modal-header-hero {
+    padding: 16px 16px 8px 16px;
+  }
+
+  .contact-modal-close-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .auto-contact-sheet .hero-section.contact-hero-section {
+    padding-top: 4px !important;
+    padding-bottom: 16px !important;
+  }
+
+  .auto-contact-sheet .contact-hero-content {
+    padding: 0 10px !important;
+  }
+
+  .auto-contact-sheet .contact-card-box {
+    padding: 16px 14px !important;
+  }
+
+  .auto-contact-sheet .contact-grid-3col {
+    grid-template-columns: 1fr !important;
+  }
+
+  .auto-contact-sheet .contact-grid-2col {
+    grid-template-columns: 1fr !important;
+  }
+
+  .auto-contact-sheet .schedule-datetime-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .auto-contact-sheet .direct-connect-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .auto-contact-backdrop,
+  .auto-contact-sheet,
+  .contact-modal-close-btn {
+    transition-duration: 0.01ms !important;
+  }
+}

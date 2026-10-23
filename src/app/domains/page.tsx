@@ -1,17 +1,46 @@
 import type { Metadata } from "next";
 import DomainSearchPage from "@/components/domains/DomainSearchPage";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildMetadata } from "@/lib/metadata";
+import {
+  breadcrumbNode,
+  organizationNode,
+  schemaGraph,
+  webPageNode,
+} from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "Domain Search & Registration | EPIC STUDIO",
-  description:
-    "Instant live domain availability checks, transparent 1st year and renewal pricing, AI brandable suggestions, and one-click Anycast DNS delegation across 500+ TLDs.",
-  openGraph: {
-    title: "Domain Name Search & Instant Registration | EPIC STUDIO",
-    description:
-      "Find and register your enterprise domain with zero hidden markup, free WHOIS Privacy Guard forever, and instant 1-click cloud DNS.",
-  },
-};
+const PATH = "/domains";
+const TITLE = "Domain Search & Registration";
+const DESCRIPTION =
+  "Search live domain availability, compare first-year and renewal pricing, and delegate DNS in one step. An EPIC STUDIO utility for founders and brands.";
+
+export const metadata: Metadata = buildMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: PATH,
+});
+
+const crumbs = [
+  { name: "Home", path: "/" },
+  { name: "Domains", path: PATH },
+];
 
 export default function DomainsPage() {
-  return <DomainSearchPage />;
+  return (
+    <>
+      <JsonLd
+        data={schemaGraph([
+          organizationNode(),
+          webPageNode({
+            path: PATH,
+            title: TITLE,
+            description: DESCRIPTION,
+            crumbs,
+          }),
+          breadcrumbNode(crumbs, PATH),
+        ])}
+      />
+      <DomainSearchPage />
+    </>
+  );
 }

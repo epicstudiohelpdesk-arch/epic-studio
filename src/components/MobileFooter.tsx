@@ -22,19 +22,9 @@ const footerNav = [
   },
 ];
 
-const contactItems = [
-  { label: "Studio HQ", value: "548 Market St, San Francisco, CA", href: "#" },
-  { label: "Phone", value: "+1 (555) 123-4567", href: "tel:+15551234567" },
-  { label: "Email", value: "contact@epic-studio.in", href: "mailto:contact@epic-studio.in" },
-  { label: "Hours", value: "Mon – Fri · 9:00 AM – 6:00 PM PST", href: "#" },
-];
-
 const footerSocials = [
-  { name: "LinkedIn", href: "#" },
-  { name: "Instagram", href: "#" },
-  { name: "Twitter / X", href: "#" },
-  { name: "Dribbble", href: "#" },
-  { name: "GitHub", href: "#" },
+  { name: "LinkedIn", href: "https://www.linkedin.com" },
+  { name: "Instagram", href: "https://instagram.com" },
 ];
 
 export default function MobileFooter() {
@@ -149,12 +139,58 @@ export default function MobileFooter() {
           </button>
           {openSection === "Contact" && (
             <div className="mf-contact-box">
-              {contactItems.map((c) => (
-                <a className="mf-contact-row" href={c.href} key={c.label}>
-                  <small>{c.label}</small>
-                  <strong>{c.value}</strong>
+              <div className="mf-contact-row">
+                <small>Call us anytime</small>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <a href="tel:+917980595630">
+                    <strong>+91 79805 95630</strong>
+                  </a>
+                  <a href="tel:+916291773811">
+                    <strong>+91 6291773811</strong>
+                  </a>
+                </div>
+              </div>
+              <div className="mf-contact-row">
+                <small>Email</small>
+                <a href="mailto:contact@epic-studio.in">
+                  <strong>contact@epic-studio.in</strong>
                 </a>
-              ))}
+              </div>
+              <div className="mf-contact-row">
+                <small>Working hours</small>
+                <strong>24x7 contact us anytime</strong>
+              </div>
+
+              {/* Studio Location Map */}
+              <div className="contact-map-card mf-map-card" role="region" aria-label="Studio Location Map">
+                <iframe
+                  title="EPIC STUDIO Location - 9C7R+VC Baruipur, West Bengal"
+                  className="contact-map-iframe"
+                  src="https://maps.google.com/maps?q=9C7R%2BVC+Baruipur%2C+West+Bengal&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  loading="lazy"
+                />
+
+                <div className="contact-map-topbar">
+                  <div className="contact-map-location-tag">
+                    <span className="contact-map-pulse-dot" />
+                    <span>9C7R+VC • Baruipur, West Bengal</span>
+                  </div>
+
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=9C7R%2BVC+Baruipur,+West+Bengal"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-map-link-btn"
+                    aria-label="Open location in Google Maps (opens in new tab)"
+                  >
+                    <span>View Map</span>
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -169,7 +205,12 @@ export default function MobileFooter() {
 
         <div className="mf-social-links">
           {footerSocials.map((s) => (
-            <a key={s.name} href={s.href}>
+            <a
+              key={s.name}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {s.name}
             </a>
           ))}

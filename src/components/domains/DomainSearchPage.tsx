@@ -412,39 +412,39 @@ export default function DomainSearchPage() {
             <div className="marquee-track track-reverse">
               <div className="marquee-content">
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
               </div>
               <div className="marquee-content" aria-hidden="true">
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
               </div>
             </div>
           </div>
@@ -454,39 +454,39 @@ export default function DomainSearchPage() {
             <div className="marquee-track track-forward">
               <div className="marquee-content">
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
               </div>
               <div className="marquee-content" aria-hidden="true">
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
                 <span>COMING SOON</span>
-                <span className="marquee-sep">//</span>
+                <span className="marquee-sep">{"//"}</span>
               </div>
             </div>
           </div>

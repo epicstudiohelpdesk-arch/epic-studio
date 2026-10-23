@@ -162,7 +162,7 @@ export default function WorkInMotionSection() {
                   <span className="wdot d-red" />
                   <span className="wdot d-yellow" />
                   <span className="wdot d-green" />
-                  <span className="wim-url">epic.studio/work/pets-app</span>
+                  <span className="wim-url">epic-studio.in/work/pets-app</span>
                 </div>
                 <div className="wim-browser-body">
                   <img src="/assets/pets.webp" onError={(e) => { e.currentTarget.src = "/assets/pets.png"; }} alt="" loading="lazy" decoding="async" />
@@ -305,8 +305,8 @@ export default function WorkInMotionSection() {
             EPIC DOES NOT PRODUCE STATIC DELIVERABLES. EPIC CREATES LIVING DIGITAL SYSTEMS —
             BUILT TO RUN, MEASURE AND EVOLVE.
           </p>
-          <a href="#selected-work" className="wim-footer-link">
-            SEE SELECTED WORK
+          <a href="#lets-build" className="wim-footer-link">
+            LET&rsquo;S BUILD
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>

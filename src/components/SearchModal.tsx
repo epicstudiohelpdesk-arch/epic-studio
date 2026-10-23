@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -25,17 +26,17 @@ const QUICK_ACTIONS = [
 ];
 
 const INDEXED_ITEMS = [
-  { type: "Divisions", name: "EPIC Engineering", desc: "Enterprise software, web apps, SaaS, ERP, CRM, APIs", link: "#engineering" },
-  { type: "Divisions", name: "EPIC AI", desc: "AI automation, chatbots, ML models, intelligent agents", link: "#ai" },
-  { type: "Divisions", name: "EPIC Cloud", desc: "DevOps, infrastructure, cloud migration, monitoring", link: "#cloud" },
-  { type: "Divisions", name: "EPIC GovTech", desc: "Citizen platforms, government digital infrastructure", link: "#govtech" },
-  { type: "Solutions", name: "Launch a Startup", desc: "End-to-end MVP, brand, tech stack and scale planning", link: "#startup" },
-  { type: "Solutions", name: "Enterprise Modernization", desc: "Legacy refactoring & cloud-native migration", link: "#modernize" },
-  { type: "Solutions", name: "Digital Transformation", desc: "Full-scale corporate tech overhaul and AI adoption", link: "#transformation" },
-  { type: "Industries", name: "Government & Public Sector", desc: "Digital citizen portals & secure infrastructure", link: "#gov" },
-  { type: "Industries", name: "Healthcare & MedTech", desc: "HIPAA compliant telehealth & medical software", link: "#health" },
-  { type: "Work", name: "West Bengal Education Platform", desc: "Scaling digital learning to 2.4M students", link: "#work-wb" },
-  { type: "Insights", name: "How AI is Transforming Public Services", desc: "Research paper on agentic AI for governance", link: "#article-ai" },
+  { type: "Divisions", name: "EPIC Engineering", desc: "Enterprise software, web apps, SaaS, ERP, CRM, APIs", link: "/services/software-engineering" },
+  { type: "Divisions", name: "EPIC AI", desc: "AI automation, chatbots, ML models, intelligent agents", link: "/services/ai-automation" },
+  { type: "Divisions", name: "EPIC Cloud", desc: "DevOps, infrastructure, cloud migration, monitoring", link: "/services/ai-automation" },
+  { type: "Divisions", name: "EPIC GovTech", desc: "Citizen platforms, government digital infrastructure", link: "/services/govtech" },
+  { type: "Solutions", name: "Launch a Startup", desc: "End-to-end MVP, brand, tech stack and scale planning", link: "/services/software-engineering" },
+  { type: "Solutions", name: "Enterprise Modernization", desc: "Legacy refactoring & cloud-native migration", link: "/services/software-engineering" },
+  { type: "Solutions", name: "Digital Transformation", desc: "Full-scale corporate tech overhaul and AI adoption", link: "/services" },
+  { type: "Industries", name: "Government & Public Sector", desc: "Digital citizen portals & secure infrastructure", link: "/services/govtech" },
+  { type: "Industries", name: "Healthcare & MedTech", desc: "HIPAA compliant telehealth & medical software", link: "/services" },
+  { type: "Work", name: "West Bengal Education Platform", desc: "Statewide learning platform serving 12M+ students and teachers", link: "/work/west-bengal-education-platform" },
+  { type: "Insights", name: "How AI is Transforming Public Services", desc: "Research paper on agentic AI for governance", link: "/services/ai-automation" },
 ];
 
 export default function SearchModal({ isOpen, onClose, onSelectAction }: SearchModalProps) {
@@ -43,11 +44,9 @@ export default function SearchModal({ isOpen, onClose, onSelectAction }: SearchM
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 50);
-    } else {
-      setQuery("");
-    }
+    if (!isOpen) return;
+    const timer = setTimeout(() => inputRef.current?.focus(), 50);
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
   useEffect(() => {
@@ -105,20 +104,20 @@ export default function SearchModal({ isOpen, onClose, onSelectAction }: SearchM
               {filteredItems.length > 0 ? (
                 <div className="results-list">
                   {filteredItems.map((item, idx) => (
-                    <a href={item.link} key={idx} className="result-item" onClick={onClose}>
+                    <Link href={item.link} key={idx} className="result-item" onClick={onClose}>
                       <span className="result-type-badge">{item.type}</span>
                       <div className="result-info">
                         <strong>{item.name}</strong>
                         <p>{item.desc}</p>
                       </div>
                       <span className="result-arrow">→</span>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               ) : (
                 <div className="no-results">
-                  <p>No matches found for "{query}"</p>
-                  <span>Try searching for "GovTech", "AI", "Engineering", or "Startup"</span>
+                  <p>No matches found for &ldquo;{query}&rdquo;</p>
+                  <span>Try searching for &ldquo;GovTech&rdquo;, &ldquo;AI&rdquo;, &ldquo;Engineering&rdquo;, or &ldquo;Startup&rdquo;</span>
                 </div>
               )}
             </div>

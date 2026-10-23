@@ -744,44 +744,47 @@ END:VCALENDAR`;
                       <span className="schedule-meta-badge">Direct Architecture Lead</span>
                     </div>
 
-                    {/* Date Picker Cards */}
-                    <div className="contact-field-block">
-                      <label className="contact-field-label">
-                        <span>1. Select Date</span>
-                      </label>
-                      <div className="schedule-date-cards">
-                        {upcomingDays.map((day) => (
-                          <button
-                            key={day.offset}
-                            type="button"
-                            className={`date-selector-card ${selectedDayOffset === day.offset ? "active" : ""}`}
-                            onClick={() => setSelectedDayOffset(day.offset)}
-                          >
-                            <span className="date-card-day">{day.dayName}</span>
-                            <span className="date-card-num">{day.dateNum}</span>
-                            <span className="date-card-month">{day.month}</span>
-                          </button>
-                        ))}
+                    {/* Date Picker & Time Slots in a sleek 2-Column Row */}
+                    <div className="schedule-datetime-row">
+                      {/* Date Picker Cards */}
+                      <div className="contact-field-block schedule-date-col">
+                        <label className="contact-field-label">
+                          <span>1. Select Date</span>
+                        </label>
+                        <div className="schedule-date-cards">
+                          {upcomingDays.map((day) => (
+                            <button
+                              key={day.offset}
+                              type="button"
+                              className={`date-selector-card ${selectedDayOffset === day.offset ? "active" : ""}`}
+                              onClick={() => setSelectedDayOffset(day.offset)}
+                            >
+                              <span className="date-card-day">{day.dayName}</span>
+                              <span className="date-card-num">{day.dateNum}</span>
+                              <span className="date-card-month">{day.month}</span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Time Slots Grid */}
-                    <div className="contact-field-block">
-                      <label className="contact-field-label">
-                        <span>2. Select Time Slot</span>
-                        <span className="contact-label-opt">{selectedTimezone.split(" — ")[0]}</span>
-                      </label>
-                      <div className="time-slots-grid">
-                        {TIME_SLOTS.map((slot) => (
-                          <button
-                            key={slot}
-                            type="button"
-                            className={`time-slot-btn ${selectedTimeSlot === slot ? "active" : ""}`}
-                            onClick={() => setSelectedTimeSlot(slot)}
-                          >
-                            <span>{slot}</span>
-                          </button>
-                        ))}
+                      {/* Time Slots Grid */}
+                      <div className="contact-field-block schedule-time-col">
+                        <label className="contact-field-label">
+                          <span>2. Select Time Slot</span>
+                          <span className="contact-label-opt">{selectedTimezone.split(" — ")[0]}</span>
+                        </label>
+                        <div className="time-slots-grid">
+                          {TIME_SLOTS.map((slot) => (
+                            <button
+                              key={slot}
+                              type="button"
+                              className={`time-slot-btn ${selectedTimeSlot === slot ? "active" : ""}`}
+                              onClick={() => setSelectedTimeSlot(slot)}
+                            >
+                              <span>{slot}</span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
@@ -823,8 +826,8 @@ END:VCALENDAR`;
                       />
                     </div>
 
-                    {/* Name & Email for Call */}
-                    <div className="contact-grid-2col">
+                    {/* Name, Email & Topic for Call in a streamlined 3-Column Row */}
+                    <div className="contact-grid-3col">
                       <div className="contact-field-block">
                         <label htmlFor="call-name" className="contact-field-label">
                           <span>Full Name *</span>
@@ -858,22 +861,22 @@ END:VCALENDAR`;
                           />
                         </div>
                       </div>
-                    </div>
 
-                    <div className="contact-field-block">
-                      <label htmlFor="call-topic" className="contact-field-label">
-                        <span>Key Discussion Topic</span>
-                        <span className="contact-label-opt">Optional</span>
-                      </label>
-                      <div className="contact-input-shell">
-                        <input
-                          id="call-topic"
-                          type="text"
-                          placeholder="e.g. New mobile application, web platform redesign, or AI integration"
-                          value={callTopic}
-                          onChange={(e) => setCallTopic(e.target.value)}
-                          className="contact-native-input"
-                        />
+                      <div className="contact-field-block">
+                        <label htmlFor="call-topic" className="contact-field-label">
+                          <span>Discussion Topic</span>
+                          <span className="contact-label-opt">Optional</span>
+                        </label>
+                        <div className="contact-input-shell">
+                          <input
+                            id="call-topic"
+                            type="text"
+                            placeholder="e.g. AI, web or mobile..."
+                            value={callTopic}
+                            onChange={(e) => setCallTopic(e.target.value)}
+                            className="contact-native-input"
+                          />
+                        </div>
                       </div>
                     </div>
 
@@ -1122,6 +1125,18 @@ END:VCALENDAR`;
                 </div>
               </div>
             </div>
+
+            {/* Pure Textual Free Consultation Section (No Box, No Buttons) */}
+            {!isModalView && (
+              <div className="contact-free-consult-textual">
+                <h3 className="free-consult-pure-title">
+                  FREE CONSULTATION!
+                </h3>
+                <p className="free-consult-pure-desc">
+                  Direct 30-minute architectural strategy session with senior tech leads. Zero commitment, zero sales pitch.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Right Column: Creative Technology Studio Technical Command Center */}
@@ -1264,12 +1279,15 @@ END:VCALENDAR`;
   if (isModalView) {
     return (
       <div className="contact-hero-modal-shell">
-        <div className="contact-modal-topbar">
-          <div className="contact-modal-brand">
-            <span className="contact-brand-pulse" />
-            <strong>EPIC STUDIO</strong>
-            <span style={{ color: "rgba(255,255,255,0.4)" }}>/</span>
-            <small>CONTACT &amp; INQUIRY</small>
+        <div className="contact-modal-header-hero">
+          <div className="contact-modal-title-wrap">
+            <span className="contact-modal-eyebrow">
+              <span className="contact-modal-badge-dot" aria-hidden="true" />
+              DIRECT ARCHITECTURE &amp; PRODUCT BRIEF
+            </span>
+            <h2 className="contact-modal-headline">
+              Got an idea? <span className="contact-modal-headline-highlight">You can share with us!</span>
+            </h2>
           </div>
 
           {onClose && (
@@ -1279,7 +1297,7 @@ END:VCALENDAR`;
               onClick={onClose}
               aria-label="Close modal"
             >
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
@@ -1287,7 +1305,7 @@ END:VCALENDAR`;
           )}
         </div>
 
-        <div className="hero-section contact-hero-section" style={{ minHeight: "auto", paddingTop: "24px" }}>
+        <div className="hero-section contact-hero-section" style={{ minHeight: "auto", paddingTop: "6px" }}>
           {contentJSX}
         </div>
       </div>

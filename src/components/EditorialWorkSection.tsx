@@ -27,7 +27,7 @@ const projects: EditorialProject[] = [
     outcomeLabel: "STUDENTS & TEACHERS SERVED",
     image: "/assets/1.jpg",
     tags: ["NEXT.JS", "CLOUD MICROSERVICES", "AI ANALYTICS"],
-    link: "#case-study-wb-edu",
+    link: "/work/west-bengal-education-platform",
   },
   {
     num: "02",
@@ -39,7 +39,7 @@ const projects: EditorialProject[] = [
     outcomeLabel: "FASTER ENTERPRISE OPS",
     image: "/assets/3.jpg",
     tags: ["RUST CORE", "PYTORCH", "EVENT MESH"],
-    link: "#case-study-omniflow",
+    link: "/work/omniflow-ai",
   },
   {
     num: "03",
@@ -51,7 +51,7 @@ const projects: EditorialProject[] = [
     outcomeLabel: "TRANSACTION VOLUME PROCESSED",
     image: "/assets/orange-screen.png",
     tags: ["REACT NATIVE", "SWIFT VAULT", "GO MICROSERVICES"],
-    link: "#case-study-kairo",
+    link: "/work/kairo-mobile",
   },
 ];
 

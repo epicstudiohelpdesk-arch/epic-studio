@@ -75,7 +75,7 @@ export default function LetsBuildSection() {
       <div className="bld-container">
         {/* Header */}
         <header className="bld-header" data-reveal>
-          <span className="bld-section-label">10 // LET&rsquo;S BUILD</span>
+          <span className="bld-section-label">08 // LET&rsquo;S BUILD</span>
           <h2 id="bld-title" className="bld-headline">
             WHAT SHOULD
             <br />
