@@ -1,0 +1,460 @@
+/* ==========================================================================
+   LIGHT THEME FULL-PAGE DUAL CONVERGE — 3D DOUBLE DOOR SYSTEM
+   Two light-themed 50vw × 100vh halves slide in from left & right,
+   meeting at center to cover the entire website.
+   When closed, they swing open like double doors in 3D space,
+   revealing the website underneath.
+   ========================================================================== */
+
+/* Fullscreen Soft Light Backdrop (Underlay) */
+.converge-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  background: rgba(244, 245, 248, 0.85);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.converge-modal-backdrop.is-visible {
+  opacity: 1;
+}
+
+.converge-modal-backdrop.is-closing {
+  opacity: 0;
+  transition: opacity 750ms ease;
+}
+
+/* Background scroll lock */
+html.converge-modal-open,
+body.converge-modal-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+body.converge-modal-open .hero-social-linesidebar,
+body.converge-modal-open .floating-folder-root,
+body.converge-modal-open .line-sidebar {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.25s ease !important;
+}
+
+/* Fullscreen Stage with 3D Perspective for Door Kinematics */
+.converge-modal-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  display: flex;
+  flex-direction: row;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+}
+
+/* ==========================================================================
+   LEFT DOOR (50vw × 100vh)
+   Enters: slides in from left (-100% -> 0)
+   Exits: swings OPEN around its left hinge like a door (rotateY -88deg)
+   ========================================================================== */
+.converge-panel-left {
+  pointer-events: auto;
+  flex: 0 0 50vw;
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 64px 72px;
+  background-color: #f8f9fc;
+  background-image:
+    linear-gradient(rgba(8, 47, 230, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 47, 230, 0.035) 1px, transparent 1px),
+    linear-gradient(145deg, #ffffff 0%, #f4f6fa 60%, #edf1f8 100%);
+  background-size: 56px 56px, 56px 56px, auto;
+  border-right: 1px solid rgba(8, 47, 230, 0.12);
+  box-shadow: 12px 0 40px rgba(8, 47, 230, 0.04), inset -1px 0 0 rgba(255, 255, 255, 0.8);
+  transform-origin: 0% 50%;
+  transform: translate3d(-100%, 0, 0);
+  transition: transform 950ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 850ms ease;
+  will-change: transform, opacity;
+  position: relative;
+  overflow-y: auto;
+  transform-style: preserve-3d;
+}
+
+.converge-panel-left.is-visible {
+  transform: translate3d(0, 0, 0) rotateY(0deg);
+  opacity: 1;
+}
+
+/* DOOR OPENING ANIMATION — LEFT DOOR */
+.converge-panel-left.is-closing {
+  animation: doorOpenLeft 1100ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes doorOpenLeft {
+  0% {
+    transform: translate3d(0, 0, 0) rotateY(0deg);
+    opacity: 1;
+    box-shadow: 12px 0 40px rgba(8, 47, 230, 0.08);
+  }
+  30% {
+    box-shadow: 25px 0 60px rgba(8, 47, 230, 0.16), 10px 0 20px rgba(0, 0, 0, 0.08);
+  }
+  70% {
+    opacity: 1;
+    box-shadow: 35px 0 80px rgba(8, 47, 230, 0.2), 15px 0 30px rgba(0, 0, 0, 0.12);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(-88deg);
+    opacity: 0;
+    box-shadow: none;
+  }
+}
+
+/* ==========================================================================
+   RIGHT DOOR (50vw × 100vh)
+   Enters: slides in from right (+100% -> 0)
+   Exits: swings OPEN around its right hinge like a door (rotateY +88deg)
+   ========================================================================== */
+.converge-panel-right {
+  pointer-events: auto;
+  flex: 0 0 50vw;
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 64px 72px;
+  background-color: #f8f9fc;
+  background-image:
+    linear-gradient(rgba(8, 47, 230, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 47, 230, 0.035) 1px, transparent 1px),
+    linear-gradient(215deg, #ffffff 0%, #f4f6fa 60%, #edf1f8 100%);
+  background-size: 56px 56px, 56px 56px, auto;
+  border-left: 1px solid rgba(8, 47, 230, 0.12);
+  box-shadow: -12px 0 40px rgba(8, 47, 230, 0.04), inset 1px 0 0 rgba(255, 255, 255, 0.8);
+  transform-origin: 100% 50%;
+  transform: translate3d(100%, 0, 0);
+  transition: transform 950ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 850ms ease;
+  will-change: transform, opacity;
+  position: relative;
+  overflow-y: auto;
+  transform-style: preserve-3d;
+}
+
+.converge-panel-right.is-visible {
+  transform: translate3d(0, 0, 0) rotateY(0deg);
+  opacity: 1;
+}
+
+/* DOOR OPENING ANIMATION — RIGHT DOOR */
+.converge-panel-right.is-closing {
+  animation: doorOpenRight 1100ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes doorOpenRight {
+  0% {
+    transform: translate3d(0, 0, 0) rotateY(0deg);
+    opacity: 1;
+    box-shadow: -12px 0 40px rgba(8, 47, 230, 0.08);
+  }
+  30% {
+    box-shadow: -25px 0 60px rgba(8, 47, 230, 0.16), -10px 0 20px rgba(0, 0, 0, 0.08);
+  }
+  70% {
+    opacity: 1;
+    box-shadow: -35px 0 80px rgba(8, 47, 230, 0.2), -15px 0 30px rgba(0, 0, 0, 0.12);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(88deg);
+    opacity: 0;
+    box-shadow: none;
+  }
+}
+
+/* Ambient Subtle Lighting */
+.converge-panel-glow-left {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 255, 23, 0.16) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.converge-panel-glow-right {
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(8, 47, 230, 0.1) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+/* Center Seam Hairline */
+.converge-seam-glow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(8, 47, 230, 0.25) 25%,
+    rgba(8, 47, 230, 0.45) 50%,
+    rgba(201, 255, 23, 0.4) 75%,
+    transparent 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity 600ms ease 800ms;
+}
+
+.converge-modal-stage.is-converged .converge-seam-glow {
+  opacity: 1;
+}
+
+/* Close Button (Light-Themed Executive Pill) */
+.converge-close-btn {
+  position: absolute;
+  top: 36px;
+  right: 48px;
+  height: 44px;
+  padding: 0 20px 0 16px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid rgba(8, 47, 230, 0.18);
+  color: #090a0f;
+  box-shadow: 0 4px 18px rgba(8, 47, 230, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 30;
+}
+
+.converge-close-btn:hover {
+  background: #082fe6;
+  border-color: #082fe6;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(8, 47, 230, 0.25);
+}
+
+.converge-close-btn:active {
+  transform: translateY(0);
+}
+
+.converge-close-btn svg {
+  stroke-width: 2.2;
+}
+
+/* Light-Themed Full Page Typography & Content */
+.converge-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.converge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #344054;
+}
+
+.converge-tag-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.converge-tag-dot.lime {
+  background: #15803d;
+  box-shadow: 0 0 10px rgba(22, 163, 74, 0.5);
+}
+
+.converge-tag-dot.blue {
+  background: #082fe6;
+  box-shadow: 0 0 10px rgba(8, 47, 230, 0.5);
+}
+
+.converge-body-content {
+  max-width: 580px;
+  margin: auto 0;
+  padding: 24px 0;
+}
+
+.converge-title {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 46px;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #0b0c10;
+  margin: 0 0 20px 0;
+}
+
+.converge-desc {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #475467;
+  margin: 0 0 36px 0;
+}
+
+.converge-metrics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.converge-metric-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid rgba(8, 47, 230, 0.1);
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111318;
+  box-shadow: 0 2px 10px rgba(8, 47, 230, 0.04);
+  transition: all 0.2s ease;
+}
+
+.converge-metric-item:hover {
+  background: #ffffff;
+  border-color: rgba(8, 47, 230, 0.25);
+  box-shadow: 0 6px 18px rgba(8, 47, 230, 0.08);
+  transform: translateX(3px);
+}
+
+.converge-metric-num {
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #082fe6;
+}
+
+.converge-metric-num.green {
+  color: #15803d;
+}
+
+.converge-footer-status {
+  padding-top: 28px;
+  border-top: 1px solid rgba(8, 47, 230, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #667085;
+  font-family: monospace;
+  letter-spacing: 0.08em;
+}
+
+/* Responsiveness on screens < 960px */
+@media (max-width: 960px) {
+  .converge-panel-left,
+  .converge-panel-right {
+    padding: 44px 32px;
+  }
+  .converge-title {
+    font-size: 34px;
+  }
+}
+
+/* Responsiveness on screens < 720px */
+@media (max-width: 720px) {
+  .converge-modal-stage {
+    flex-direction: column;
+    perspective: 1200px;
+  }
+  .converge-panel-left {
+    flex: 0 0 50vh;
+    width: 100vw;
+    height: 50vh;
+    padding: 32px 24px;
+    border-right: none;
+    border-bottom: 1px solid rgba(8, 47, 230, 0.12);
+    transform-origin: top center;
+    transform: translate3d(-100%, 0, 0);
+  }
+  .converge-panel-right {
+    flex: 0 0 50vh;
+    width: 100vw;
+    height: 50vh;
+    padding: 32px 24px;
+    border-left: none;
+    border-top: 1px solid rgba(8, 47, 230, 0.12);
+    transform-origin: bottom center;
+    transform: translate3d(100%, 0, 0);
+  }
+  .converge-panel-left.is-closing {
+    animation: doorOpenTop 1050ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  .converge-panel-right.is-closing {
+    animation: doorOpenBottom 1050ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  @keyframes doorOpenTop {
+    0% { transform: translate3d(0, 0, 0) rotateX(0deg); opacity: 1; }
+    65% { opacity: 1; }
+    100% { transform: translate3d(0, 0, 0) rotateX(88deg); opacity: 0; }
+  }
+  @keyframes doorOpenBottom {
+    0% { transform: translate3d(0, 0, 0) rotateX(0deg); opacity: 1; }
+    65% { opacity: 1; }
+    100% { transform: translate3d(0, 0, 0) rotateX(-88deg); opacity: 0; }
+  }
+  .converge-seam-glow {
+    top: 50%;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 2px;
+    transform: translateY(-50%);
+  }
+  .converge-title {
+    font-size: 26px;
+  }
+  .converge-close-btn {
+    top: 20px;
+    right: 20px;
+  }
+}

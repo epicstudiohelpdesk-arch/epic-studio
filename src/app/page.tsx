@@ -25,6 +25,7 @@ import {
 } from "@/lib/schema";
 
 import AutoContactDrawer from "@/components/AutoContactDrawer";
+import DualConvergeModal from "@/components/DualConvergeModal";
 
 export const metadata: Metadata = buildMetadata({
   title: "Multidisciplinary Technology & Design Studio",
@@ -87,6 +88,7 @@ export default function Home() {
       <LetsBuildSection />
       <SiteFooter />
       <AutoContactDrawer />
+      <DualConvergeModal />
     </main>
   );
 }
