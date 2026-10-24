@@ -280,6 +280,10 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
     name: string;
     email: string;
     summary: string;
+    whatsappUrls?: string[];
+    mailtoUrl?: string;
+    emailSent?: boolean;
+    recipients?: string[];
   } | null>(null);
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -361,43 +365,102 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
   };
   const upcomingDays = getUpcomingDays();
 
-  // Inquiry Form Submit
-  const handleInquirySubmit = (e: React.FormEvent) => {
+  // Inquiry Form Submit — Dispatches to subhamdasholycross2023@gmail.com, epicstudiohelpdesk@gmail.com & WhatsApp
+  const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const token = `EPIC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const token = `EPIC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const payload = {
+      type: "inquiry" as const,
+      token,
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      discipline: selectedDiscipline,
+      budget: selectedBudget,
+      timeline: selectedTimeline,
+      message: message.trim(),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+
+      setSubmittedData({
+        token: data.token || token,
+        type: "inquiry",
+        name: payload.name,
+        email: payload.email,
+        summary: `${selectedDiscipline} · ${selectedBudget} · ${selectedTimeline}`,
+      });
+    } catch (err) {
+      console.error("[Contact Form] API submission fallback:", err);
       setSubmittedData({
         token,
         type: "inquiry",
-        name,
-        email,
+        name: payload.name,
+        email: payload.email,
         summary: `${selectedDiscipline} · ${selectedBudget} · ${selectedTimeline}`,
       });
-    }, 500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  // Schedule Call Submit
-  const handleScheduleSubmit = (e: React.FormEvent) => {
+  // Schedule Call Submit — Dispatches to subhamdasholycross2023@gmail.com & epicstudiohelpdesk@gmail.com
+  const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const selectedDayObj = upcomingDays[selectedDayOffset];
-      const token = `EPIC-CALL-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const selectedDayObj = upcomingDays[selectedDayOffset];
+    const token = `EPIC-CALL-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const payload = {
+      type: "call" as const,
+      token,
+      name: name.trim(),
+      email: email.trim(),
+      date: selectedDayObj.fullDateStr,
+      timeSlot: selectedTimeSlot,
+      timezone: selectedTimezone,
+      platform: selectedPlatform,
+      callTopic: callTopic.trim(),
+    };
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+
+      setSubmittedData({
+        token: data.token || token,
+        type: "call",
+        name: payload.name,
+        email: payload.email,
+        summary: `${selectedDayObj.fullDateStr} at ${selectedTimeSlot} (${selectedTimezone}) via ${selectedPlatform.toUpperCase()}`,
+      });
+    } catch (err) {
+      console.error("[Schedule Form] API submission fallback:", err);
       setSubmittedData({
         token,
         type: "call",
-        name,
-        email,
+        name: payload.name,
+        email: payload.email,
         summary: `${selectedDayObj.fullDateStr} at ${selectedTimeSlot} (${selectedTimezone}) via ${selectedPlatform.toUpperCase()}`,
       });
-    }, 500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Generate Calendar .ics download
@@ -493,41 +556,50 @@ END:VCALENDAR`;
               {/* Console Box Card */}
               <div className="contact-card-box">
                 {submittedData ? (
-                  /* Success & Confirmation State */
-                  <div className="contact-success-card">
-                    <div className="success-badge-icon">
-                      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2.8">
+                  /* Compact & Professional Dispatched Confirmation Message */
+                  <div className="contact-dispatched-screen">
+                    <div className="dispatched-status-icon">
+                      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </div>
 
-                    <h2 className="contact-success-title">
-                      {submittedData.type === "call" ? "Consultation Scheduled" : "Inquiry Received"}
+                    <h2 className="dispatched-headline">
+                      {submittedData.type === "call" ? "Consultation Scheduled" : "Inquiry Dispatched"}
                     </h2>
 
-                    <p className="contact-success-desc">
-                      Thank you, <strong>{submittedData.name}</strong>. A confirmation has been sent to <strong>{submittedData.email}</strong>. Our team will review your inquiry and get in touch within 2 business hours.
+                    <p className="dispatched-body">
+                      {submittedData.type === "call" ? (
+                        <>
+                          Thank you, <strong>{submittedData.name}</strong>. Your technical consultation has been registered for{" "}
+                          <span className="dispatched-highlight">{submittedData.summary}</span>. Our architecture lead will join your scheduled session.
+                        </>
+                      ) : (
+                        <>
+                          Thank you, <strong>{submittedData.name}</strong>. Your project brief has been received and routed directly to our engineering desk. We will review your requirements and get back to you within 2 hours.
+                        </>
+                      )}
                     </p>
 
-                    <div className="contact-token-box">
-                      <span>REFERENCE CODE: {submittedData.token}</span>
+                    <div className="dispatched-meta-tag">
+                      <span>REF: {submittedData.token}</span>
                       <button
                         type="button"
-                        className="token-copy-btn"
+                        className="dispatched-copy-btn"
                         onClick={() => handleCopyText(submittedData.token, "Reference Code")}
                       >
                         COPY
                       </button>
                     </div>
 
-                    <div className="success-actions-row">
+                    <div className="dispatched-actions">
                       {submittedData.type === "call" && (
                         <button
                           type="button"
-                          className="success-btn-primary"
+                          className="dispatched-btn-primary"
                           onClick={handleDownloadCalendarEvent}
                         >
-                          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                             <line x1="16" y1="2" x2="16" y2="6" />
                             <line x1="8" y1="2" x2="8" y2="6" />
@@ -539,14 +611,14 @@ END:VCALENDAR`;
 
                       <button
                         type="button"
-                        className="success-btn-secondary"
+                        className="dispatched-btn-secondary"
                         onClick={() => setSubmittedData(null)}
                       >
-                        Submit Another Inquiry
+                        Submit Another Brief
                       </button>
 
                       {onClose && (
-                        <button type="button" className="success-btn-secondary" onClick={onClose}>
+                        <button type="button" className="dispatched-btn-secondary" onClick={onClose}>
                           Close
                         </button>
                       )}

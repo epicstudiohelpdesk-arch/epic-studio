@@ -3,8 +3,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./splash.css";
 
-const AUTO_DISMISS_MS = 3600;
-const EXIT_DURATION_MS = 1050;
+const AUTO_DISMISS_MS = 2200;
+const EXIT_DURATION_MS = 800;
 
 export default function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);

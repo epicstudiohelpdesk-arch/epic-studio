@@ -1,22 +1,24 @@
 /* ==========================================================================
-   LIGHT THEME FULL-PAGE DUAL CONVERGE — 3D DOUBLE DOOR SYSTEM
-   Two light-themed 50vw × 100vh halves slide in from left & right,
-   meeting at center to cover the entire website.
-   When closed, they swing open like double doors in 3D space,
-   revealing the website underneath.
+   EXECUTIVE DIWALI SPECIAL OFFER MODAL
+   - Docks to the right side of the screen.
+   - Glides in smoothly with slower, visually prominent, cinematic motion.
+   - Expanded length and height displaying /diwali.png with high-impact clarity.
+   - Soft, reduced diffuse background shadow and subtle ambient blur.
+   - Redesigned circular glassmorphism close button with tactile hover.
+   - Professional bottom action bar with contact trigger buttons.
    ========================================================================== */
 
-/* Fullscreen Soft Light Backdrop (Underlay) */
+/* Fullscreen Soft Backdrop (Ambient & subtle — website remains clearly visible) */
 .converge-modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 99998;
-  background: rgba(244, 245, 248, 0.85);
-  backdrop-filter: blur(18px) saturate(180%);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  background: rgba(4, 6, 12, 0.32);
+  backdrop-filter: blur(5px) saturate(130%);
+  -webkit-backdrop-filter: blur(5px) saturate(130%);
   opacity: 0;
   pointer-events: auto;
-  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 650ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .converge-modal-backdrop.is-visible {
@@ -25,7 +27,7 @@
 
 .converge-modal-backdrop.is-closing {
   opacity: 0;
-  transition: opacity 750ms ease;
+  transition: opacity 600ms ease;
 }
 
 /* Background scroll lock */
@@ -36,7 +38,7 @@ body.converge-modal-open {
   touch-action: none !important;
 }
 
-body.converge-modal-open .hero-social-linesidebar,
+/* Hide floating elements that might overlap the right-anchored modal */
 body.converge-modal-open .floating-folder-root,
 body.converge-modal-open .line-sidebar {
   opacity: 0 !important;
@@ -45,416 +47,335 @@ body.converge-modal-open .line-sidebar {
   transition: opacity 0.25s ease !important;
 }
 
-/* Fullscreen Stage with 3D Perspective for Door Kinematics */
-.converge-modal-stage {
+/* ==========================================================================
+   MODAL DRAWER — EXPANDED LENGTH & HEIGHT, SOFTER AMBIENT SHADOW
+   Attached to the right side, slower cinematic glide from right to left
+   ========================================================================== */
+.converge-modal-drawer {
   position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) translate3d(105%, 0, 0);
+  width: min(1060px, 95vw);
+  height: min(670px, calc(100vh - 36px));
   z-index: 99999;
-  display: flex;
-  flex-direction: row;
-  pointer-events: none;
+  border-radius: 28px 0 0 28px;
   overflow: hidden;
-  perspective: 1600px;
-  perspective-origin: 50% 50%;
-  transform-style: preserve-3d;
-}
-
-/* ==========================================================================
-   LEFT DOOR (50vw × 100vh)
-   Enters: slides in from left (-100% -> 0)
-   Exits: swings OPEN around its left hinge like a door (rotateY -88deg)
-   ========================================================================== */
-.converge-panel-left {
-  pointer-events: auto;
-  flex: 0 0 50vw;
-  width: 50vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 64px 72px;
-  background-color: #f8f9fc;
-  background-image:
-    linear-gradient(rgba(8, 47, 230, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(8, 47, 230, 0.035) 1px, transparent 1px),
-    linear-gradient(145deg, #ffffff 0%, #f4f6fa 60%, #edf1f8 100%);
-  background-size: 56px 56px, 56px 56px, auto;
-  border-right: 1px solid rgba(8, 47, 230, 0.12);
-  box-shadow: 12px 0 40px rgba(8, 47, 230, 0.04), inset -1px 0 0 rgba(255, 255, 255, 0.8);
-  transform-origin: 0% 50%;
-  transform: translate3d(-100%, 0, 0);
-  transition: transform 950ms cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 850ms ease;
+  background: #090b12;
+  /* Reduced, softer, diffuse ambient shadow */
+  box-shadow: -14px 0 45px rgba(0, 0, 0, 0.32), 0 8px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.22);
+  border-right: none;
+  pointer-events: none;
+  opacity: 0.7;
+  /* Slower, more prominent and buttery-smooth luxury deceleration */
+  transition: transform 1150ms cubic-bezier(0.16, 1, 0.28, 1),
+              opacity 700ms ease,
+              box-shadow 800ms ease;
   will-change: transform, opacity;
-  position: relative;
-  overflow-y: auto;
-  transform-style: preserve-3d;
-}
-
-.converge-panel-left.is-visible {
-  transform: translate3d(0, 0, 0) rotateY(0deg);
-  opacity: 1;
-}
-
-/* DOOR OPENING ANIMATION — LEFT DOOR */
-.converge-panel-left.is-closing {
-  animation: doorOpenLeft 1100ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
-  pointer-events: none;
-}
-
-@keyframes doorOpenLeft {
-  0% {
-    transform: translate3d(0, 0, 0) rotateY(0deg);
-    opacity: 1;
-    box-shadow: 12px 0 40px rgba(8, 47, 230, 0.08);
-  }
-  30% {
-    box-shadow: 25px 0 60px rgba(8, 47, 230, 0.16), 10px 0 20px rgba(0, 0, 0, 0.08);
-  }
-  70% {
-    opacity: 1;
-    box-shadow: 35px 0 80px rgba(8, 47, 230, 0.2), 15px 0 30px rgba(0, 0, 0, 0.12);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) rotateY(-88deg);
-    opacity: 0;
-    box-shadow: none;
-  }
-}
-
-/* ==========================================================================
-   RIGHT DOOR (50vw × 100vh)
-   Enters: slides in from right (+100% -> 0)
-   Exits: swings OPEN around its right hinge like a door (rotateY +88deg)
-   ========================================================================== */
-.converge-panel-right {
-  pointer-events: auto;
-  flex: 0 0 50vw;
-  width: 50vw;
-  height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 64px 72px;
-  background-color: #f8f9fc;
-  background-image:
-    linear-gradient(rgba(8, 47, 230, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(8, 47, 230, 0.035) 1px, transparent 1px),
-    linear-gradient(215deg, #ffffff 0%, #f4f6fa 60%, #edf1f8 100%);
-  background-size: 56px 56px, 56px 56px, auto;
-  border-left: 1px solid rgba(8, 47, 230, 0.12);
-  box-shadow: -12px 0 40px rgba(8, 47, 230, 0.04), inset 1px 0 0 rgba(255, 255, 255, 0.8);
-  transform-origin: 100% 50%;
-  transform: translate3d(100%, 0, 0);
-  transition: transform 950ms cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 850ms ease;
-  will-change: transform, opacity;
-  position: relative;
-  overflow-y: auto;
-  transform-style: preserve-3d;
 }
 
-.converge-panel-right.is-visible {
-  transform: translate3d(0, 0, 0) rotateY(0deg);
+.converge-modal-drawer.is-visible {
+  transform: translateY(-50%) translate3d(0, 0, 0);
   opacity: 1;
+  pointer-events: auto;
 }
 
-/* DOOR OPENING ANIMATION — RIGHT DOOR */
-.converge-panel-right.is-closing {
-  animation: doorOpenRight 1100ms cubic-bezier(0.35, 0, 0.25, 1) forwards;
-  pointer-events: none;
-}
-
-@keyframes doorOpenRight {
-  0% {
-    transform: translate3d(0, 0, 0) rotateY(0deg);
-    opacity: 1;
-    box-shadow: -12px 0 40px rgba(8, 47, 230, 0.08);
-  }
-  30% {
-    box-shadow: -25px 0 60px rgba(8, 47, 230, 0.16), -10px 0 20px rgba(0, 0, 0, 0.08);
-  }
-  70% {
-    opacity: 1;
-    box-shadow: -35px 0 80px rgba(8, 47, 230, 0.2), -15px 0 30px rgba(0, 0, 0, 0.12);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) rotateY(88deg);
-    opacity: 0;
-    box-shadow: none;
-  }
-}
-
-/* Ambient Subtle Lighting */
-.converge-panel-glow-left {
-  position: absolute;
-  top: -100px;
-  left: -100px;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 255, 23, 0.16) 0%, transparent 68%);
-  pointer-events: none;
-}
-
-.converge-panel-glow-right {
-  position: absolute;
-  bottom: -100px;
-  right: -100px;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(8, 47, 230, 0.1) 0%, transparent 68%);
-  pointer-events: none;
-}
-
-/* Center Seam Hairline */
-.converge-seam-glow {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 2px;
-  transform: translateX(-50%);
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(8, 47, 230, 0.25) 25%,
-    rgba(8, 47, 230, 0.45) 50%,
-    rgba(201, 255, 23, 0.4) 75%,
-    transparent 100%
-  );
+.converge-modal-drawer.is-closing {
+  transform: translateY(-50%) translate3d(105%, 0, 0);
   opacity: 0;
+  /* Slower graceful exit glide */
+  transition: transform 850ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              opacity 650ms ease;
   pointer-events: none;
-  z-index: 20;
-  transition: opacity 600ms ease 800ms;
 }
 
-.converge-modal-stage.is-converged .converge-seam-glow {
-  opacity: 1;
+/* Modal Art Container */
+.converge-modal-art {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #090b10;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Close Button (Light-Themed Executive Pill) */
+.converge-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ==========================================================================
+   REDESIGNED CLOSE BUTTON — CIRCULAR FLOATING GLASSMORPHISM
+   ========================================================================== */
 .converge-close-btn {
   position: absolute;
-  top: 36px;
-  right: 48px;
+  top: 22px;
+  right: 22px;
+  width: 44px;
   height: 44px;
-  padding: 0 20px 0 16px;
-  border-radius: 9999px;
-  background: #ffffff;
-  border: 1px solid rgba(8, 47, 230, 0.18);
-  color: #090a0f;
-  box-shadow: 0 4px 18px rgba(8, 47, 230, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
-  display: inline-flex;
+  border-radius: 50%;
+  background: rgba(14, 18, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   cursor: pointer;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 30;
+  z-index: 50;
+  pointer-events: auto;
+  padding: 0;
 }
 
 .converge-close-btn:hover {
-  background: #082fe6;
-  border-color: #082fe6;
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(8, 47, 230, 0.25);
+  background: rgba(8, 47, 230, 0.92);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.08) rotate(90deg);
+  box-shadow: 0 6px 20px rgba(8, 47, 230, 0.45);
 }
 
 .converge-close-btn:active {
-  transform: translateY(0);
+  transform: scale(0.94);
 }
 
 .converge-close-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
   stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-/* Light-Themed Full Page Typography & Content */
-.converge-header-row {
+/* ==========================================================================
+   PURE FEATHERED BOTTOM GRADIENT OVERLAY (NO HARD EDGES)
+   ========================================================================== */
+.converge-modal-bottom-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(
+    to top,
+    rgba(7, 9, 16, 0.96) 0%,
+    rgba(7, 9, 16, 0.85) 30%,
+    rgba(7, 9, 16, 0.52) 60%,
+    rgba(7, 9, 16, 0.18) 82%,
+    rgba(7, 9, 16, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 35;
+}
+
+/* ==========================================================================
+   PROFESSIONAL BOTTOM ACTION BAR
+   ========================================================================== */
+.converge-modal-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 36px 24px 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 32px;
+  gap: 20px;
+  z-index: 40;
+  background: transparent;
 }
 
-.converge-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #344054;
-}
-
-.converge-tag-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.converge-tag-dot.lime {
-  background: #15803d;
-  box-shadow: 0 0 10px rgba(22, 163, 74, 0.5);
-}
-
-.converge-tag-dot.blue {
-  background: #082fe6;
-  box-shadow: 0 0 10px rgba(8, 47, 230, 0.5);
-}
-
-.converge-body-content {
-  max-width: 580px;
-  margin: auto 0;
-  padding: 24px 0;
-}
-
-.converge-title {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 46px;
-  line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  color: #0b0c10;
-  margin: 0 0 20px 0;
-}
-
-.converge-desc {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 1.65;
-  color: #475467;
-  margin: 0 0 36px 0;
-}
-
-.converge-metrics-grid {
+/* Status Indicator on Left */
+.converge-offer-badge {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 14px;
 }
 
-.converge-metric-item {
+/* Premium Diya Icon Container with Gentle Flame Radiance */
+.converge-diya-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.16) 0%, rgba(245, 158, 11, 0.08) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.38);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  background: #ffffff;
-  border: 1px solid rgba(8, 47, 230, 0.1);
-  border-radius: 14px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #111318;
-  box-shadow: 0 2px 10px rgba(8, 47, 230, 0.04);
-  transition: all 0.2s ease;
+  justify-content: center;
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
 }
 
-.converge-metric-item:hover {
+.converge-diya-svg {
+  filter: drop-shadow(0 0 5px rgba(251, 146, 60, 0.65));
+  animation: diyaGlow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes diyaGlow {
+  0% {
+    filter: drop-shadow(0 0 4px rgba(251, 146, 60, 0.5));
+    transform: scale(0.98);
+  }
+  100% {
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.85));
+    transform: scale(1.02);
+  }
+}
+
+.converge-badge-primary {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.converge-badge-secondary {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 450;
+  letter-spacing: 0.01em;
+  margin-top: 2px;
+}
+
+/* Buttons on Right */
+.converge-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Secondary Button — Schedule Consultation (Frosted White Glass) */
+.converge-btn-secondary {
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.converge-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.converge-btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Primary Button — Claim Offer & Contact (Crisp Solid White Executive) */
+.converge-btn-primary {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 9999px;
   background: #ffffff;
-  border-color: rgba(8, 47, 230, 0.25);
-  box-shadow: 0 6px 18px rgba(8, 47, 230, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  color: #080b16;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(255, 255, 255, 0.5);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.converge-btn-primary:hover {
+  background: #f8fafc;
+  color: #050811;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.35), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.converge-btn-primary:active {
+  transform: translateY(0);
+}
+
+.converge-btn-primary svg {
+  transition: transform 0.2s ease;
+}
+
+.converge-btn-primary:hover svg {
   transform: translateX(3px);
 }
 
-.converge-metric-num {
-  font-family: monospace;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #082fe6;
-}
-
-.converge-metric-num.green {
-  color: #15803d;
-}
-
-.converge-footer-status {
-  padding-top: 28px;
-  border-top: 1px solid rgba(8, 47, 230, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #667085;
-  font-family: monospace;
-  letter-spacing: 0.08em;
-}
-
-/* Responsiveness on screens < 960px */
-@media (max-width: 960px) {
-  .converge-panel-left,
-  .converge-panel-right {
-    padding: 44px 32px;
-  }
-  .converge-title {
-    font-size: 34px;
-  }
-}
-
-/* Responsiveness on screens < 720px */
-@media (max-width: 720px) {
-  .converge-modal-stage {
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 900px) {
+  .converge-modal-bottom-bar {
+    padding: 14px 20px 18px 20px;
     flex-direction: column;
-    perspective: 1200px;
+    align-items: stretch;
+    gap: 12px;
   }
-  .converge-panel-left {
-    flex: 0 0 50vh;
-    width: 100vw;
-    height: 50vh;
-    padding: 32px 24px;
-    border-right: none;
-    border-bottom: 1px solid rgba(8, 47, 230, 0.12);
-    transform-origin: top center;
-    transform: translate3d(-100%, 0, 0);
+
+  .converge-offer-badge {
+    justify-content: center;
   }
-  .converge-panel-right {
-    flex: 0 0 50vh;
-    width: 100vw;
-    height: 50vh;
-    padding: 32px 24px;
-    border-left: none;
-    border-top: 1px solid rgba(8, 47, 230, 0.12);
-    transform-origin: bottom center;
-    transform: translate3d(100%, 0, 0);
+
+  .converge-modal-actions {
+    justify-content: stretch;
   }
-  .converge-panel-left.is-closing {
-    animation: doorOpenTop 1050ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+
+  .converge-btn-secondary,
+  .converge-btn-primary {
+    flex: 1;
+    justify-content: center;
   }
-  .converge-panel-right.is-closing {
-    animation: doorOpenBottom 1050ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@media (max-width: 640px) {
+  .converge-modal-drawer {
+    width: 98vw;
+    height: min(600px, calc(100vh - 24px));
+    border-radius: 18px 0 0 18px;
   }
-  @keyframes doorOpenTop {
-    0% { transform: translate3d(0, 0, 0) rotateX(0deg); opacity: 1; }
-    65% { opacity: 1; }
-    100% { transform: translate3d(0, 0, 0) rotateX(88deg); opacity: 0; }
-  }
-  @keyframes doorOpenBottom {
-    0% { transform: translate3d(0, 0, 0) rotateX(0deg); opacity: 1; }
-    65% { opacity: 1; }
-    100% { transform: translate3d(0, 0, 0) rotateX(-88deg); opacity: 0; }
-  }
-  .converge-seam-glow {
-    top: 50%;
-    left: 0;
-    right: 0;
-    width: 100vw;
-    height: 2px;
-    transform: translateY(-50%);
-  }
-  .converge-title {
-    font-size: 26px;
-  }
+
   .converge-close-btn {
-    top: 20px;
-    right: 20px;
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .converge-close-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .converge-btn-secondary {
+    display: none;
   }
 }

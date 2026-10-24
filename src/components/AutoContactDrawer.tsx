@@ -81,10 +81,16 @@ export default function AutoContactDrawer() {
       }, 5500);
     };
 
+    const handleExplicitOpen = () => {
+      initialTriggerRef.current = true;
+      if (timerRef.current) clearTimeout(timerRef.current);
+      triggerDrawer();
+    };
+
     window.addEventListener("doors:closed", handleDoorsClosed);
     window.addEventListener("converge-modal:closed", handleDoorsClosed);
-    window.addEventListener("open:contact-modal", () => triggerDrawer());
-    (window as unknown as { openContactModal?: () => void }).openContactModal = () => triggerDrawer();
+    window.addEventListener("open:contact-modal", handleExplicitOpen);
+    (window as unknown as { openContactModal?: () => void }).openContactModal = handleExplicitOpen;
     (window as unknown as { scheduleContactReappear?: (ms: number) => void }).scheduleContactReappear = (ms: number) =>
       scheduleNextPeriodic(ms);
 

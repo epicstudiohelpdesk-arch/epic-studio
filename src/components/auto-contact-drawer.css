@@ -354,141 +354,452 @@ body.contact-drawer-open .line-sidebar {
   font-size: 11.5px !important;
 }
 
-/* Schedule and Confirmation flex gracefully within fixed card */
-.auto-contact-sheet .schedule-grid-wrap,
-.auto-contact-sheet .contact-success-card {
+/* ==========================================================================
+   SCHEDULE CALL TAB — PROPORTIONATE EXECUTIVE LAYOUT INSIDE MODAL
+   Fills available card height gracefully with zero dead space
+   ========================================================================== */
+.auto-contact-sheet .schedule-grid-wrap {
   flex: 1 !important;
+  height: 100% !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 10px !important;
-  justify-content: flex-start !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
 }
 
-.auto-contact-sheet .schedule-meta-bar {
-  padding: 5px 12px !important;
-  border-radius: 6px !important;
+.auto-contact-sheet .contact-dispatched-screen {
+  flex: 1 !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 10px 0 !important;
+  text-align: center !important;
+}
+
+.auto-contact-sheet .dispatched-status-icon {
+  width: 48px !important;
+  height: 48px !important;
   margin-bottom: 2px !important;
 }
 
+.auto-contact-sheet .dispatched-headline {
+  font-size: 26px !important;
+  margin: 0 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.auto-contact-sheet .dispatched-body {
+  font-size: 13.5px !important;
+  max-width: 440px !important;
+  line-height: 1.5 !important;
+  color: #64748b !important;
+  margin: 0 !important;
+}
+
+.auto-contact-sheet .dispatched-meta-tag {
+  padding: 5px 12px !important;
+  font-size: 11px !important;
+  border-radius: 6px !important;
+}
+
+.auto-contact-sheet .dispatched-copy-btn {
+  padding: 2px 6px !important;
+  font-size: 10px !important;
+}
+
+.auto-contact-sheet .dispatched-actions {
+  margin-top: 6px !important;
+  gap: 8px !important;
+}
+
+.auto-contact-sheet .dispatched-btn-primary,
+.auto-contact-sheet .dispatched-btn-secondary {
+  height: 38px !important;
+  padding: 0 18px !important;
+  font-size: 12px !important;
+  border-radius: 999px !important;
+}
+
+.auto-contact-sheet .schedule-meta-bar {
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  margin-bottom: 0 !important;
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.auto-contact-sheet .schedule-meta-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.auto-contact-sheet .schedule-meta-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #082fe6 !important;
+}
+
 .auto-contact-sheet .schedule-meta-text {
-  font-size: 11.5px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
 }
 
 .auto-contact-sheet .schedule-meta-badge {
-  font-size: 10px !important;
-  padding: 2px 6px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  padding: 4px 10px !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
 .auto-contact-sheet .schedule-datetime-row {
   display: grid !important;
   grid-template-columns: 1.15fr 1fr !important;
-  gap: 12px !important;
-  align-items: flex-start !important;
+  gap: 16px !important;
+  align-items: stretch !important;
 }
 
 .auto-contact-sheet .schedule-date-cards {
   display: flex !important;
-  gap: 4px !important;
+  gap: 6px !important;
+  height: 100% !important;
 }
 
 .auto-contact-sheet .date-selector-card {
   flex: 1 !important;
   min-width: 0 !important;
-  padding: 5px 2px !important;
-  gap: 1px !important;
+  min-height: 62px !important;
+  padding: 8px 4px !important;
+  border-radius: 8px !important;
+  gap: 2px !important;
+  background: #f8fafc !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.auto-contact-sheet .date-selector-card:hover {
+  background: #ffffff !important;
+  border-color: rgba(8, 47, 230, 0.4) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(8, 47, 230, 0.08) !important;
+}
+
+.auto-contact-sheet .date-selector-card.active {
+  background: #090d1a !important;
+  border-color: #090d1a !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(9, 13, 26, 0.25) !important;
 }
 
 .auto-contact-sheet .date-card-day {
-  font-size: 9px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #64748b !important;
+}
+
+.auto-contact-sheet .date-selector-card.active .date-card-day {
+  color: #94a3b8 !important;
 }
 
 .auto-contact-sheet .date-card-num {
-  font-size: 14px !important;
-  line-height: 1.1 !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  color: inherit !important;
 }
 
 .auto-contact-sheet .date-card-month {
-  font-size: 8.5px !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: #94a3b8 !important;
+}
+
+.auto-contact-sheet .date-selector-card.active .date-card-month {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .auto-contact-sheet .time-slots-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 5px !important;
+  gap: 7px !important;
+  height: 100% !important;
 }
 
 .auto-contact-sheet .time-slot-btn {
-  height: 32px !important;
-  min-height: 32px !important;
-  font-size: 11px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
   padding: 0 4px !important;
+  background: #f8fafc !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  color: #334155 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
 }
 
-/* Direct Contacts Mode 2x2 Grid Optimization inside Modal */
+.auto-contact-sheet .time-slot-btn:hover {
+  background: #ffffff !important;
+  border-color: rgba(8, 47, 230, 0.4) !important;
+  color: #0f172a !important;
+}
+
+.auto-contact-sheet .time-slot-btn.active {
+  background: #090d1a !important;
+  border-color: #090d1a !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(9, 13, 26, 0.2) !important;
+}
+
+/* Schedule inputs, dropdowns & submit row */
+.auto-contact-sheet .schedule-grid-wrap .contact-grid-2col,
+.auto-contact-sheet .schedule-grid-wrap .contact-grid-3col {
+  gap: 12px !important;
+}
+
+.auto-contact-sheet .schedule-grid-wrap .contact-field-label {
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: #334155 !important;
+  margin-bottom: 5px !important;
+}
+
+.auto-contact-sheet .schedule-grid-wrap .custom-dropdown-trigger {
+  min-height: 42px !important;
+  font-size: 13px !important;
+  border-radius: 8px !important;
+}
+
+.auto-contact-sheet .schedule-grid-wrap .contact-native-input {
+  height: 42px !important;
+  font-size: 13.5px !important;
+  border-radius: 8px !important;
+}
+
+.auto-contact-sheet .schedule-grid-wrap .contact-submit-row {
+  margin-top: 4px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.auto-contact-sheet .schedule-grid-wrap .contact-sla-badge {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+}
+
+.auto-contact-sheet .schedule-grid-wrap .contact-main-submit-btn {
+  height: 44px !important;
+  padding: 0 28px !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+}
+
+/* ==========================================================================
+   DIRECT CONTACTS TAB — EXPANDED EXECUTIVE COMMUNICATIONS CONSOLE
+   2x2 grid that fills vertical height gracefully with zero empty space
+   ========================================================================== */
 .auto-contact-sheet .direct-connect-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  gap: 10px !important;
-  align-content: start !important;
+  grid-template-rows: 1fr 1fr auto !important;
+  gap: 14px !important;
+  align-content: stretch !important;
   flex: 1 !important;
+  height: 100% !important;
 }
 
 .auto-contact-sheet .hotline-card {
-  padding: 10px 12px !important;
-  gap: 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 16px 18px !important;
+  gap: 12px !important;
+  border-radius: 10px !important;
+  background: #f8fafc !important;
+  border: 1px solid rgba(15, 23, 42, 0.09) !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03) !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.auto-contact-sheet .hotline-card:hover {
+  background: #ffffff !important;
+  border-color: rgba(8, 47, 230, 0.3) !important;
+  box-shadow: 0 8px 24px rgba(8, 47, 230, 0.07) !important;
+  transform: translateY(-2px) !important;
 }
 
 .auto-contact-sheet .hotline-top {
-  gap: 8px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
 }
 
 .auto-contact-sheet .hotline-icon-box {
-  width: 26px !important;
-  height: 26px !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 9px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  color: #082fe6 !important;
+  transition: all 0.2s ease !important;
+}
+
+.auto-contact-sheet .hotline-card:hover .hotline-icon-box {
+  background: #090d1a !important;
+  color: #ffffff !important;
+  border-color: #090d1a !important;
 }
 
 .auto-contact-sheet .hotline-icon-box svg {
-  width: 15px !important;
-  height: 15px !important;
+  width: 18px !important;
+  height: 18px !important;
 }
 
 .auto-contact-sheet .hotline-text h3 {
-  font-size: 12px !important;
-  margin-bottom: 2px !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 0 3px 0 !important;
 }
 
 .auto-contact-sheet .hotline-text p {
-  font-size: 10.5px !important;
-  line-height: 1.3 !important;
+  font-size: 11.5px !important;
+  line-height: 1.4 !important;
+  color: #64748b !important;
+  margin: 0 !important;
 }
 
 .auto-contact-sheet .hotline-action-btn {
-  height: 28px !important;
-  padding: 0 10px !important;
-  font-size: 11px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  height: 34px !important;
+  padding: 0 14px !important;
+  border-radius: 7px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.14) !important;
+  color: #0f172a !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.auto-contact-sheet .hotline-action-btn:hover {
+  background: #090d1a !important;
+  color: #ffffff !important;
+  border-color: #090d1a !important;
+  box-shadow: 0 4px 12px rgba(9, 13, 26, 0.2) !important;
 }
 
 .auto-contact-sheet .hotline-action-btn span:last-child {
-  font-size: 9.5px !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  opacity: 0.75 !important;
+}
+
+.auto-contact-sheet .hotline-dual-actions {
+  display: flex !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.auto-contact-sheet .hotline-dual-actions .hotline-action-btn {
+  flex: 1 !important;
+  padding: 0 10px !important;
+  font-size: 11.5px !important;
 }
 
 .auto-contact-sheet .direct-operations-bar {
   grid-column: 1 / -1 !important;
-  padding: 10px 16px !important;
-  gap: 14px !important;
+  display: grid !important;
+  grid-template-columns: 1fr auto 1.25fr auto 1.15fr !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 13px 18px !important;
+  border-radius: 9px !important;
+  background: #090e1a !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
   margin-top: 2px !important;
 }
 
+.auto-contact-sheet .op-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+}
+
 .auto-contact-sheet .op-label-row {
-  font-size: 8.5px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #94a3b8 !important;
 }
 
 .auto-contact-sheet .op-title {
-  font-size: 11px !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .auto-contact-sheet .op-subtitle {
-  font-size: 9.5px !important;
+  font-size: 10px !important;
+  color: rgba(255, 255, 255, 0.65) !important;
+  line-height: 1.2 !important;
 }
 
 /* Hide bulky bottom trust cards & free textual in modal view so modal never scrolls */
