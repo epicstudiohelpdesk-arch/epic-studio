@@ -1,0 +1,119 @@
+/* ==========================================================================
+   DIWALI FIREWORKS & ROCKET LAUNCHER COMPONENT STYLING
+   ========================================================================== */
+
+/* Background canvas for rocket flight & bursts - sits BEHIND hero components */
+.diwali-fireworks-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2; /* Sits behind phone mockup, headline, person, cards, text, and navbar */
+}
+
+/* Cracker launcher station - compact size, shifted down so bottom sits behind marquee */
+.diwali-cracker-station-container {
+  position: absolute;
+  right: clamp(16px, 3.2vw, 56px);
+  bottom: calc(28 * var(--u, 1px)); /* Bottom sits slightly behind marquee */
+  z-index: 8; /* Strictly below marquee-strip (z-index: 10) so bottom tucks behind */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s cubic-bezier(0.16, 1.25, 0.3, 1), filter 0.3s ease;
+}
+
+.diwali-cracker-station-container:hover {
+  transform: scale(1.06) translateY(-2px);
+  filter: drop-shadow(0 10px 24px rgba(255, 140, 0, 0.7));
+}
+
+.diwali-cracker-station-container:active {
+  transform: scale(0.96) translateY(2px);
+}
+
+/* Compact Cracker Station cylinders wrapper */
+.cracker-station-art {
+  position: relative;
+  width: clamp(105px, 8.5vw, 145px);
+  aspect-ratio: 280 / 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Cracker Station SVG - sits IN FRONT of fountain sparkles */
+.cracker-station-art svg {
+  position: relative;
+  z-index: 3;
+}
+
+/* Live nozzle fountain spark emitter canvas - lowered down, sits slightly BEHIND cracker barrels */
+.station-fountain-canvas {
+  position: absolute;
+  top: -30px;
+  left: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 30px);
+  pointer-events: none;
+  z-index: 1; /* Sits BEHIND the cracker cylinders (z-index: 3) */
+  /* Smooth optical gradient feathering so upper portion NEVER appears cut out */
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.5) 75%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0.5) 75%,
+    transparent 100%
+  );
+}
+
+/* Ambient ground glow beneath cracker barrels */
+.cracker-station-ground-glow {
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  height: 16px;
+  background: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.75) 0%, rgba(255, 60, 0, 0.3) 50%, transparent 80%);
+  filter: blur(5px);
+  pointer-events: none;
+  animation: glowFlicker 1.8s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes glowFlicker {
+  0% {
+    opacity: 0.65;
+    transform: translateX(-50%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 760px) {
+  .diwali-cracker-station-container {
+    right: 12px;
+    bottom: -10px; /* Tucks slightly behind marquee on phone view */
+    transform-origin: bottom right;
+  }
+  .cracker-station-art {
+    width: 95px;
+  }
+}

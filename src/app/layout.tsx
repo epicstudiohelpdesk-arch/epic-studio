@@ -9,6 +9,7 @@ import AnimationGate from "@/components/AnimationGate";
 import DynamicFavicon from "@/components/DynamicFavicon";
 import SplashScreen from "@/components/SplashScreen";
 import JsonLd from "@/components/seo/JsonLd";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { SITE, SITE_URL } from "@/lib/site";
 import {
   organizationNode,
@@ -174,6 +175,7 @@ export default function RootLayout({
         <AnimationGate />
         {children}
         <FloatingFolder />
+        <AnalyticsTracker />
       </body>
     </html>
   );

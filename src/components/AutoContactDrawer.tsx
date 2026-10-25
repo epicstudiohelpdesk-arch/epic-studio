@@ -13,6 +13,16 @@ export default function AutoContactDrawer() {
   const periodicTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const triggerDrawer = useCallback(() => {
+    // Strictly prevent contact drawer from appearing while Diwali modal is open/visible
+    if (typeof document !== "undefined") {
+      const isDiwaliOpen =
+        !!document.querySelector(".converge-dropdown-page") ||
+        document.body.classList.contains("converge-page-open");
+      if (isDiwaliOpen) {
+        return;
+      }
+    }
+
     if (isOpenRef.current) return;
     isOpenRef.current = true;
 
@@ -42,7 +52,9 @@ export default function AutoContactDrawer() {
       periodicTimerRef.current = setTimeout(() => {
         const isDoorsOpen =
           typeof document !== "undefined" &&
-          !!document.querySelector(".converge-modal-stage");
+          (!!document.querySelector(".converge-modal-stage") ||
+           !!document.querySelector(".converge-dropdown-page") ||
+           document.body.classList.contains("converge-page-open"));
         const isHidden =
           typeof document !== "undefined" && document.visibilityState === "hidden";
 
@@ -50,7 +62,7 @@ export default function AutoContactDrawer() {
           triggerDrawer();
         } else {
           // If modal is already open, doors active, or tab hidden, check again after short interval
-          scheduleNextPeriodic(10000);
+          scheduleNextPeriodic(12000);
         }
       }, interval);
     },
@@ -71,14 +83,35 @@ export default function AutoContactDrawer() {
   }, [scheduleNextPeriodic]);
 
   useEffect(() => {
-    // Triggers first appearance 5-6 seconds AFTER the 3D doors modal is closed
+    // Suppress and close contact modal immediately when Diwali modal opens
+    const handleDiwaliModalOpened = () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (periodicTimerRef.current) clearTimeout(periodicTimerRef.current);
+      setIsVisible(false);
+      setIsMounted(false);
+      isOpenRef.current = false;
+    };
+
+    // Triggers first appearance 6-7 seconds AFTER the Diwali modal is closed
     const handleDoorsClosed = () => {
+      if (typeof document !== "undefined") {
+        const isDiwaliOpen =
+          !!document.querySelector(".converge-dropdown-page") ||
+          document.body.classList.contains("converge-page-open");
+        if (isDiwaliOpen) return;
+      }
       if (initialTriggerRef.current) return;
       initialTriggerRef.current = true;
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
-        triggerDrawer();
-      }, 5500);
+        const isDiwaliOpen =
+          typeof document !== "undefined" &&
+          (!!document.querySelector(".converge-dropdown-page") ||
+           document.body.classList.contains("converge-page-open"));
+        if (!isDiwaliOpen) {
+          triggerDrawer();
+        }
+      }, 7000);
     };
 
     const handleExplicitOpen = () => {
@@ -87,6 +120,8 @@ export default function AutoContactDrawer() {
       triggerDrawer();
     };
 
+    window.addEventListener("converge-modal:opened", handleDiwaliModalOpened);
+    window.addEventListener("converge-modal:open", handleDiwaliModalOpened);
     window.addEventListener("doors:closed", handleDoorsClosed);
     window.addEventListener("converge-modal:closed", handleDoorsClosed);
     window.addEventListener("open:contact-modal", handleExplicitOpen);
@@ -95,9 +130,11 @@ export default function AutoContactDrawer() {
       scheduleNextPeriodic(ms);
 
     return () => {
+      window.removeEventListener("converge-modal:opened", handleDiwaliModalOpened);
+      window.removeEventListener("converge-modal:open", handleDiwaliModalOpened);
       window.removeEventListener("doors:closed", handleDoorsClosed);
       window.removeEventListener("converge-modal:closed", handleDoorsClosed);
-      window.removeEventListener("open:contact-modal", () => triggerDrawer());
+      window.removeEventListener("open:contact-modal", handleExplicitOpen);
       if (timerRef.current) clearTimeout(timerRef.current);
       if (periodicTimerRef.current) clearTimeout(periodicTimerRef.current);
     };

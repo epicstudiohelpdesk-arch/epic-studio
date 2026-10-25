@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Visit {
+  id        String   @id @default(cuid())
+  ip        String?
+  userAgent String?
+  country   String?
+  city      String?
+  path      String   @default("/")
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+}
+
+model FormSubmission {
+  id         String   @id @default(cuid())
+  token      String   @unique
+  type       String
+  name       String
+  email      String
+  phone      String?
+  discipline String?
+  budget     String?
+  timeline   String?
+  message    String?
+  date       String?
+  timeSlot   String?
+  timezone   String?
+  platform   String?
+  callTopic  String?
+  status     String   @default("new")
+  notes      String?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([email])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         String   @default("admin")
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

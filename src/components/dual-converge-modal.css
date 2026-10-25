@@ -1,381 +1,391 @@
 /* ==========================================================================
-   EXECUTIVE DIWALI SPECIAL OFFER MODAL
-   - Docks to the right side of the screen.
-   - Glides in smoothly with slower, visually prominent, cinematic motion.
-   - Expanded length and height displaying /diwali.png with high-impact clarity.
-   - Soft, reduced diffuse background shadow and subtle ambient blur.
-   - Redesigned circular glassmorphism close button with tactile hover.
-   - Professional bottom action bar with contact trigger buttons.
+   FESTIVE DIWALI DROP-DOWN PAGE (CURVED BOTTOM CORNERS, FULL WIDTH, REDUCED HEIGHT)
+   - Moves in smoothly and slowly from top to bottom like a drop-down page panel.
+   - Full width (100vw), flush with ceiling (top: 0).
+   - Bottom side corners rounded and curved.
+   - Reduced height (clamp(460px, 68vh, 590px)), NOT 100vh.
+   - /diwali.png is contained directly inside the page itself edge-to-edge.
+   - No inner modal box, no top tabular banner, no corner close button.
+   - Upward arrow button at bottom center slides page back UP off-screen.
    ========================================================================== */
 
-/* Fullscreen Soft Backdrop (Ambient & subtle — website remains clearly visible) */
-.converge-modal-backdrop {
+/* Fullscreen Ambient Backdrop (completely clear - zero darkness, zero blur) */
+.converge-backdrop {
   position: fixed;
   inset: 0;
   z-index: 99998;
-  background: rgba(4, 6, 12, 0.32);
-  backdrop-filter: blur(5px) saturate(130%);
-  -webkit-backdrop-filter: blur(5px) saturate(130%);
-  opacity: 0;
+  background: transparent; /* No darkness */
+  backdrop-filter: none; /* No blurriness */
+  -webkit-backdrop-filter: none;
+  opacity: 1;
   pointer-events: auto;
-  transition: opacity 650ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 400ms ease;
 }
 
-.converge-modal-backdrop.is-visible {
+.converge-backdrop.is-visible {
   opacity: 1;
 }
 
-.converge-modal-backdrop.is-closing {
+.converge-backdrop.is-closing {
   opacity: 0;
-  transition: opacity 600ms ease;
+  pointer-events: none;
+  transition: opacity 400ms ease;
 }
 
-/* Background scroll lock */
-html.converge-modal-open,
-body.converge-modal-open {
+/* Background scroll lock & Suppress background contact modal while Diwali modal is active */
+html.converge-page-open,
+body.converge-page-open {
   overflow: hidden !important;
   overscroll-behavior: none !important;
   touch-action: none !important;
 }
 
-/* Hide floating elements that might overlap the right-anchored modal */
-body.converge-modal-open .floating-folder-root,
-body.converge-modal-open .line-sidebar {
+body.converge-page-open .floating-folder-root,
+body.converge-page-open .line-sidebar,
+body.converge-page-open .auto-contact-backdrop,
+body.converge-page-open .auto-contact-wrapper,
+body.converge-page-open .auto-contact-sheet {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
+  display: none !important;
   transition: opacity 0.25s ease !important;
 }
 
 /* ==========================================================================
-   MODAL DRAWER — EXPANDED LENGTH & HEIGHT, SOFTER AMBIENT SHADOW
-   Attached to the right side, slower cinematic glide from right to left
+   THE DROP-DOWN PAGE PANEL (SEAMLESS EDGE-TO-EDGE IMAGE FIT, NO DARK CORNERS)
    ========================================================================== */
-.converge-modal-drawer {
+.converge-dropdown-page {
   position: fixed;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%) translate3d(105%, 0, 0);
-  width: min(1060px, 95vw);
-  height: min(670px, calc(100vh - 36px));
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: clamp(520px, 75vh, 740px); /* Slightly reduced height as requested */
   z-index: 99999;
-  border-radius: 28px 0 0 28px;
-  overflow: hidden;
-  background: #090b12;
-  /* Reduced, softer, diffuse ambient shadow */
-  box-shadow: -14px 0 45px rgba(0, 0, 0, 0.32), 0 8px 30px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 215, 0, 0.22);
-  border-right: none;
+  background: transparent; /* Transparent container - no dark corners peeking through */
+  /* Top flush with window ceiling; bottom side corners curved and rounded */
+  border-radius: 0 0 clamp(32px, 4vw, 48px) clamp(32px, 4vw, 48px);
+  border-bottom: 2.5px solid rgba(255, 215, 0, 0.65);
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.28),
+    0 0 28px rgba(255, 215, 0, 0.2);
+  transform: translate3d(0, calc(-100% - 130px), 0);
   pointer-events: none;
-  opacity: 0.7;
-  /* Slower, more prominent and buttery-smooth luxury deceleration */
-  transition: transform 1150ms cubic-bezier(0.16, 1, 0.28, 1),
-              opacity 700ms ease,
-              box-shadow 800ms ease;
-  will-change: transform, opacity;
-  display: flex;
+  overflow: visible; /* Allows short pull rope at bottom rim to hang freely below */
+  will-change: transform;
+  /* Buttery-smooth slow luxury cinematic glide from top to bottom */
+  transition: transform 1200ms cubic-bezier(0.16, 1, 0.26, 1);
 }
 
-.converge-modal-drawer.is-visible {
-  transform: translateY(-50%) translate3d(0, 0, 0);
-  opacity: 1;
+.converge-dropdown-page.is-visible {
+  transform: translate3d(0, 0, 0);
   pointer-events: auto;
 }
 
-.converge-modal-drawer.is-closing {
-  transform: translateY(-50%) translate3d(105%, 0, 0);
-  opacity: 0;
-  /* Slower graceful exit glide */
-  transition: transform 850ms cubic-bezier(0.25, 0.1, 0.25, 1),
-              opacity 650ms ease;
+.converge-dropdown-page.is-closing {
+  transform: translate3d(0, calc(-100% - 130px), 0);
+  /* Slower, graceful glide back UPWARDS into the ceiling */
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
-/* Modal Art Container */
-.converge-modal-art {
+/* ==========================================================================
+   THE IMAGE: FITS PROPERLY INSIDE THE MODAL COVERING THE ENTIRE AREA
+   ========================================================================== */
+.converge-page-img-wrap {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  position: relative;
   overflow: hidden;
-  background: #090b10;
-  display: flex;
-  flex-direction: column;
+  border-radius: inherit; /* Clips image cleanly to bottom curved corners */
+  background: transparent;
 }
 
-.converge-modal-img {
+/* Festive Image covers the entire modal area seamlessly without dark letterboxing */
+.converge-page-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: cover; /* Covers the entire modal area completely */
+  object-position: center 36%; /* Centers the headline, phones, laptop and offer */
   display: block;
   user-select: none;
   -webkit-user-drag: none;
 }
 
-/* ==========================================================================
-   REDESIGNED CLOSE BUTTON — CIRCULAR FLOATING GLASSMORPHISM
-   ========================================================================== */
-.converge-close-btn {
+/* Bottom Content Bar (Action CTA) */
+.converge-bottom-bar {
   position: absolute;
-  top: 22px;
-  right: 22px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(14, 18, 28, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px clamp(24px, 5vw, 68px) 24px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 50;
+  justify-content: flex-end;
+  gap: 16px;
+  z-index: 20;
   pointer-events: auto;
-  padding: 0;
 }
 
-.converge-close-btn:hover {
-  background: rgba(8, 47, 230, 0.92);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: scale(1.08) rotate(90deg);
-  box-shadow: 0 6px 20px rgba(8, 47, 230, 0.45);
+/* Redesigned Claim Offer & Contact CTA (Modern luxury squircle/rectangular cut, non-circular) */
+.converge-cta-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 26px;
+  border-radius: 12px; /* Non-circular, sleek modern squircle */
+  background: linear-gradient(135deg, #ffe066 0%, #f59e0b 50%, #d97706 100%);
+  color: #1a0c00;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1.5px 0 rgba(146, 64, 14, 0.45),
+    0 6px 20px rgba(217, 119, 6, 0.42),
+    0 2px 5px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s ease,
+    filter 0.22s ease;
 }
 
-.converge-close-btn:active {
-  transform: scale(0.94);
-}
-
-.converge-close-btn svg {
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* ==========================================================================
-   PURE FEATHERED BOTTOM GRADIENT OVERLAY (NO HARD EDGES)
-   ========================================================================== */
-.converge-modal-bottom-overlay {
+/* Subtle light shimmer sweep reflection */
+.converge-cta-primary::before {
+  content: "";
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 180px;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
   background: linear-gradient(
-    to top,
-    rgba(7, 9, 16, 0.96) 0%,
-    rgba(7, 9, 16, 0.85) 30%,
-    rgba(7, 9, 16, 0.52) 60%,
-    rgba(7, 9, 16, 0.18) 82%,
-    rgba(7, 9, 16, 0) 100%
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
   );
+  transform: skewX(-22deg);
+  transition: left 0.75s ease;
   pointer-events: none;
-  z-index: 35;
+}
+
+.converge-cta-primary:hover::before {
+  left: 150%;
+}
+
+.converge-cta-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 0 rgba(146, 64, 14, 0.55),
+    0 10px 28px rgba(245, 158, 11, 0.55),
+    0 3px 8px rgba(0, 0, 0, 0.24);
+}
+
+.converge-cta-primary:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.25),
+    0 3px 10px rgba(217, 119, 6, 0.38);
+}
+
+.converge-cta-sparkle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #78350f;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.converge-cta-primary:hover .converge-cta-sparkle {
+  transform: rotate(20deg) scale(1.18);
+  color: #451a03;
+}
+
+.converge-cta-text {
+  position: relative;
+  z-index: 1;
+}
+
+.converge-cta-arrow {
+  display: inline-flex;
+  stroke: currentColor;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.converge-cta-primary:hover .converge-cta-arrow {
+  transform: translateX(4px);
 }
 
 /* ==========================================================================
-   PROFESSIONAL BOTTOM ACTION BAR
+   SHORT PULL ROPE (ATTACHED AT BOTTOM OF MODAL, 20PX GAP FROM RIGHT CORNER)
    ========================================================================== */
-.converge-modal-bottom-bar {
+.modal-pull-rope-root {
   position: absolute;
-  bottom: 0;
+  top: calc(100% - 3px); /* Attached directly at the bottom rim of the modal */
+  right: 20px; /* Exactly 20px gap from the right corner */
+  width: 44px;
+  height: 130px;
+  pointer-events: none;
+  z-index: 60;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: visible;
+}
+
+.modal-pull-rope-svg {
+  position: absolute;
+  top: 0;
   left: 0;
-  right: 0;
-  padding: 16px 36px 24px 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  z-index: 40;
-  background: transparent;
+  width: 44px;
+  height: 140px;
+  overflow: visible;
+  pointer-events: none;
 }
 
-/* Status Indicator on Left */
-.converge-offer-badge {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.rope-ceiling-mount {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
-/* Premium Diya Icon Container with Gentle Flame Radiance */
-.converge-diya-badge {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.16) 0%, rgba(245, 158, 11, 0.08) 100%);
-  border: 1px solid rgba(255, 215, 0, 0.38);
+.rope-pull-handle {
+  cursor: grab;
+  pointer-events: auto;
+  outline: none;
+  transition: filter 0.2s ease;
+}
+
+.rope-pull-handle:focus-visible {
+  filter: drop-shadow(0 0 10px #ffd700);
+}
+
+.modal-pull-rope-root.is-pulling .rope-pull-handle {
+  cursor: grabbing;
+  filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.95)) brightness(1.2);
+}
+
+.rope-pull-handle:hover {
+  filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.85));
+}
+
+/* Small downward arrow displayed beside the rope only on hover (standalone golden arrow - NOT encircled) */
+.rope-hover-down-arrow {
+  position: absolute;
+  top: 0;
+  right: 44px; /* Positioned directly beside the pull ring */
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 18px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
+  width: 22px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  color: #ffd700;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 10px rgba(255, 215, 0, 0.95));
+  opacity: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  transform: translate3d(0, 42px, 0);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.2s ease,
+    color 0.2s ease;
+  user-select: none;
 }
 
-.converge-diya-svg {
-  filter: drop-shadow(0 0 5px rgba(251, 146, 60, 0.65));
-  animation: diyaGlow 2.5s ease-in-out infinite alternate;
+/* Display downward arrow when hovered over rope */
+.modal-pull-rope-root:hover .rope-hover-down-arrow,
+.modal-pull-rope-root.is-pulling .rope-hover-down-arrow {
+  opacity: 1;
 }
 
-@keyframes diyaGlow {
+.rope-hover-down-arrow:hover {
+  color: #fff6a8;
+  filter: drop-shadow(0 2px 7px rgba(0, 0, 0, 1)) drop-shadow(0 0 16px #ffd700);
+}
+
+.rope-hover-down-arrow svg {
+  animation: arrowBounceDown 1.4s ease-in-out infinite;
+  display: block;
+}
+
+@keyframes arrowBounceDown {
+  0%, 100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+/* Floating sparkle stars when pull triggered */
+.rope-sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 13px;
+  color: #ffd700;
+  text-shadow: 0 0 8px #ffe58f;
+  animation: sparkleFloat 0.7s ease-out forwards;
+}
+
+@keyframes sparkleFloat {
   0% {
-    filter: drop-shadow(0 0 4px rgba(251, 146, 60, 0.5));
-    transform: scale(0.98);
+    opacity: 1;
+    transform: translate(0, 0) scale(0.6);
   }
   100% {
-    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.85));
-    transform: scale(1.02);
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(1.3);
   }
-}
-
-.converge-badge-primary {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.converge-badge-secondary {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.72);
-  font-weight: 450;
-  letter-spacing: 0.01em;
-  margin-top: 2px;
-}
-
-/* Buttons on Right */
-.converge-modal-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-/* Secondary Button — Schedule Consultation (Frosted White Glass) */
-.converge-btn-secondary {
-  height: 44px;
-  padding: 0 22px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-}
-
-.converge-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-}
-
-.converge-btn-secondary:active {
-  transform: translateY(0);
-}
-
-/* Primary Button — Claim Offer & Contact (Crisp Solid White Executive) */
-.converge-btn-primary {
-  height: 44px;
-  padding: 0 24px;
-  border-radius: 9999px;
-  background: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  color: #080b16;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(255, 255, 255, 0.5);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
-}
-
-.converge-btn-primary:hover {
-  background: #f8fafc;
-  color: #050811;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.35), 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-.converge-btn-primary:active {
-  transform: translateY(0);
-}
-
-.converge-btn-primary svg {
-  transition: transform 0.2s ease;
-}
-
-.converge-btn-primary:hover svg {
-  transform: translateX(3px);
 }
 
 /* ==========================================================================
-   RESPONSIVE ADJUSTMENTS
+   RESPONSIVE DESIGN
    ========================================================================== */
-@media (max-width: 900px) {
-  .converge-modal-bottom-bar {
-    padding: 14px 20px 18px 20px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
+@media (max-width: 860px) {
+  .converge-dropdown-page {
+    height: clamp(460px, 70vh, 620px);
+    border-radius: 0 0 28px 28px;
   }
-
-  .converge-offer-badge {
-    justify-content: center;
-  }
-
-  .converge-modal-actions {
-    justify-content: stretch;
-  }
-
-  .converge-btn-secondary,
-  .converge-btn-primary {
-    flex: 1;
-    justify-content: center;
+  .converge-bottom-bar {
+    padding: 14px 22px 18px;
   }
 }
 
-@media (max-width: 640px) {
-  .converge-modal-drawer {
-    width: 98vw;
-    height: min(600px, calc(100vh - 24px));
-    border-radius: 18px 0 0 18px;
+@media (max-width: 520px) {
+  .converge-dropdown-page {
+    height: clamp(400px, 66vh, 500px);
+    border-radius: 0 0 22px 22px;
   }
-
-  .converge-close-btn {
-    top: 14px;
-    right: 14px;
-    width: 38px;
-    height: 38px;
+  .converge-bottom-bar {
+    padding: 10px 16px 14px;
+    justify-content: center;
   }
-
-  .converge-close-btn svg {
-    width: 16px;
-    height: 16px;
+  .converge-cta-primary {
+    padding: 10px 20px;
+    font-size: 12px;
+    border-radius: 10px;
   }
-
-  .converge-btn-secondary {
-    display: none;
+  .modal-pull-rope-root {
+    right: 16px;
+  }
+  .rope-hover-down-arrow {
+    right: 36px;
+    width: 18px;
+    height: 24px;
   }
 }

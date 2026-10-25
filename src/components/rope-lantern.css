@@ -1,0 +1,278 @@
+/* ==========================================================================
+   Animated Hanging Rope Lantern (Physics-Driven Golden Chain & Fanoos Lamp)
+   ========================================================================== */
+
+.rope-lantern-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(36 * var(--u, 1px));
+  height: calc(36 * var(--u, 1px));
+  flex-shrink: 0;
+  z-index: 105;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.rope-lantern-stage {
+  position: absolute;
+  top: calc(-22 * var(--u, 1px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 340px;
+  overflow: visible;
+  pointer-events: none;
+  transition: top 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-scrolled .rope-lantern-stage {
+  top: calc(-10 * var(--u, 1px));
+}
+
+.rope-lantern-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Draggable Lantern Handle */
+.rope-lantern-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 90px;
+  pointer-events: auto;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+  touch-action: none;
+  transition: filter 0.2s ease;
+  will-change: transform;
+}
+
+.rope-lantern-handle:hover {
+  filter: drop-shadow(0 0 10px rgba(255, 190, 40, 0.75));
+}
+
+.rope-lantern-handle.is-grabbing {
+  cursor: grabbing !important;
+}
+
+.rope-lantern-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Ambient Radial Glow Aura */
+.rope-lantern-aura {
+  position: absolute;
+  top: 14px;
+  left: -14px;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 185, 30, 0.6) 0%,
+    rgba(255, 130, 10, 0.3) 42%,
+    rgba(255, 80, 0, 0) 75%
+  );
+  pointer-events: none;
+  filter: blur(5px);
+  animation: lanternFlicker 3s ease-in-out infinite alternate;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  mix-blend-mode: screen;
+}
+
+.rope-lantern-wrap.is-radiant .rope-lantern-aura {
+  top: 2px;
+  left: -26px;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 240, 150, 0.85) 0%,
+    rgba(255, 180, 30, 0.5) 45%,
+    rgba(255, 100, 0, 0) 75%
+  );
+  filter: blur(7px);
+  animation: lanternRadiantPulse 2s ease-in-out infinite alternate;
+}
+
+/* Inner Light Core Accent */
+.rope-lantern-core-glow {
+  position: absolute;
+  top: 28px;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    #ffe79a 40%,
+    rgba(255, 170, 0, 0.8) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  animation: coreBreathe 2.4s ease-in-out infinite alternate;
+}
+
+.rope-lantern-wrap.is-radiant .rope-lantern-core-glow {
+  width: 22px;
+  height: 22px;
+  top: 26px;
+  left: 8px;
+  filter: blur(3px);
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    #fff8d6 50%,
+    rgba(255, 200, 50, 0.9) 80%,
+    transparent 100%
+  );
+}
+
+/* Subtle Interactive Tooltip */
+.rope-lantern-tooltip {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  color: #ffe699;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  z-index: 10;
+}
+
+.rope-lantern-wrap:hover .rope-lantern-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.rope-lantern-tooltip svg {
+  width: 9px;
+  height: 9px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+}
+
+.rope-lantern-handle.is-grabbing ~ .rope-lantern-tooltip {
+  opacity: 0 !important;
+}
+
+/* Floating Sparkle Particles */
+.rope-sparkle-mote {
+  position: absolute;
+  pointer-events: none;
+  font-size: 13px;
+  color: #ffdf7e;
+  text-shadow: 0 0 6px #ffa500;
+  user-select: none;
+  animation: sparklePop 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sparklePop {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.4) rotate(0deg);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--tx) * 1.3), calc(var(--ty) * 1.3)) scale(0.2) rotate(360deg);
+  }
+}
+
+@keyframes lanternFlicker {
+  0% {
+    opacity: 0.82;
+    transform: scale(0.96);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  70% {
+    opacity: 0.88;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 0.95;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes lanternRadiantPulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes coreBreathe {
+  0% {
+    opacity: 0.85;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 760px) {
+  .rope-lantern-wrap {
+    width: 32px;
+    height: 32px;
+  }
+  .rope-lantern-stage {
+    transform: translateX(-50%) scale(0.9);
+    top: calc(-18px);
+  }
+}
+
+@media (max-width: 480px) {
+  .rope-lantern-wrap {
+    width: 28px;
+    height: 28px;
+  }
+  .rope-lantern-stage {
+    transform: translateX(-50%) scale(0.82);
+    top: calc(-14px);
+  }
+}

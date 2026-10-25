@@ -15,6 +15,8 @@ const CloudLivePreview = dynamic(() => import("./LivePreviews").then((m) => m.Cl
 const GrowthLivePreview = dynamic(() => import("./LivePreviews").then((m) => m.GrowthLivePreview));
 const MobileLivePreview = dynamic(() => import("./LivePreviews").then((m) => m.MobileLivePreview));
 const LabsLivePreview = dynamic(() => import("./LivePreviews").then((m) => m.LabsLivePreview));
+const RopeLantern = dynamic(() => import("./RopeLantern"), { ssr: false });
+const HeaderLightStrip = dynamic(() => import("./HeaderLightStrip"), { ssr: false });
 
 interface DivisionItem {
   name: string;
@@ -389,23 +391,10 @@ const INDUSTRIES_LIST: IndustryItem[] = [
   },
 ];
 
-const WORK_CATEGORIES = [
-  { name: "Case Studies", count: "32 Projects" },
-  { name: "Web Platforms", count: "64 Deployed" },
-  { name: "Mobile Apps", count: "40+ Apps" },
-  { name: "Enterprise Software", count: "18 Systems" },
-  { name: "Government Projects", count: "15 Infrastructure" },
-  { name: "Brand Identity", count: "50+ Brands" },
-  { name: "Campaigns", count: "80+ Sprints" },
-  { name: "AI Solutions", count: "25 Agents" },
-  { name: "Product Design", count: "90+ Specs" },
-];
-
 const NAV_TABS = [
   { label: "Divisions", key: "Divisions", count: "8 Units", href: "/services" },
   { label: "Solutions", key: "Solutions", count: "10 Packages", href: "/services" },
   { label: "Industries", key: "Industries", count: "11 Sectors", href: "/work" },
-  { label: "Work", key: "Work", count: "7 Categories", href: "/work" },
 ];
 
 // Memoized: the header never re-renders when parent hero state flips acts
@@ -415,7 +404,6 @@ function Header() {
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [lastActiveTab, setLastActiveTab] = useState<string>("Divisions");
   const [featuredDivisionIndex, setFeaturedDivisionIndex] = useState<number>(0);
-  const [selectedWorkIndex, setSelectedWorkIndex] = useState<number>(0);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [expertModalOpen, setExpertModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -589,29 +577,34 @@ function Header() {
       >
         <div className="header-bg" aria-hidden="true" />
         <header className="site-header">
-          {/* Brand Logo */}
-          <Link className="brand" href="/" aria-label="EPIC STUDIO home">
-            <span className="brand-logo" aria-hidden="true">
-              <img
-                src="/brand_logo/dark.png"
-                alt="EPIC STUDIO Logo"
-                className="brand-logo-img brand-logo-dark"
-                width={60}
-                height={60}
-              />
-              <img
-                src="/brand_logo/light.png"
-                alt="EPIC STUDIO Logo"
-                className="brand-logo-img brand-logo-light"
-                width={60}
-                height={60}
-              />
-            </span>
-            <span className="brand-text">
-              <strong>EPIC STUDIO</strong>
-              <small>Multidisciplinary Tech & Design</small>
-            </span>
-          </Link>
+          {/* Brand Logo & Light Strip */}
+          <div className="header-brand-wrap">
+            <Link className="brand" href="/" aria-label="EPIC STUDIO home">
+              <span className="brand-logo" aria-hidden="true">
+                <img
+                  src="/brand_logo/dark.png"
+                  alt="EPIC STUDIO Logo"
+                  className="brand-logo-img brand-logo-dark"
+                  width={60}
+                  height={60}
+                />
+                <img
+                  src="/brand_logo/light.png"
+                  alt="EPIC STUDIO Logo"
+                  className="brand-logo-img brand-logo-light"
+                  width={60}
+                  height={60}
+                />
+              </span>
+              <span className="brand-text">
+                <strong>EPIC STUDIO</strong>
+                <small>Multidisciplinary Tech & Design</small>
+              </span>
+            </Link>
+
+            {/* Festive Hanging Fairy Light Strip positioned right beside the brand textual (Hero section only) */}
+            {pathname === "/" && <HeaderLightStrip isScrolled={isScrolled} />}
+          </div>
 
           {/* Nav Items */}
           <nav className="main-nav" aria-label="Primary navigation">
@@ -644,6 +637,16 @@ function Header() {
               );
             })}
 
+            {/* Standalone Direct Work Button (Simple button, no dropdown chevron, no hover flyout) */}
+            <Link
+              href="/work"
+              className={`nav-link-item nav-link-direct ${pathname === "/work" ? "active" : ""}`}
+              onMouseEnter={() => setActiveTab(null)}
+            >
+              <span>Work</span>
+              <span className="nav-animated-bar" />
+            </Link>
+
             {/* Standalone Direct Domains Button (No dropdown chevron, no mega-menu card on hover) */}
             <Link
               href="/domains"
@@ -657,6 +660,9 @@ function Header() {
 
           {/* Header Right Actions */}
           <div className="header-actions">
+            {/* Animated Golden Chain Rope Lantern */}
+            <RopeLantern />
+
             {/* Join Us Button */}
             <Link
               href="/contact"
@@ -1026,97 +1032,7 @@ function Header() {
               </div>
             )}
 
-            {/* ========================================================================= */}
-            {/* 4. WORK FLYOUT */}
-            {/* ========================================================================= */}
-            {currentTab === "Work" && (
-              <div className="universal-flyout-grid">
-                {/* LEFT: Mini Landing Page */}
-                <div className="flyout-col-left">
-                  <span className="flyout-section-tag">04 / WORK</span>
-                  <h2 className="flyout-headline">
-                    Selected Deployments &amp; Case Studies
-                  </h2>
-                  <p className="flyout-paragraph">
-                    Explore high-performance digital platforms, enterprise SaaS ecosystems, and public infrastructure delivered worldwide.
-                  </p>
-                  <div className="flyout-metrics-row">
-                    <div className="mini-metric">
-                      <strong>99.4%</strong>
-                      <span>Retention</span>
-                    </div>
-                    <div className="mini-metric">
-                      <strong>14</strong>
-                      <span>Industry Awards</span>
-                    </div>
-                  </div>
-                  <Link href="/work" className="flyout-cta-btn">
-                    <span>View Case Studies</span>
-                    <span className="cta-arrow">→</span>
-                  </Link>
-                </div>
 
-                {/* CENTER: Work Categories */}
-                <div className="flyout-col-center">
-                  <div className="work-cats-grid">
-                    {WORK_CATEGORIES.map((cat, idx) => (
-                      <div
-                        key={cat.name}
-                        className={`work-cat-card ${selectedWorkIndex === idx ? "active" : ""}`}
-                        onMouseEnter={() => setSelectedWorkIndex(idx)}
-                        onClick={openExpertModal}
-                      >
-                        <h4>{cat.name}</h4>
-                        <span>{cat.count}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* RIGHT: Large Rotating Project Preview */}
-                <div className="flyout-col-right">
-                  <div className="large-project-card">
-                    <div className="project-img-placeholder">
-                      <div className="project-badge">FEATURED CASE STUDY</div>
-                      <div className="project-visual-graphic">
-                        <span className="graphic-icon">
-                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2L2 7h20L12 2z" />
-                          </svg>
-                        </span>
-                        <span>West Bengal Education Platform</span>
-                      </div>
-                    </div>
-                    <div className="project-details">
-                      <h3>West Bengal Education Platform</h3>
-                      <p>Unified digital learning infrastructure supporting multi-lingual curriculum delivery.</p>
-
-                      <div className="tech-stack-pills">
-                        <span>Next.js</span>
-                        <span>Cloud Native</span>
-                        <span>AI Tutoring</span>
-                      </div>
-
-                      <div className="project-impact-row">
-                        <div>
-                          <small>TIMELINE</small>
-                          <strong>6 Months</strong>
-                        </div>
-                        <div>
-                          <small>IMPACT</small>
-                          <strong>12M+ Students &amp; Teachers</strong>
-                        </div>
-                      </div>
-
-                      <Link href="/work/west-bengal-education-platform" className="project-view-btn">
-                        <span>View Project Case Study</span>
-                        <span>→</span>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
 
 
 
@@ -1248,25 +1164,25 @@ function Header() {
                           ))}
                         </ul>
                       )}
-                      {item.key === "Work" && (
-                        <ul className="mobile-sub-list mobile-sub-list-compact">
-                          {WORK_CATEGORIES.map((c) => (
-                            <li key={c.name}>
-                              <a href="#" className="mobile-sub-link" onClick={openExpertModal}>
-                                <span>
-                                  <span className="mobile-sub-name">{c.name}</span>
-                                  <span className="mobile-sub-desc">{c.count}</span>
-                                </span>
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                     </div>
                   )}
                 </div>
               );
             })}
+
+            {/* Standalone Direct Work Button for Mobile */}
+            <div className="mobile-nav-item">
+              <Link
+                href="/work"
+                className={`mobile-nav-btn mobile-nav-direct-link ${pathname === "/work" ? "is-active" : ""}`}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="mobile-nav-toggle-left">
+                  <span className="mobile-nav-title">Work</span>
+                </span>
+                <span className="mobile-direct-arrow">→</span>
+              </Link>
+            </div>
 
             {/* Standalone Direct Domains Button for Mobile */}
             <div className="mobile-nav-item">

@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import Header from "@/components/Header";
 import LineSidebar from "@/components/LineSidebar";
+import DiwaliFireworks from "@/components/DiwaliFireworks";
+import HeroDiyaDuo from "@/components/HeroDiyaDuo";
 
 const stats = [
   ["500", "+", "Happy client"],
@@ -1204,10 +1206,16 @@ export default function HeroSection() {
             <img src="/assets/icons8-twitter-50.png" alt="EPIC STUDIO Twitter X Profile" decoding="async" />
           </span>
         </div>
+
+        {/* Diwali Fireworks Launcher Station & Particle Canvas */}
+        <DiwaliFireworks />
       </div>
 
       {/* Marquee Strip positioned directly beneath hero-wrap */}
       {marquee}
+
+      {/* 2 Festive Animated & Glowing Diyas on the Marquee (Left Side) */}
+      <HeroDiyaDuo />
     </div>
   );
 }

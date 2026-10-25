@@ -1,0 +1,307 @@
+/* ==========================================================================
+   Festive Hanging Fairy Light Strip (Warm LED Rice Light Strand)
+   Connecting from top navbar branding down beside "AI builders."
+   ========================================================================== */
+
+.header-brand-wrap {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  gap: calc(16 * var(--u, 1px));
+}
+
+.header-light-strip-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 38px;
+  flex-shrink: 0;
+  z-index: 105;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.32s;
+}
+
+.header-light-strip-wrap:active {
+  cursor: grabbing;
+}
+
+/* Appear strictly in Hero section; disappear cleanly when scrolled to other sections */
+.header-scrolled .header-light-strip-wrap,
+.header-light-strip-wrap.is-scrolled-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-8px);
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.28s;
+}
+
+/* Stage hanging down from top edge of viewport (y = 0) */
+.header-light-strip-stage {
+  position: absolute;
+  top: calc(-22 * var(--u, 1px));
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+  transition: top 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-light-strip-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Grab handle area for interactive tugging */
+.header-light-strip-hitarea {
+  position: absolute;
+  top: 0;
+  left: -80px;
+  width: 120px;
+  height: 320px;
+  pointer-events: auto;
+  cursor: grab;
+  border-radius: 20px;
+  touch-action: none;
+  background: transparent;
+}
+
+.header-light-strip-hitarea:active {
+  cursor: grabbing;
+}
+
+/* Concentric SVG transform boxes for silky smooth animations */
+.light-bulb-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bulbCorePulse 3.2s ease-in-out infinite alternate;
+}
+
+.light-bulb-bloom {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bulbBloomBreathe 3s ease-in-out infinite alternate;
+}
+
+.light-bulb-flare {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bulbFlareShimmer 2.8s ease-in-out infinite alternate;
+}
+
+.light-bulb-aura {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bulbAuraBreathe 3.5s ease-in-out infinite alternate;
+}
+
+/* Staggered bulb animations for rich organic twinkle */
+.bulb-node:nth-child(1) .light-bulb-core { animation-delay: 0s; animation-duration: 2.7s; }
+.bulb-node:nth-child(2) .light-bulb-core { animation-delay: -0.7s; animation-duration: 3.3s; }
+.bulb-node:nth-child(3) .light-bulb-core { animation-delay: -1.4s; animation-duration: 2.9s; }
+.bulb-node:nth-child(4) .light-bulb-core { animation-delay: -0.3s; animation-duration: 3.6s; }
+.bulb-node:nth-child(5) .light-bulb-core { animation-delay: -1.9s; animation-duration: 2.8s; }
+.bulb-node:nth-child(6) .light-bulb-core { animation-delay: -0.9s; animation-duration: 3.2s; }
+.bulb-node:nth-child(7) .light-bulb-core { animation-delay: -2.3s; animation-duration: 2.6s; }
+.bulb-node:nth-child(8) .light-bulb-core { animation-delay: -1.2s; animation-duration: 3.4s; }
+.bulb-node:nth-child(9) .light-bulb-core { animation-delay: -1.7s; animation-duration: 3.0s; }
+.bulb-node:nth-child(10) .light-bulb-core { animation-delay: -0.5s; animation-duration: 2.8s; }
+.bulb-node:nth-child(11) .light-bulb-core { animation-delay: -2.1s; animation-duration: 3.5s; }
+.bulb-node:nth-child(12) .light-bulb-core { animation-delay: -1.0s; animation-duration: 3.1s; }
+.bulb-node:nth-child(13) .light-bulb-core { animation-delay: -0.3s; animation-duration: 2.9s; }
+.bulb-node:nth-child(14) .light-bulb-core { animation-delay: -1.8s; animation-duration: 3.3s; }
+.bulb-node:nth-child(15) .light-bulb-core { animation-delay: -0.8s; animation-duration: 2.7s; }
+.bulb-node:nth-child(16) .light-bulb-core { animation-delay: -2.3s; animation-duration: 3.4s; }
+
+.bulb-node:nth-child(1) .light-bulb-bloom { animation-delay: -0.4s; }
+.bulb-node:nth-child(2) .light-bulb-bloom { animation-delay: -1.1s; }
+.bulb-node:nth-child(3) .light-bulb-bloom { animation-delay: -1.8s; }
+.bulb-node:nth-child(4) .light-bulb-bloom { animation-delay: -0.6s; }
+.bulb-node:nth-child(5) .light-bulb-bloom { animation-delay: -2.2s; }
+.bulb-node:nth-child(6) .light-bulb-bloom { animation-delay: -1.3s; }
+.bulb-node:nth-child(7) .light-bulb-bloom { animation-delay: -0.2s; }
+.bulb-node:nth-child(8) .light-bulb-bloom { animation-delay: -1.6s; }
+.bulb-node:nth-child(9) .light-bulb-bloom { animation-delay: -2.0s; }
+.bulb-node:nth-child(10) .light-bulb-bloom { animation-delay: -0.9s; }
+.bulb-node:nth-child(11) .light-bulb-bloom { animation-delay: -2.4s; }
+.bulb-node:nth-child(12) .light-bulb-bloom { animation-delay: -1.5s; }
+.bulb-node:nth-child(13) .light-bulb-bloom { animation-delay: -0.7s; }
+.bulb-node:nth-child(14) .light-bulb-bloom { animation-delay: -2.1s; }
+.bulb-node:nth-child(15) .light-bulb-bloom { animation-delay: -1.2s; }
+.bulb-node:nth-child(16) .light-bulb-bloom { animation-delay: -2.5s; }
+
+.bulb-node:nth-child(1) .light-bulb-flare { animation-delay: -0.2s; }
+.bulb-node:nth-child(2) .light-bulb-flare { animation-delay: -0.9s; }
+.bulb-node:nth-child(3) .light-bulb-flare { animation-delay: -1.6s; }
+.bulb-node:nth-child(4) .light-bulb-flare { animation-delay: -0.4s; }
+.bulb-node:nth-child(5) .light-bulb-flare { animation-delay: -2.0s; }
+.bulb-node:nth-child(6) .light-bulb-flare { animation-delay: -1.1s; }
+.bulb-node:nth-child(7) .light-bulb-flare { animation-delay: -2.5s; }
+.bulb-node:nth-child(8) .light-bulb-flare { animation-delay: -1.4s; }
+.bulb-node:nth-child(9) .light-bulb-flare { animation-delay: -1.8s; }
+.bulb-node:nth-child(10) .light-bulb-flare { animation-delay: -0.7s; }
+.bulb-node:nth-child(11) .light-bulb-flare { animation-delay: -2.2s; }
+.bulb-node:nth-child(12) .light-bulb-flare { animation-delay: -1.3s; }
+.bulb-node:nth-child(13) .light-bulb-flare { animation-delay: -0.5s; }
+.bulb-node:nth-child(14) .light-bulb-flare { animation-delay: -1.9s; }
+.bulb-node:nth-child(15) .light-bulb-flare { animation-delay: -1.0s; }
+.bulb-node:nth-child(16) .light-bulb-flare { animation-delay: -2.4s; }
+
+.bulb-node:nth-child(1) .light-bulb-aura { animation-delay: -0.5s; }
+.bulb-node:nth-child(2) .light-bulb-aura { animation-delay: -1.2s; }
+.bulb-node:nth-child(3) .light-bulb-aura { animation-delay: -2.0s; }
+.bulb-node:nth-child(4) .light-bulb-aura { animation-delay: -0.8s; }
+.bulb-node:nth-child(5) .light-bulb-aura { animation-delay: -2.4s; }
+.bulb-node:nth-child(6) .light-bulb-aura { animation-delay: -1.5s; }
+.bulb-node:nth-child(7) .light-bulb-aura { animation-delay: -0.4s; }
+.bulb-node:nth-child(8) .light-bulb-aura { animation-delay: -1.9s; }
+.bulb-node:nth-child(9) .light-bulb-aura { animation-delay: -2.2s; }
+.bulb-node:nth-child(10) .light-bulb-aura { animation-delay: -1.0s; }
+.bulb-node:nth-child(11) .light-bulb-aura { animation-delay: -2.6s; }
+.bulb-node:nth-child(12) .light-bulb-aura { animation-delay: -1.7s; }
+.bulb-node:nth-child(13) .light-bulb-aura { animation-delay: -0.9s; }
+.bulb-node:nth-child(14) .light-bulb-aura { animation-delay: -2.3s; }
+.bulb-node:nth-child(15) .light-bulb-aura { animation-delay: -1.4s; }
+.bulb-node:nth-child(16) .light-bulb-aura { animation-delay: -2.7s; }
+
+/* Enhanced radiance when hovered or grabbing */
+.header-light-strip-wrap:hover .bulb-node .light-bulb-bloom,
+.header-light-strip-wrap.is-dragging .bulb-node .light-bulb-bloom {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 60, 0.95));
+}
+
+.header-light-strip-wrap:hover .bulb-node .light-bulb-flare,
+.header-light-strip-wrap.is-dragging .bulb-node .light-bulb-flare {
+  opacity: 0.95;
+}
+
+/* Bottom bracket glowing aura */
+.strip-bottom-bracket {
+  transition: transform 0.2s ease;
+}
+
+.header-light-strip-wrap:hover .strip-bottom-bracket,
+.header-light-strip-wrap.is-dragging .strip-bottom-bracket {
+  filter: drop-shadow(0 0 6px rgba(255, 215, 60, 0.9));
+}
+
+/* Floating interactive spark particle */
+.strip-sparkle-item {
+  position: absolute;
+  color: #fff2a8;
+  font-size: 12px;
+  font-weight: bold;
+  pointer-events: none;
+  animation: stripSparkleFloat 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  text-shadow: 0 0 8px #ffb300, 0 0 14px #ffd700;
+  z-index: 125;
+}
+
+/* Keyframes */
+@keyframes bulbCorePulse {
+  0% {
+    opacity: 0.92;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 0.88;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes bulbBloomBreathe {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 0.82;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes bulbAuraBreathe {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 0.75;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes bulbFlareShimmer {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+  100% {
+    opacity: 0.62;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes stripSparkleFloat {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(var(--tx, 0px), var(--ty, -15px)) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--tx, 0px) * 1.5), calc(var(--ty, -15px) * 1.6)) scale(0.3);
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 760px) {
+  .header-brand-wrap {
+    gap: 8px;
+  }
+  .header-light-strip-wrap {
+    width: 16px;
+    height: 32px;
+  }
+  .header-light-strip-stage {
+    top: -28px;
+    transform: scale(0.78);
+    transform-origin: top left;
+  }
+}
