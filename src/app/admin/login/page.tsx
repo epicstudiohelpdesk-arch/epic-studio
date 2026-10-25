@@ -32,7 +32,7 @@ function AdminLoginForm() {
       try {
         const res = await fetch("/api/admin/auth/me");
         if (res.ok) {
-          router.replace(redirectTarget);
+          window.location.href = redirectTarget;
           return;
         }
       } catch {
@@ -72,9 +72,11 @@ function AdminLoginForm() {
         return;
       }
 
-      router.replace(redirectTarget);
-    } catch {
-      setError("Network or server connection error. Please try again.");
+      // Hard navigation ensures Safari and modern browsers immediately apply the secure session cookie
+      window.location.href = redirectTarget;
+    } catch (err: any) {
+      console.error("[Login Error]", err);
+      setError(err?.message || "Network or server connection error. Please try again.");
       setLoading(false);
     }
   };
