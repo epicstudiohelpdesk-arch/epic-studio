@@ -365,7 +365,7 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
   };
   const upcomingDays = getUpcomingDays();
 
-  // Inquiry Form Submit — Dispatches to subhamdasholycross2023@gmail.com, epicstudiohelpdesk@gmail.com & WhatsApp
+  // Inquiry Form Submit — Dispatches to epicstudiohelpdesk@gmail.com, subhamdasholycross2023@gmail.com, rajeshroybusiness1997@gmail.com & WhatsApp
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
@@ -413,7 +413,7 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
     }
   };
 
-  // Schedule Call Submit — Dispatches to subhamdasholycross2023@gmail.com & epicstudiohelpdesk@gmail.com
+  // Schedule Call Submit — Dispatches to epicstudiohelpdesk@gmail.com, subhamdasholycross2023@gmail.com & rajeshroybusiness1997@gmail.com
   const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;

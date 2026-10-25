@@ -6,10 +6,15 @@ import { persistFormSubmission } from "@/lib/submissions";
 
 export const runtime = "nodejs";
 
-const TARGET_EMAILS = [
+const DEFAULT_TARGET_EMAILS = [
   "subhamdasholycross2023@gmail.com",
-  "epicstudiohelpdesk@gmail.com"
+  "epicstudiohelpdesk@gmail.com",
+  "rajeshroybusiness1997@gmail.com"
 ];
+
+const TARGET_EMAILS = process.env.NOTIFICATION_EMAILS
+  ? process.env.NOTIFICATION_EMAILS.split(",").map((e) => e.trim()).filter(Boolean)
+  : DEFAULT_TARGET_EMAILS;
 
 const TARGET_WHATSAPP_NUMBERS = [
   "916291773811",
