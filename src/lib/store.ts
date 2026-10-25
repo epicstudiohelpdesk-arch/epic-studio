@@ -44,22 +44,39 @@ interface Store {
   forms: FormSubmission[];
 }
 
+let inMemoryStore: Store = { visits: [], forms: [] };
+
 async function ensureStore() {
   try {
     await fs.access(STORE_FILE);
   } catch {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    await fs.writeFile(STORE_FILE, JSON.stringify({ visits: [], forms: [] }, null, 2));
+    try {
+      await fs.mkdir(DATA_DIR, { recursive: true });
+      await fs.writeFile(STORE_FILE, JSON.stringify({ visits: [], forms: [] }, null, 2));
+    } catch {
+      // Ephemeral / Read-only filesystem (Vercel Lambda)
+    }
   }
 }
 
 export async function readStore(): Promise<Store> {
-  await ensureStore();
-  const data = await fs.readFile(STORE_FILE, "utf-8");
-  return JSON.parse(data);
+  try {
+    await ensureStore();
+    const data = await fs.readFile(STORE_FILE, "utf-8");
+    const parsed = JSON.parse(data);
+    inMemoryStore = parsed;
+    return parsed;
+  } catch {
+    return inMemoryStore;
+  }
 }
 
 export async function writeStore(store: Store): Promise<void> {
-  await ensureStore();
-  await fs.writeFile(STORE_FILE, JSON.stringify(store, null, 2));
+  inMemoryStore = store;
+  try {
+    await ensureStore();
+    await fs.writeFile(STORE_FILE, JSON.stringify(store, null, 2));
+  } catch {
+    // Read-only filesystem (Vercel Lambda) - silently persist to in-memory during execution
+  }
 }

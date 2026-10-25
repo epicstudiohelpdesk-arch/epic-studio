@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import prisma from "@/lib/prisma";
 import { readStore, writeStore } from "@/lib/store";
+import { persistFormSubmission } from "@/lib/submissions";
 
 export const runtime = "nodejs";
 
@@ -44,13 +46,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const year = new Date().getFullYear();
-    const token =
-      body.token ||
-      (body.type === "call"
-        ? `EPIC-CALL-${year}-${Math.floor(1000 + Math.random() * 9000)}`
-        : `EPIC-${year}-${Math.floor(1000 + Math.random() * 9000)}`);
-
     const timestamp = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Kolkata",
       dateStyle: "full",
@@ -58,36 +53,28 @@ export async function POST(request: Request) {
     });
 
     const isCall = body.type === "call";
+    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || request.headers.get("x-real-ip") || undefined;
+    const clientUserAgent = request.headers.get("user-agent") || undefined;
 
-    // Store submission in database
-    try {
-      const store = await readStore();
-      store.forms.push({
-        id: crypto.randomUUID(),
-        token,
-        type: body.type,
-        name: body.name,
-        email: body.email,
-        phone: body.phone,
-        discipline: body.discipline,
-        budget: body.budget,
-        timeline: body.timeline,
-        message: body.message,
-        date: body.date,
-        timeSlot: body.timeSlot,
-        timezone: body.timezone,
-        platform: body.platform,
-        callTopic: body.callTopic,
-        status: "new",
-        ip: request.headers.get("x-forwarded-for")?.split(",")[0].trim() || request.headers.get("x-real-ip") || undefined,
-        userAgent: request.headers.get("user-agent") || undefined,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      });
-      await writeStore(store);
-    } catch (storeErr) {
-      console.error("[Contact API] Failed to store submission:", storeErr);
-    }
+    // Zero-data-loss dual persistence (Prisma SQLite DB primary + local redundant backup)
+    const { token, persistedToDb } = await persistFormSubmission({
+      token: body.token,
+      type: body.type,
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      discipline: body.discipline,
+      budget: body.budget,
+      timeline: body.timeline,
+      message: body.message,
+      date: body.date,
+      timeSlot: body.timeSlot,
+      timezone: body.timezone,
+      platform: body.platform,
+      callTopic: body.callTopic,
+      ip: clientIp,
+      userAgent: clientUserAgent,
+    });
 
     // 1. Prepare Text & Subject
     const subject = isCall

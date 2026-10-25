@@ -1,13 +1,16 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import "./splash.css";
 
 const AUTO_DISMISS_MS = 2200;
 const EXIT_DURATION_MS = 800;
 
 export default function SplashScreen() {
-  const [isVisible, setIsVisible] = useState(true);
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
+  const [isVisible, setIsVisible] = useState(!isAdmin);
   const [isExiting, setIsExiting] = useState(false);
   const hasStartedExit = useRef(false);
   const exitTimer = useRef<number | null>(null);
@@ -65,6 +68,8 @@ export default function SplashScreen() {
       if (exitTimer.current !== null) window.clearTimeout(exitTimer.current);
     };
   }, [isVisible]);
+
+  if (isAdmin) return null;
 
   useEffect(() => {
     if (!isVisible || isExiting) return;

@@ -1,10 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Folder from "./Folder";
 
 export default function FloatingFolder() {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -77,6 +80,8 @@ export default function FloatingFolder() {
       <span className="folder-paper-label">Contact</span>
     </Link>,
   ];
+
+  if (isAdmin) return null;
 
   return (
     <aside
