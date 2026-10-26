@@ -24,7 +24,7 @@ import "@/app/geo.css";
 const PATH = "/about";
 const TITLE = "Studio, Model & Locations";
 const DESCRIPTION =
-  "EPIC STUDIO is a senior-only technology and design studio based in Kolkata, India, with client hubs in Bengaluru, San Francisco, London and Singapore.";
+  "EPIC STUDIO is a senior-only technology and design studio based in Kolkata, India, with client hubs in Mumbai, Bengaluru, San Francisco, London and Singapore.";
 
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
@@ -130,7 +130,7 @@ export default function AboutPage() {
                 <tr>
                   <th scope="row">Client hubs</th>
                   <td>
-                    Bengaluru · San Francisco · London · Singapore
+                    Kolkata · Mumbai · Bengaluru · San Francisco · London · Singapore
                     <br />
                     <Link className="geo-link" href="/locations">
                       Global delivery model →

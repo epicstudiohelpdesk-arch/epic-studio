@@ -25,7 +25,9 @@ interface MetaOptions {
 export function buildMetadata(opts: MetaOptions): Metadata {
   const url = absoluteUrl(opts.path);
   const image = absoluteUrl(opts.image ?? SITE.ogImage);
-  const fullTitle = `${opts.title} | ${SITE.name}`;
+  const fullTitle = opts.title.includes(SITE.name)
+    ? opts.title
+    : `${opts.title} | ${SITE.name}`;
 
   return {
     // Absolute prevents the root template from appending a second brand

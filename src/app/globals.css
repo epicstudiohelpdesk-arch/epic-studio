@@ -33,6 +33,18 @@ html {
   touch-action: pan-x pan-y;
   -webkit-text-size-adjust: 100%;
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 body {
   margin: 0;
   background: #090a0f;
@@ -44,6 +56,18 @@ body {
   scrollbar-width: none;
   touch-action: pan-x pan-y;
   -webkit-text-size-adjust: 100%;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 /* Disable all hover effects & pointer events globally while actively scrolling */
 body.is-scrolling,
@@ -333,6 +357,20 @@ img {
 .join-pill:focus-visible .join-pill-text {
   color: #000000;
 }
+.join-pill.active {
+  background: var(--lime, #c9ff17);
+  border-color: var(--lime, #c9ff17);
+  color: #000000;
+  box-shadow: 0 4px 18px rgba(201, 255, 23, 0.4);
+}
+.join-pill.active .join-pill-icon {
+  background: #000000;
+  color: var(--lime, #c9ff17);
+}
+.join-pill.active .join-pill-text {
+  color: #000000;
+  font-weight: 800;
+}
 .phone-pill {
   display: inline-flex;
   align-items: center;
@@ -515,6 +553,19 @@ img {
 }
 .header-active-white .join-pill-text {
   color: #ffffff;
+}
+.header-active-white .join-pill.active {
+  background: var(--lime);
+  border-color: #000000;
+  color: #000000;
+}
+.header-active-white .join-pill.active .join-pill-icon {
+  background: #000000;
+  color: var(--lime);
+}
+.header-active-white .join-pill.active .join-pill-text {
+  color: #000000;
+  font-weight: 800;
 }
 .header-active-white .join-pill:hover,
 .header-active-white .join-pill:focus-visible {
@@ -8201,6 +8252,11 @@ body.splash-active .hero-master-wrapper .hero-spark::after {
   border-color: #0f172a;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
   outline: none;
+}
+.mobile-join-btn.active {
+  background: #f0fdf4;
+  border-color: #10b981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
 }
 
 .mobile-consult-btn {

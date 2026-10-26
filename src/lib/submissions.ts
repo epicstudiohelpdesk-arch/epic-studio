@@ -27,7 +27,7 @@ export function generateReferenceToken(type: string): string {
   const year = new Date().getFullYear();
   const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
   const microSeconds = Date.now().toString().slice(-4);
-  const prefix = type === "call" ? "EPIC-CALL" : "EPIC";
+  const prefix = type === "call" ? "EPIC-CALL" : type === "career" ? "EPIC-TALENT" : "EPIC";
   return `${prefix}-${year}-${randomSuffix}${microSeconds}`;
 }
 

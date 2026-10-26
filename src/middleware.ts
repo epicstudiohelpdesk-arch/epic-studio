@@ -57,15 +57,28 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Production redirect: If someone opens epic-studio.in/admin, forward to admin.epic-studio.in
-  const isProductionApex =
-    hostname === "epic-studio.in" || hostname === "www.epic-studio.in";
+  // 2. Production apex consolidation and admin redirection
+  const isApex = hostname === "epic-studio.in";
 
-  if (isProductionApex && url.pathname.startsWith("/admin")) {
+  if (isApex && url.pathname.startsWith("/admin")) {
     const redirectUrl = new URL(
       `https://admin.epic-studio.in${url.pathname}${url.search}`
     );
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
+  if (isApex) {
+    const redirectUrl = new URL(
+      `https://www.epic-studio.in${url.pathname}${url.search}`
+    );
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
+  if (hostname === "www.epic-studio.in" && url.pathname.startsWith("/admin")) {
+    const redirectUrl = new URL(
+      `https://admin.epic-studio.in${url.pathname}${url.search}`
+    );
+    return NextResponse.redirect(redirectUrl, 308);
   }
 
   return NextResponse.next();

@@ -24,7 +24,7 @@ export function GET() {
     "",
     `## Entity`,
     "",
-    `${SITE.name} is a multidisciplinary technology and design studio founded in ${SITE.foundingDate}. Its engineering base is in Kolkata, West Bengal, India, with published client hubs in Bengaluru, San Francisco, London and Singapore. The studio serves clients across the Americas, Europe and APAC.`,
+    `${SITE.name} is a multidisciplinary technology and design studio founded in ${SITE.foundingDate}. Its engineering base is in Kolkata, West Bengal, India, with published client hubs in Mumbai, Bengaluru, San Francisco, London and Singapore. The studio serves clients across the Americas, Europe and APAC.`,
     "",
     `Contact: ${SITE.email}. Phone: ${SITE.phones[0].replace(/-/g, " ")}. Website: ${SITE.url}.`,
     "Instagram: https://www.instagram.com/epic_studio.2024",

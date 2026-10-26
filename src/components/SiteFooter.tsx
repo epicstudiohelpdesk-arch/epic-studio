@@ -8,6 +8,7 @@ import MobileFooter from "./MobileFooter";
 const footerNav: Record<string, { label: string; href: string }[]> = {
   Company: [
     { label: "About", href: "/about" },
+    { label: "Join Us", href: "/join" },
     { label: "Work", href: "/work" },
     { label: "FAQ", href: "/faq" },
     { label: "Contact", href: "/contact" },
@@ -330,8 +331,8 @@ export default function SiteFooter() {
           <div className="fd-bottom">
             <span className="fd-copyright">© 2026 EPIC STUDIO. All rights reserved.</span>
             <div className="fd-legal">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
+              <Link href="/privacy">Privacy Policy</Link>
+              <Link href="/terms">Terms of Service</Link>
               <a href="#">Cookie Settings</a>
             </div>
           </div>

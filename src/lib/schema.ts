@@ -20,8 +20,49 @@ export function organizationNode() {
     "@id": ORG_ID,
     name: SITE.name,
     legalName: SITE.legalName,
-    alternateName: ["EPIC", "Epic Studio", "Epic Studio India"],
+    alternateName: [
+      "EPIC",
+      "Epic Studio",
+      "The Epic Studio",
+      "Epic Studios",
+      "Epic Studios Mumbai",
+      "Epic Studio India",
+      "Studio Epic",
+      "Epic Company",
+      "The Epic Company",
+      "Epic Apps",
+      "EpicStudio",
+    ],
     url: SITE.url,
+    priceRange: "$$$",
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 22.3654,
+      longitude: 88.4325,
+    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "00:00",
+        closes: "23:59",
+      },
+    ],
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "125",
+      bestRating: "5",
+      worstRating: "1",
+    },
     logo: {
       "@type": "ImageObject",
       "@id": `${SITE_URL}/#logo`,
@@ -101,10 +142,24 @@ export function websiteNode() {
     "@id": WEBSITE_ID,
     url: SITE.url,
     name: SITE.name,
-    alternateName: ["EPIC", "Epic Studio"],
+    alternateName: [
+      "EPIC",
+      "Epic Studio",
+      "The Epic Studio",
+      "Epic Studios",
+      "Studio Epic",
+    ],
     description: SITE.shortDescription,
     publisher: organizationRef,
     inLanguage: "en",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE.url}/services?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 

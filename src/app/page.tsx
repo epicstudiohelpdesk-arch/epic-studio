@@ -28,7 +28,7 @@ import AutoContactDrawer from "@/components/AutoContactDrawer";
 import DualConvergeModal from "@/components/DualConvergeModal";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Multidisciplinary Technology & Design Studio",
+  title: "EPIC STUDIO — Software, Mobile Apps & AI Design Studio",
   description:
     "EPIC STUDIO is a senior-only technology and design studio building enterprise software, mobile apps, AI automation, design systems, GovTech platforms and brand video.",
   path: "/",

@@ -398,6 +398,7 @@ export default function HeroSection() {
                 />
               </svg>
               <h1 id="hero-title" className={isPersonHidden ? "headline-sunk" : ""}>
+                <span className="sr-only">EPIC STUDIO — </span>
                 <span className="hero-creative-eyebrow">Senior-only technology &amp; design studio</span>
                 <span className="hero-title-creative">Creative</span>
                 <span className="hero-title-agency-wrapper">

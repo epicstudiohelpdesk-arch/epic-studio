@@ -14,7 +14,7 @@ export function GET() {
     `Canonical URL: ${SITE.url}`,
     `Entity: ${SITE.name} — multidisciplinary technology & design studio`,
     `Headquarters: Kolkata, West Bengal, India`,
-    `Client hubs: Bengaluru, San Francisco, London, Singapore`,
+    `Client hubs: Mumbai, Bengaluru, San Francisco, London, Singapore`,
     `Founded: ${SITE.foundingDate}`,
     `Contact: ${SITE.email} · ${SITE.phones[0].replace(/-/g, " ")}`,
     `Last reviewed: ${CONTENT_UPDATED}`,

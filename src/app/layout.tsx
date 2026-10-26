@@ -42,7 +42,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "EPIC STUDIO — Multidisciplinary Technology & Design Studio",
+    default: "EPIC STUDIO — Software, Mobile Apps & AI Design Studio",
     template: "%s | EPIC STUDIO",
   },
   description: SITE.description,
@@ -54,10 +54,14 @@ export const metadata: Metadata = {
   keywords: [
     "EPIC STUDIO",
     "epic-studio.in",
+    "epic studios",
+    "the epic studio",
+    "epic studios mumbai",
     "software development studio",
     "enterprise software development",
     "mobile app development",
     "AI automation agency",
+    "AI agent development",
     "UI UX design studio",
     "GovTech development",
     "video production studio",
@@ -65,6 +69,8 @@ export const metadata: Metadata = {
     "React Native development",
     "Kolkata software studio",
     "India technology studio",
+    "custom software development agency",
+    "creative design studio",
   ],
   referrer: "origin-when-cross-origin",
   alternates: {
@@ -75,14 +81,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: SITE.name,
-    title: "EPIC STUDIO — Multidisciplinary Technology & Design Studio",
+    title: "EPIC STUDIO — Software, Mobile Apps & AI Design Studio",
     description: SITE.description,
     images: [
       {
         url: `${SITE_URL}${SITE.ogImage}`,
         width: 1200,
         height: 630,
-        alt: "EPIC STUDIO — technology and design studio",
+        alt: "EPIC STUDIO — Software, Mobile Apps & AI Design Studio",
         type: "image/png",
       },
     ],
@@ -91,7 +97,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@epicstudio",
     creator: "@epicstudio",
-    title: "EPIC STUDIO — Multidisciplinary Technology & Design Studio",
+    title: "EPIC STUDIO — Software, Mobile Apps & AI Design Studio",
     description: SITE.description,
     images: [`${SITE_URL}${SITE.ogImage}`],
   },

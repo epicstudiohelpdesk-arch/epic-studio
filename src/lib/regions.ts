@@ -609,7 +609,7 @@ export const REGIONS: Region[] = [
     market: "India",
     hreflang: "en-IN",
     metaDescription:
-      "EPIC STUDIO is headquartered in Kolkata, India, delivering software, mobile, AI, GovTech and design for Indian organisations.",
+      "EPIC STUDIO delivers enterprise software, mobile apps, AI automation and design across India, with hubs in Kolkata, Mumbai and Bengaluru.",
     ogLocale: "en_IN",
     currency: "INR",
     currencyCode: "INR",
@@ -618,11 +618,11 @@ export const REGIONS: Region[] = [
       "Engineering base in Kolkata; IST is the studio's home time zone.",
     hub: "Kolkata",
     overview:
-      "EPIC STUDIO is headquartered in Kolkata, India, and works with Indian enterprises, public institutions and startups on software, mobile, AI, design systems, GovTech and video. The studio combines Indian engineering depth with a senior-only delivery model.",
+      "EPIC STUDIO is headquartered in Kolkata, India, and works with Indian enterprises, public institutions and startups across Mumbai, Bengaluru, Delhi NCR and Kolkata on software, mobile, AI, design systems, GovTech and video. The studio combines Indian engineering depth with a senior-only delivery model.",
     context: [
       "Indian digital programmes often combine public-scale traffic, multilingual users and constrained devices. The architecture has to work under those conditions, not only in a demo.",
       "Public and regulated work brings its own obligations: accessibility, auditability, data protection under the DPDP Act and, for government platforms, security and procurement requirements.",
-      "The studio's base in Kolkata means Indian clients get full working-day overlap, direct access to the delivery team and the option of in-person workshops without a long-haul flight.",
+      "The studio's base in Kolkata with presence across Mumbai and Bengaluru means Indian clients get full working-day overlap, direct access to the delivery team and the option of in-person workshops.",
     ],
     compliance: [
       {
@@ -670,7 +670,12 @@ export const REGIONS: Region[] = [
       {
         question: "Where is EPIC STUDIO based in India?",
         answer:
-          "EPIC STUDIO's engineering base is in Kolkata, West Bengal, India. The studio publishes client hubs in Bengaluru, San Francisco, London and Singapore.",
+          "EPIC STUDIO's engineering base is in Kolkata, West Bengal, India. The studio maintains active client presence across Mumbai, Bengaluru, Delhi NCR, and international hubs in San Francisco, London, and Singapore.",
+      },
+      {
+        question: "Do you serve clients in Mumbai, Bengaluru and across India?",
+        answer:
+          "Yes. EPIC STUDIO delivers enterprise software engineering, mobile apps, AI automation, and UI/UX design systems for clients in Mumbai, Bengaluru, Delhi NCR, Kolkata, and nationwide. Clients receive dedicated senior delivery teams, full working-day IST overlap, and in-person workshop options.",
       },
       {
         question: "Do you work with Indian government departments?",

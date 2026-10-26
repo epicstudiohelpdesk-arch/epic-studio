@@ -3,28 +3,50 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const footerNav = [
+const footerNav: { heading: string; items: { label: string; href: string }[] }[] = [
   {
     heading: "Company",
-    items: ["About Studio", "Careers", "Press & Media", "Sustainability", "Contact Us"],
+    items: [
+      { label: "About Studio", href: "/about" },
+      { label: "Careers", href: "/join" },
+      { label: "Case Studies", href: "/work" },
+      { label: "Contact Us", href: "/contact" },
+    ],
   },
   {
     heading: "Services",
-    items: ["Product Engineering", "Creative Direction", "AI & Automation", "Cloud Infrastructure", "Growth Strategy"],
+    items: [
+      { label: "Software Engineering", href: "/services/software-engineering" },
+      { label: "Mobile Development", href: "/services/mobile-app-development" },
+      { label: "AI & Automation", href: "/services/ai-automation" },
+      { label: "UI/UX Design", href: "/services/ui-ux-design" },
+      { label: "GovTech", href: "/services/govtech" },
+      { label: "Video Production", href: "/services/video-production" },
+    ],
   },
   {
     heading: "Resources",
-    items: ["Insights & Articles", "Case Studies", "Design Playbooks", "Events", "Brand Assets"],
+    items: [
+      { label: "Case Studies", href: "/work" },
+      { label: "Global Coverage", href: "/locations" },
+      { label: "FAQ", href: "/faq" },
+      { label: "All Services", href: "/services" },
+    ],
   },
   {
     heading: "Industries",
-    items: ["Technology & SaaS", "Fintech & Banking", "Healthcare", "Retail & E-commerce", "Public Sector"],
+    items: [
+      { label: "GovTech & Public Sector", href: "/services/govtech" },
+      { label: "Education Technology", href: "/work/west-bengal-education-platform" },
+      { label: "Fintech & Banking", href: "/work/kairo-mobile" },
+      { label: "AI & Autonomous SaaS", href: "/work/omniflow-ai" },
+    ],
   },
 ];
 
 const footerSocials = [
-  { name: "LinkedIn", href: "https://www.linkedin.com" },
-  { name: "Instagram", href: "https://instagram.com" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/epic-studio-630a97341" },
+  { name: "Instagram", href: "https://www.instagram.com/epic_studio.2024" },
 ];
 
 export default function MobileFooter() {
@@ -114,8 +136,8 @@ export default function MobileFooter() {
               {isOpen && (
                 <ul className="mf-acc-sublist">
                   {items.map((item) => (
-                    <li key={item}>
-                      <a href="#">{item}</a>
+                    <li key={item.href}>
+                      <Link href={item.href}>{item.label}</Link>
                     </li>
                   ))}
                 </ul>
@@ -198,9 +220,9 @@ export default function MobileFooter() {
 
       {/* 3. Brand & Social Section */}
       <div className="mf-brand-section">
-        <a className="mf-brand-title" href="#">
+        <Link className="mf-brand-title" href="/">
           <strong>EPIC STUDIO</strong>
-        </a>
+        </Link>
         <p className="mf-brand-tagline">Multidisciplinary Design &amp; Technology Studio</p>
 
         <div className="mf-social-links">
@@ -221,8 +243,8 @@ export default function MobileFooter() {
       <div className="mf-bottom-legal">
         <p>© 2026 EPIC STUDIO Inc. All rights reserved.</p>
         <div className="mf-legal-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
           <a href="#">Cookie Settings</a>
         </div>
       </div>
