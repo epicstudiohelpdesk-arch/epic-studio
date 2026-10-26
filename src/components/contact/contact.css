@@ -451,6 +451,282 @@
   font-weight: 400;
 }
 
+/* Phone Input With Worldwide Country Dropdown */
+.contact-phone-input-root {
+  position: relative;
+  width: 100%;
+}
+
+.contact-phone-input-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 8px;
+  background: #f8fafc;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+}
+
+.contact-phone-input-shell:focus-within,
+.contact-phone-input-shell.dropdown-active {
+  border-color: var(--blue, #082fe6);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(8, 47, 230, 0.1);
+}
+
+.contact-phone-input-shell.has-error {
+  border-color: #ef4444;
+  background: #fffafa;
+}
+
+.contact-country-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px 0 12px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #0f172a;
+  font-size: 13.5px;
+  font-weight: 700;
+  flex-shrink: 0;
+  outline: none;
+  border-radius: 7px 0 0 7px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.contact-country-trigger:hover {
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.contact-country-flag {
+  font-size: 17px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+}
+
+.contact-country-dial {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.contact-country-arrow {
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-left: 2px;
+}
+
+.contact-country-arrow.is-open {
+  transform: rotate(180deg);
+  color: var(--blue, #082fe6);
+}
+
+.contact-country-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(15, 23, 42, 0.14);
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.contact-phone-native-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0f172a;
+  min-width: 0;
+  padding: 0 12px 0 0;
+  height: 40px;
+}
+
+.contact-phone-native-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Country Selector Dropdown Menu */
+.contact-country-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  max-height: 320px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 10px;
+  box-shadow:
+    0 18px 40px -8px rgba(2, 16, 44, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+  z-index: 120;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: customDropdownIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-country-search-box {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.contact-country-search-icon {
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.contact-country-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.contact-country-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.contact-country-search-clear {
+  border: none;
+  background: rgba(15, 23, 42, 0.06);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.contact-country-search-clear:hover {
+  background: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+.contact-country-options-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.contact-country-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-country-section-header {
+  padding: 6px 8px 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.contact-country-section-divider {
+  height: 1px;
+  background: rgba(15, 23, 42, 0.07);
+  margin: 6px 4px;
+}
+
+.contact-country-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px 9px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #1e293b;
+  transition: background 0.12s ease, color 0.12s ease;
+  gap: 8px;
+}
+
+.contact-country-option-item:hover {
+  background: #f1f5f9;
+  color: var(--blue, #082fe6);
+}
+
+.contact-country-option-item.is-selected {
+  background: rgba(8, 47, 230, 0.08);
+  color: var(--blue, #082fe6);
+  font-weight: 700;
+}
+
+.contact-country-option-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.contact-country-option-flag {
+  font-size: 16px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.contact-country-option-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contact-country-option-dial {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.contact-country-option-item.is-selected .contact-country-option-dial {
+  color: var(--blue, #082fe6);
+}
+
+.contact-country-empty-state {
+  padding: 18px 12px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #64748b;
+}
+
 /* Textarea */
 .contact-textarea-shell {
   display: flex;
@@ -1092,15 +1368,16 @@
 }
 
 .contact-outline-word {
-  color: transparent;
-  -webkit-text-stroke: 1.8px rgba(255, 255, 255, 0.85);
-  transition: color 0.25s ease;
+  color: #ffffff;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 10px 36px rgba(0, 24, 70, 0.45);
+  transition: color 0.25s ease, text-shadow 0.25s ease;
 }
 
 .contact-outline-word:hover {
   color: #ffffff;
-  -webkit-text-stroke: 1.8px transparent;
-  text-shadow: 0 0 28px rgba(255, 255, 255, 0.65);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0 28px rgba(255, 255, 255, 0.75), 0 10px 36px rgba(0, 24, 70, 0.45);
 }
 
 .contact-right-hero-sub {

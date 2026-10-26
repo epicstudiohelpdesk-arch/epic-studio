@@ -44,9 +44,9 @@ export async function POST(request: Request) {
   try {
     const body: ContactPayload = await request.json();
 
-    if (!body.name?.trim() || !body.email?.trim()) {
+    if (!body.name?.trim() || !body.email?.trim() || !body.phone?.trim()) {
       return NextResponse.json(
-        { error: "Name and email are required fields." },
+        { error: "Name, email, and phone number are required fields." },
         { status: 400 }
       );
     }
@@ -245,7 +245,7 @@ ${body.message || "No additional brief description provided."}
 
     // 3. Prepare WhatsApp Message
     const whatsappText = isCall
-      ? `*EPIC STUDIO — CONSULTATION BOOKED*\n\n*Ref:* ${token}\n*Client:* ${body.name}\n*Email:* ${body.email}\n*Platform:* ${body.platform || "Google Meet"}\n*Date & Time:* ${body.date} at ${body.timeSlot} (${body.timezone || "IST"})\n*Topic:* ${body.callTopic || "General Technical Consultation"}`
+      ? `*EPIC STUDIO — CONSULTATION BOOKED*\n\n*Ref:* ${token}\n*Client:* ${body.name}\n*Email:* ${body.email}\n*Phone:* ${body.phone || "Not provided"}\n*Platform:* ${body.platform || "Google Meet"}\n*Date & Time:* ${body.date} at ${body.timeSlot} (${body.timezone || "IST"})\n*Topic:* ${body.callTopic || "General Technical Consultation"}`
       : `*EPIC STUDIO — NEW PROJECT INQUIRY*\n\n*Ref:* ${token}\n*Client:* ${body.name}\n*Email:* ${body.email}\n*Phone:* ${body.phone || "Not provided"}\n*Discipline:* ${body.discipline || "General"}\n*Budget:* ${body.budget || "Flexible"}\n*Timeline:* ${body.timeline || "Flexible"}\n\n*Brief:* ${body.message || "No brief details provided"}`;
 
     const whatsappUrls = TARGET_WHATSAPP_NUMBERS.map(

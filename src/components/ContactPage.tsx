@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Header from "./Header";
 import SiteFooter from "./SiteFooter";
+import PhoneInputWithCountry from "./contact/PhoneInputWithCountry";
 import "./contact/contact.css";
 
 interface ContactPageProps {
@@ -263,6 +264,7 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
   // Schedule Call State
@@ -369,6 +371,10 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
+    if (!phone.trim()) {
+      setPhoneError("Phone number is required.");
+      return;
+    }
 
     setIsSubmitting(true);
     const token = `EPIC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -417,6 +423,10 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
   const handleScheduleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
+    if (!phone.trim()) {
+      setPhoneError("Phone number is required.");
+      return;
+    }
 
     setIsSubmitting(true);
     const selectedDayObj = upcomingDays[selectedDayOffset];
@@ -427,6 +437,7 @@ export default function ContactPage({ onClose, isModalView = false }: ContactPag
       token,
       name: name.trim(),
       email: email.trim(),
+      phone: phone.trim(),
       date: selectedDayObj.fullDateStr,
       timeSlot: selectedTimeSlot,
       timezone: selectedTimezone,
@@ -740,19 +751,27 @@ END:VCALENDAR`;
 
                       <div className="contact-field-block">
                         <label htmlFor="inquiry-phone" className="contact-field-label">
-                          <span>Phone Number</span>
-                          <span className="contact-label-opt">Optional</span>
+                          <span>Phone Number *</span>
                         </label>
-                        <div className="contact-input-shell">
-                          <input
-                            id="inquiry-phone"
-                            type="tel"
-                            placeholder="+91 (optional)"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="contact-native-input"
-                          />
-                        </div>
+                        <PhoneInputWithCountry
+                          id="inquiry-phone"
+                          value={phone}
+                          required
+                          defaultCountryCode="IN"
+                          isOpen={openDropdown === "inquiry-country"}
+                          onToggle={() => setOpenDropdown((prev) => (prev === "inquiry-country" ? null : "inquiry-country"))}
+                          onClose={() => setOpenDropdown((prev) => (prev === "inquiry-country" ? null : prev))}
+                          onChange={(fullPhone) => {
+                            setPhone(fullPhone);
+                            if (phoneError) setPhoneError(null);
+                          }}
+                          error={phoneError}
+                        />
+                        {phoneError && (
+                          <span style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px", display: "block" }}>
+                            {phoneError}
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -898,8 +917,8 @@ END:VCALENDAR`;
                       />
                     </div>
 
-                    {/* Name, Email & Topic for Call in a streamlined 3-Column Row */}
-                    <div className="contact-grid-3col">
+                    {/* Name & Email for Call */}
+                    <div className="contact-grid-2col">
                       <div className="contact-field-block">
                         <label htmlFor="call-name" className="contact-field-label">
                           <span>Full Name *</span>
@@ -932,6 +951,34 @@ END:VCALENDAR`;
                             className="contact-native-input"
                           />
                         </div>
+                      </div>
+                    </div>
+
+                    {/* Phone & Discussion Topic for Call */}
+                    <div className="contact-grid-2col">
+                      <div className="contact-field-block">
+                        <label htmlFor="call-phone" className="contact-field-label">
+                          <span>Phone Number *</span>
+                        </label>
+                        <PhoneInputWithCountry
+                          id="call-phone"
+                          value={phone}
+                          required
+                          defaultCountryCode="IN"
+                          isOpen={openDropdown === "call-country"}
+                          onToggle={() => setOpenDropdown((prev) => (prev === "call-country" ? null : "call-country"))}
+                          onClose={() => setOpenDropdown((prev) => (prev === "call-country" ? null : prev))}
+                          onChange={(fullPhone) => {
+                            setPhone(fullPhone);
+                            if (phoneError) setPhoneError(null);
+                          }}
+                          error={phoneError}
+                        />
+                        {phoneError && (
+                          <span style={{ color: "#ef4444", fontSize: "12px", marginTop: "4px", display: "block" }}>
+                            {phoneError}
+                          </span>
+                        )}
                       </div>
 
                       <div className="contact-field-block">
