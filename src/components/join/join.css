@@ -1475,7 +1475,7 @@
 
 @media (max-width: 768px) {
   .hero-section.join-cutout-hero-section {
-    padding-top: 76px;
+    padding-top: max(76px, calc(var(--sat, env(safe-area-inset-top, 0px)) + 54px));
     padding-bottom: 36px;
   }
   .join-cutout-container {

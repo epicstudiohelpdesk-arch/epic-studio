@@ -110,7 +110,7 @@ export default function LetsBuildSection() {
         </div>
 
         {/* Dynamic response + CTA */}
-        <div className="bld-response" data-reveal key={selected.id}>
+        <div className="bld-response" key={selected.id}>
           <p className="bld-cta-line">{selected.ctaLine}</p>
 
           <div className="bld-actions">

@@ -254,25 +254,13 @@
   }
 }
 
-/* Responsive adjustments */
-@media (max-width: 760px) {
-  .rope-lantern-wrap {
-    width: 32px;
-    height: 32px;
-  }
+/* Responsive adjustments - Hide Diwali Lantern on mobile screens */
+@media (max-width: 768px) {
+  .rope-lantern-wrap,
   .rope-lantern-stage {
-    transform: translateX(-50%) scale(0.9);
-    top: calc(-18px);
-  }
-}
-
-@media (max-width: 480px) {
-  .rope-lantern-wrap {
-    width: 28px;
-    height: 28px;
-  }
-  .rope-lantern-stage {
-    transform: translateX(-50%) scale(0.82);
-    top: calc(-14px);
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
   }
 }

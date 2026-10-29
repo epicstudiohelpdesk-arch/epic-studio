@@ -41,6 +41,12 @@ export default function AutoContactDrawer() {
     (customDelay?: number) => {
       if (periodicTimerRef.current) clearTimeout(periodicTimerRef.current);
 
+      // On mobile screens, disable automated periodic drawer popups to avoid background
+      // touch-blocking listeners and maintain smooth scrolling during long sessions.
+      if (typeof window !== "undefined" && window.innerWidth <= 768) {
+        return;
+      }
+
       // Periodic reappearance interval while browsing (default: 45 seconds)
       const defaultInterval = 45000;
       const interval =
@@ -92,8 +98,11 @@ export default function AutoContactDrawer() {
       isOpenRef.current = false;
     };
 
-    // Triggers first appearance 6-7 seconds AFTER the Diwali modal is closed
+    // Triggers first appearance 6-7 seconds AFTER the Diwali modal is closed (desktop only)
     const handleDoorsClosed = () => {
+      if (typeof window !== "undefined" && window.innerWidth <= 768) {
+        return;
+      }
       if (typeof document !== "undefined") {
         const isDiwaliOpen =
           !!document.querySelector(".converge-dropdown-page") ||
@@ -168,8 +177,14 @@ export default function AutoContactDrawer() {
 
     const blockScroll = (e: WheelEvent | TouchEvent) => {
       const target = e.target as HTMLElement | null;
-      // Allow scrolling only inside overflowing custom dropdown menus
-      if (target && target.closest(".custom-dropdown-menu")) {
+      // Allow scrolling inside overflowing custom dropdown menus and modal content
+      if (
+        target &&
+        (target.closest(".custom-dropdown-menu") ||
+          target.closest(".auto-contact-sheet") ||
+          target.closest(".contact-card-box") ||
+          target.closest(".contact-hero-section"))
+      ) {
         return;
       }
       if (e.cancelable) {

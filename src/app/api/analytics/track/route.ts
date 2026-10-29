@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: false }, { status: 500 });
   }
 }
@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
         recentVisits: visits.slice(-20).reverse(),
       });
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch analytics" }, { status: 500 });
   }
 }

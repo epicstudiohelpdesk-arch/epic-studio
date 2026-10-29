@@ -168,7 +168,7 @@ export async function getAdminSession(): Promise<AdminSessionUser | null> {
     const sessionCookie = cookieStore.get(SESSION_COOKIE);
     if (!sessionCookie?.value) return null;
     return verifySessionToken(sessionCookie.value);
-  } catch (err) {
+  } catch {
     return null;
   }
 }

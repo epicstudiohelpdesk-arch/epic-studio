@@ -65,11 +65,10 @@ export default function PeopleSection() {
 
         {/* Centered Profile Cards */}
         <div className="ppl-spread">
-          {people.map((person, i) => (
+          {people.map((person) => (
             <article
               key={person.id}
               data-reveal
-              style={{ transitionDelay: `${i * 110}ms` }}
               className="ppl-ios-card"
             >
               {/* Photo Background */}
@@ -77,7 +76,7 @@ export default function PeopleSection() {
                 src={person.image}
                 alt={person.name}
                 className="ppl-ios-bg"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
               />
 

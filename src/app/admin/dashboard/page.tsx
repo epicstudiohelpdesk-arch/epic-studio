@@ -23,9 +23,6 @@ import {
   RiArrowRightUpLine,
   RiInboxArchiveLine,
   RiMenuLine,
-  RiCalendarCheckLine,
-  RiFileTextLine,
-  RiArrowLeftRightLine,
 } from "react-icons/ri";
 
 interface Submission {

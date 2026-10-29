@@ -409,34 +409,60 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileOpenTab, setMobileOpenTab] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isExtremeTop, setIsExtremeTop] = useState(true);
+  const [isDesktopScreen, setIsDesktopScreen] = useState(false);
   const leaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Track scroll position to update navbar background state when scrolling
+  const headerWrapperRef = useRef<HTMLDivElement | null>(null);
+  const mobileMenuPanelRef = useRef<HTMLDivElement | null>(null);
+  const hamburgerBtnRef = useRef<HTMLButtonElement | null>(null);
+  const mobileMenuOpenRef = useRef(false);
+  const isScrolledRef = useRef(false);
+  const lastToggleRef = useRef(0);
+
+  // Monitor screen size to mount desktop-only physics components (HeaderLightStrip, RopeLantern)
   useEffect(() => {
-    let ticking = false;
-    let rafId: number | null = null;
-    const updateScrollState = () => {
-      ticking = false;
-      rafId = null;
+    const checkDesktop = () => {
+      setIsDesktopScreen(typeof window !== "undefined" && window.innerWidth > 768);
+    };
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop, { passive: true });
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
+  // Track scroll position to update navbar background state with zero per-frame DOM churn
+  useEffect(() => {
+    const updateHeaderClasses = (scrolled: boolean) => {
+      const wrapper = headerWrapperRef.current;
+      if (!wrapper) return;
+      wrapper.classList.toggle("header-scrolled", scrolled);
+      if (!activeTab && !mobileMenuOpenRef.current) {
+        wrapper.classList.toggle("header-active-white", scrolled);
+      }
+    };
+
+    const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       const nextScrolled = scrollY > 15;
-      const nextExtremeTop = scrollY < 5;
-      setIsScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
-      setIsExtremeTop((prev) => (prev === nextExtremeTop ? prev : nextExtremeTop));
+
+      // Only touch the DOM when the scroll threshold state actually changes
+      if (isScrolledRef.current !== nextScrolled) {
+        isScrolledRef.current = nextScrolled;
+        updateHeaderClasses(nextScrolled);
+        setIsScrolled(nextScrolled);
+      }
     };
-    const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      rafId = requestAnimationFrame(updateScrollState);
-    };
-    handleScroll();
+
+    // Synchronous initial check on mount or tab/menu flip
+    const initialScrolled = (window.scrollY || document.documentElement.scrollTop) > 15;
+    isScrolledRef.current = initialScrolled;
+    updateHeaderClasses(initialScrolled);
+    setIsScrolled(initialScrolled);
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      if (rafId !== null) cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [activeTab, mobileMenuOpen]);
 
   // Auto-rotate the featured division preview on the right panel only.
   // This never changes the selected state of the division buttons.
@@ -458,30 +484,14 @@ function Header() {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
 
-      const preventScroll = (e: WheelEvent | TouchEvent) => {
-        const target = e.target as HTMLElement | null;
-        if (target && target.closest(".mega-menu-panel, .header-wrapper, .mega-menu-inner")) {
-          const scrollable = target.closest(".mega-menu-panel, .universal-flyout-grid, .flyout-col-left, .flyout-col-center, .flyout-col-right") as HTMLElement | null;
-          if (scrollable && scrollable.scrollHeight > scrollable.clientHeight) {
-            return;
-          }
-        }
-        e.preventDefault();
-      };
-
-      window.addEventListener("wheel", preventScroll, { passive: false });
-      window.addEventListener("touchmove", preventScroll, { passive: false });
-
       return () => {
         document.body.style.overflow = prevBodyOverflow;
         document.documentElement.style.overflow = prevHtmlOverflow;
-        window.removeEventListener("wheel", preventScroll);
-        window.removeEventListener("touchmove", preventScroll);
       };
     }
   }, [activeTab]);
 
-  // Lock page scroll + close on Escape while the mobile drawer is open.
+  // Lock background page scroll + close on Escape while the mobile drawer is open.
   useEffect(() => {
     if (mobileMenuOpen) {
       const prevBodyOverflow = document.body.style.overflow;
@@ -489,17 +499,6 @@ function Header() {
 
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
-
-      const preventScroll = (e: WheelEvent | TouchEvent) => {
-        const target = e.target as HTMLElement | null;
-        if (target && target.closest(".mobile-menu-drawer")) {
-          return;
-        }
-        e.preventDefault();
-      };
-
-      window.addEventListener("wheel", preventScroll, { passive: false });
-      window.addEventListener("touchmove", preventScroll, { passive: false });
 
       const onKey = (e: KeyboardEvent) => {
         if (e.key === "Escape") setMobileMenuOpen(false);
@@ -509,8 +508,6 @@ function Header() {
       return () => {
         document.body.style.overflow = prevBodyOverflow;
         document.documentElement.style.overflow = prevHtmlOverflow;
-        window.removeEventListener("wheel", preventScroll);
-        window.removeEventListener("touchmove", preventScroll);
         window.removeEventListener("keydown", onKey);
       };
     }
@@ -548,14 +545,61 @@ function Header() {
   const activeDivision = DIVISIONS_DATA[featuredDivisionIndex];
 
   const openMobileMenu = () => {
+    mobileMenuOpenRef.current = true;
     setActiveTab(null);
     setMobileMenuOpen(true);
+    if (headerWrapperRef.current) {
+      headerWrapperRef.current.classList.add("header-active-white");
+    }
+    if (mobileMenuPanelRef.current) {
+      mobileMenuPanelRef.current.classList.add("mobile-menu-open");
+    }
+    if (hamburgerBtnRef.current) {
+      hamburgerBtnRef.current.classList.add("is-open");
+      hamburgerBtnRef.current.setAttribute("aria-expanded", "true");
+    }
   };
 
   const closeMobileMenu = () => {
+    mobileMenuOpenRef.current = false;
     setMobileMenuOpen(false);
     setMobileOpenTab(null);
+    if (mobileMenuPanelRef.current) {
+      mobileMenuPanelRef.current.classList.remove("mobile-menu-open");
+    }
+    if (hamburgerBtnRef.current) {
+      hamburgerBtnRef.current.classList.remove("is-open");
+      hamburgerBtnRef.current.setAttribute("aria-expanded", "false");
+    }
+    if (headerWrapperRef.current) {
+      const isNowScrolled = (window.scrollY || document.documentElement.scrollTop) > 15;
+      isScrolledRef.current = isNowScrolled;
+      headerWrapperRef.current.classList.toggle("header-scrolled", isNowScrolled);
+      headerWrapperRef.current.classList.toggle("header-active-white", isNowScrolled);
+      setIsScrolled(isNowScrolled);
+    }
   };
+
+  const toggleMobileMenu = (e?: React.SyntheticEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const now = Date.now();
+    if (now - lastToggleRef.current < 250) {
+      return;
+    }
+    lastToggleRef.current = now;
+    if (mobileMenuOpenRef.current) {
+      closeMobileMenu();
+    } else {
+      openMobileMenu();
+    }
+  };
+
+  useEffect(() => {
+    closeMobileMenu();
+  }, [pathname]);
 
   const toggleMobileTab = (key: string) => {
     setMobileOpenTab((prev) => (prev === key ? null : key));
@@ -571,7 +615,8 @@ function Header() {
   return (
     <>
       <div
-        className={`header-wrapper ${isHeaderWhite ? "header-active-white" : ""} ${isScrolled ? "header-scrolled" : ""} ${isMenuOpen ? "header-hover-active" : ""} ${isExtremeTop ? "at-extreme-top" : ""}`}
+        ref={headerWrapperRef}
+        className={`header-wrapper ${isHeaderWhite ? "header-active-white" : ""} ${isScrolled ? "header-scrolled" : ""} ${isMenuOpen ? "header-hover-active" : ""}`}
         onMouseEnter={cancelClose}
         onMouseLeave={handleMouseLeave}
       >
@@ -602,8 +647,12 @@ function Header() {
               </span>
             </Link>
 
-            {/* Festive Hanging Fairy Light Strip positioned right beside the brand textual (Hero section only) */}
-            {pathname === "/" && <HeaderLightStrip isScrolled={isScrolled} />}
+            {/* Festive Hanging Fairy Light Strip positioned right beside the brand textual (Hero section only on tablet & desktop) */}
+            {pathname === "/" && isDesktopScreen && (
+              <div className="hidden md:block">
+                <HeaderLightStrip isScrolled={isScrolled} />
+              </div>
+            )}
           </div>
 
           {/* Nav Items */}
@@ -660,8 +709,12 @@ function Header() {
 
           {/* Header Right Actions */}
           <div className="header-actions">
-            {/* Animated Golden Chain Rope Lantern */}
-            <RopeLantern />
+            {/* Animated Golden Chain Rope Lantern (Tablet & Desktop only) */}
+            {isDesktopScreen && (
+              <div className="hidden md:block">
+                <RopeLantern />
+              </div>
+            )}
 
             {/* Join Us Button */}
             <Link
@@ -717,11 +770,17 @@ function Header() {
 
             {/* Hamburger Menu Trigger (mobile only) */}
             <button
+              ref={hamburgerBtnRef}
               className={`hamburger-btn ${mobileMenuOpen ? "is-open" : ""}`}
               type="button"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
-              onClick={mobileMenuOpen ? closeMobileMenu : openMobileMenu}
+              onClick={toggleMobileMenu}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu();
+              }}
             >
               <span className="hamburger-line" aria-hidden="true" />
               <span className="hamburger-line" aria-hidden="true" />
@@ -1060,6 +1119,7 @@ function Header() {
 
       {/* Mobile Drawer Menu */}
       <div
+        ref={mobileMenuPanelRef}
         className={`mobile-menu-panel ${mobileMenuOpen ? "mobile-menu-open" : ""}`}
         role="dialog"
         aria-modal="true"
@@ -1175,7 +1235,7 @@ function Header() {
               <Link
                 href="/work"
                 className={`mobile-nav-btn mobile-nav-direct-link ${pathname === "/work" ? "is-active" : ""}`}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => closeMobileMenu()}
               >
                 <span className="mobile-nav-toggle-left">
                   <span className="mobile-nav-title">Work</span>
@@ -1189,7 +1249,7 @@ function Header() {
               <Link
                 href="/domains"
                 className={`mobile-nav-btn mobile-nav-direct-link ${pathname === "/domains" ? "is-active" : ""}`}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => closeMobileMenu()}
               >
                 <span className="mobile-nav-toggle-left">
                   <span className="mobile-nav-title">Domains</span>
@@ -1203,7 +1263,7 @@ function Header() {
               <Link
                 href="/contact"
                 className={`mobile-nav-btn mobile-nav-direct-link ${pathname === "/contact" ? "is-active" : ""}`}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => closeMobileMenu()}
               >
                 <span className="mobile-nav-toggle-left">
                   <span className="mobile-nav-title">Talk with Expert</span>

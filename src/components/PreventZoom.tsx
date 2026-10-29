@@ -26,9 +26,18 @@ export default function PreventZoom() {
       }
     };
 
-    // 4. Prevent double-tap to zoom on iOS devices
+    // 4. Prevent double-tap to zoom on iOS devices (while preserving native button/input clicks)
     let lastTouchEnd = 0;
     const preventDoubleTap = (e: TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        target.closest(
+          "button, a, input, textarea, select, [role='button'], [role='tab'], [tabindex], .mobile-nav-toggle, .mobile-sub-link"
+        )
+      ) {
+        return;
+      }
       const now = Date.now();
       if (now - lastTouchEnd <= 300) {
         e.preventDefault();
@@ -36,9 +45,15 @@ export default function PreventZoom() {
       lastTouchEnd = now;
     };
 
-    // 5. Disable hover effects while actively scrolling
+    // 5. Disable hover effects while actively scrolling (Desktop with mouse only)
     let scrollTimeout: NodeJS.Timeout | null = null;
+    const isTouchDevice =
+      typeof window !== "undefined" &&
+      (window.innerWidth <= 768 || window.matchMedia("(pointer: coarse)").matches);
+
     const handleScroll = () => {
+      // Skip on mobile touch screens to prevent style recalibration thrashing during touch flings
+      if (isTouchDevice) return;
       if (!document.body.classList.contains("is-scrolling")) {
         document.body.classList.add("is-scrolling");
       }
@@ -51,22 +66,34 @@ export default function PreventZoom() {
       }, 140);
     };
 
-    document.addEventListener("gesturestart", preventGesture, { passive: false });
-    document.addEventListener("gesturechange", preventGesture, { passive: false });
-    document.addEventListener("gestureend", preventGesture, { passive: false });
     window.addEventListener("wheel", preventWheelZoom, { passive: false });
     window.addEventListener("keydown", preventKeyZoom);
-    document.addEventListener("touchend", preventDoubleTap, { passive: false });
-    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Passive touchstart listener enables immediate CSS :active states on iOS Safari
+    const enableIOSActiveStates = () => {};
+    document.addEventListener("touchstart", enableIOSActiveStates, { passive: true });
+
+    // On touch devices, native CSS `touch-action: pan-y manipulation` handles tap response
+    // and double-tap zoom prevention directly on the GPU compositor thread with 0ms delay.
+    // Non-passive gesture and touchend listeners on document must NOT be attached on mobile
+    // because they force the browser to stall touch flings waiting for JavaScript execution.
+    if (!isTouchDevice) {
+      document.addEventListener("gesturestart", preventGesture, { passive: false });
+      document.addEventListener("gesturechange", preventGesture, { passive: false });
+      document.addEventListener("gestureend", preventGesture, { passive: false });
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    }
 
     return () => {
-      document.removeEventListener("gesturestart", preventGesture);
-      document.removeEventListener("gesturechange", preventGesture);
-      document.removeEventListener("gestureend", preventGesture);
       window.removeEventListener("wheel", preventWheelZoom);
       window.removeEventListener("keydown", preventKeyZoom);
-      document.removeEventListener("touchend", preventDoubleTap);
-      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("touchstart", enableIOSActiveStates);
+      if (!isTouchDevice) {
+        document.removeEventListener("gesturestart", preventGesture);
+        document.removeEventListener("gesturechange", preventGesture);
+        document.removeEventListener("gestureend", preventGesture);
+        window.removeEventListener("scroll", handleScroll);
+      }
       if (scrollTimeout) {
         clearTimeout(scrollTimeout);
       }

@@ -65,6 +65,11 @@ const nextConfig: NextConfig = {
         destination: "/join",
         permanent: true,
       },
+      {
+        source: "/admin-v2/:path*",
+        destination: "/admin/:path*",
+        permanent: true,
+      },
     ];
   },
 };

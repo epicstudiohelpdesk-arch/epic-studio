@@ -11,8 +11,14 @@
   display: inline-block;
   cursor: pointer;
   user-select: none;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   filter: drop-shadow(0 8px 20px rgba(0, 10, 35, 0.14));
+}
+
+.folder:active {
+  transform: scale(0.97);
 }
 
 .folder:not(.folder--click):hover {
@@ -208,6 +214,8 @@
   justify-content: center;
   padding: 8px 12px;
   cursor: pointer;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 .folder-paper-item {
@@ -220,6 +228,13 @@
   height: 100%;
   text-decoration: none;
   color: #0a1120;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
+  transition: transform 0.15s ease;
+}
+
+.folder-paper-item:active {
+  transform: scale(0.95);
 }
 
 .folder-paper-icon {
@@ -238,12 +253,25 @@
 
 @media (max-width: 768px) {
   .floating-folder-root {
-    bottom: 22px;
-    right: 28px;
-    transform: translateY(20px) scale(0.8);
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: calc(20px + env(safe-area-inset-right, 0px));
+    transform: translateY(20px) scale(0.85);
   }
 
   .floating-folder-root.visible {
     transform: translateY(0) scale(0.85);
     transform-origin: bottom right;
-  }}
+  }
+}
+
+@media (max-width: 380px) {
+  .floating-folder-root {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: calc(12px + env(safe-area-inset-right, 0px));
+  }
+
+  .floating-folder-root.visible {
+    transform: translateY(0) scale(0.75);
+    transform-origin: bottom right;
+  }
+}

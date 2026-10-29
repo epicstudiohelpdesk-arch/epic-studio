@@ -366,26 +366,12 @@ body.converge-page-open .auto-contact-sheet {
   }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 768px) {
+  .converge-backdrop,
   .converge-dropdown-page {
-    height: clamp(400px, 66vh, 500px);
-    border-radius: 0 0 22px 22px;
-  }
-  .converge-bottom-bar {
-    padding: 10px 16px 14px;
-    justify-content: center;
-  }
-  .converge-cta-primary {
-    padding: 10px 20px;
-    font-size: 12px;
-    border-radius: 10px;
-  }
-  .modal-pull-rope-root {
-    right: 16px;
-  }
-  .rope-hover-down-arrow {
-    right: 36px;
-    width: 18px;
-    height: 24px;
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
   }
 }

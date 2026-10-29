@@ -3,12 +3,9 @@
 import { useEffect } from "react";
 
 /**
- * Pauses every decorative infinite animation inside any [data-anim-scope]
- * container while that container is outside the viewport (plus 120px
- * margin). SVG-path animations (stroke-dashoffset waves/flows), box-shadow
- * pulses and blur-filter orbs cannot run on the compositor, so left alone
- * they burn main-thread paint time continuously — even when scrolled far
- * out of view — starving hero act transitions of frame budget.
+ * Pauses heavy decorative infinite SVG/canvas animations inside [data-anim-scope]
+ * when scrolled far outside the viewport (> 600px buffer).
+ * Generous buffer ensures animations are already running smoothly before entering view.
  */
 export default function AnimationGate() {
   useEffect(() => {
@@ -21,18 +18,22 @@ export default function AnimationGate() {
       return;
     }
 
+    const isMobile =
+      typeof window !== "undefined" &&
+      (window.innerWidth <= 860 || window.matchMedia("(pointer: coarse)").matches);
+
+    const rootMargin = isMobile ? "150px 0px 150px 0px" : "350px 0px 350px 0px";
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           entry.target.classList.toggle("is-offscreen", !entry.isIntersecting);
         }
       },
-      { rootMargin: "120px" }
+      { rootMargin }
     );
 
     scopes.forEach((el) => {
-      // Start paused until first observation confirms visibility.
-      el.classList.add("is-offscreen");
       io.observe(el);
     });
 

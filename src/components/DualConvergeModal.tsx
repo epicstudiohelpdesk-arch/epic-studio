@@ -28,7 +28,7 @@ export default function DualConvergeModal() {
   }, []);
 
   const handleRedirectToContact = useCallback(
-    (_tab?: string) => {
+    () => {
       setIsClosing(true);
       setIsVisible(false);
 
@@ -45,6 +45,7 @@ export default function DualConvergeModal() {
   );
 
   const openPage = useCallback(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
     setIsClosing(false);
     setIsMounted(true);
     if (typeof window !== "undefined") {
@@ -60,6 +61,7 @@ export default function DualConvergeModal() {
 
   const autoTrigger = useCallback(() => {
     if (didAutoTriggerRef.current) return;
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
     didAutoTriggerRef.current = true;
     openPage();
   }, [openPage]);
@@ -189,7 +191,7 @@ export default function DualConvergeModal() {
           <button
             type="button"
             className="converge-cta-primary"
-            onClick={() => handleRedirectToContact("inquiry")}
+            onClick={() => handleRedirectToContact()}
             aria-label="Claim Diwali Special Offer on our contact page"
           >
             <span className="converge-cta-sparkle" aria-hidden="true">

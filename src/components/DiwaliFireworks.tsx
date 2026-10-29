@@ -302,6 +302,7 @@ export default function DiwaliFireworks() {
   // Spawn flying rocket in sky canvas when its guide stick clears the cylinder
   const spawnSkyRocket = useCallback(
     (rocketType: number, barrelIndex: number, barrelAngleDeg: number) => {
+      if (typeof window !== "undefined" && window.innerWidth <= 768) return;
       if (!stationRef.current || !overlayCanvasRef.current) return;
       const canvas = overlayCanvasRef.current;
       const parent = canvas.parentElement;
@@ -309,6 +310,7 @@ export default function DiwaliFireworks() {
 
       const parentRect = parent.getBoundingClientRect();
       const stationRect = stationRef.current.getBoundingClientRect();
+      if (stationRect.width === 0 || stationRect.height === 0) return;
       const barrel = barrelsRef.current[barrelIndex];
 
       const startX =
@@ -471,9 +473,14 @@ export default function DiwaliFireworks() {
     [launchRocketFromCylinder]
   );
 
-  // Periodic automatic wave sequencer
+  // Periodic automatic wave sequencer (Desktop & Tablet screens only)
   useEffect(() => {
     isComponentMounted.current = true;
+
+    const isDesktopOrTablet = () =>
+      typeof window !== "undefined" && window.innerWidth > 768;
+
+    if (!isDesktopOrTablet()) return;
 
     // Preload rocket images for sky rendering
     ROCKET_SRCS.forEach((src, idx) => {
@@ -489,52 +496,94 @@ export default function DiwaliFireworks() {
 
     const scheduleNextWave = () => {
       if (!isComponentMounted.current) return;
+      if (!isDesktopOrTablet()) return;
       const nextDelay = 2000 + Math.random() * 1000;
       waveTimerRef.current = setTimeout(() => {
         if (!isComponentMounted.current) return;
-        triggerRocketWave();
+        if (isDesktopOrTablet()) {
+          triggerRocketWave();
+        }
         scheduleNextWave();
       }, nextDelay);
     };
 
-    const initialTimer = setTimeout(() => {
-      triggerRocketWave();
-      scheduleNextWave();
-    }, 900);
+    let initialTimer: ReturnType<typeof setTimeout> | null = null;
+    if (isDesktopOrTablet()) {
+      initialTimer = setTimeout(() => {
+        if (isDesktopOrTablet()) {
+          triggerRocketWave();
+        }
+        scheduleNextWave();
+      }, 900);
+    }
+
+    const handleWindowResize = () => {
+      if (isDesktopOrTablet()) {
+        if (!waveTimerRef.current) {
+          triggerRocketWave();
+          scheduleNextWave();
+        }
+      } else {
+        if (waveTimerRef.current) {
+          clearTimeout(waveTimerRef.current);
+          waveTimerRef.current = null;
+        }
+        rocketsRef.current = [];
+        starburstSpokesRef.current = [];
+        sparkParticlesRef.current = [];
+        flashCoresRef.current = [];
+        fountainSparksRef.current = [];
+      }
+    };
+
+    window.addEventListener("resize", handleWindowResize);
 
     return () => {
       isComponentMounted.current = false;
-      clearTimeout(initialTimer);
+      if (initialTimer) clearTimeout(initialTimer);
       if (waveTimerRef.current) clearTimeout(waveTimerRef.current);
+      window.removeEventListener("resize", handleWindowResize);
     };
   }, [triggerRocketWave]);
 
-  // Main 60fps Animation Loop (Barrel Launches & Sky Flight & Bursts)
+  // Main 60fps Animation Loop (Barrel Launches & Sky Flight & Bursts - Desktop & Tablet only)
   useEffect(() => {
+    const isDesktopOrTablet = () =>
+      typeof window !== "undefined" && window.innerWidth > 768;
+
+    if (!isDesktopOrTablet()) return;
+
     const canvas = overlayCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animFrameId: number;
+    let animFrameId: number | null = null;
 
     const resizeCanvas = () => {
       const parent = canvas.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      const width = rect.width || parent.clientWidth || window.innerWidth;
+      const height = rect.height || parent.clientHeight || 780;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
 
     const render = () => {
+      // Completely stop RAF execution on mobile to conserve CPU/GPU
+      if (!isDesktopOrTablet()) {
+        animFrameId = null;
+        return;
+      }
+
       const parent = canvas.parentElement;
-      const cw = parent ? parent.clientWidth : window.innerWidth;
-      const ch = parent ? parent.clientHeight : window.innerHeight;
+      const cw = parent ? (parent.clientWidth || canvas.width) : window.innerWidth;
+      const ch = parent ? (parent.clientHeight || canvas.height) : window.innerHeight;
 
       ctx.clearRect(0, 0, cw, ch);
 
@@ -780,22 +829,46 @@ export default function DiwaliFireworks() {
       animFrameId = requestAnimationFrame(render);
     };
 
-    animFrameId = requestAnimationFrame(render);
+    if (isDesktopOrTablet()) {
+      animFrameId = requestAnimationFrame(render);
+    }
+
+    const handleCanvasResize = () => {
+      resizeCanvas();
+      if (isDesktopOrTablet()) {
+        if (!animFrameId) {
+          animFrameId = requestAnimationFrame(render);
+        }
+      } else {
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    window.addEventListener("resize", handleCanvasResize);
 
     return () => {
-      cancelAnimationFrame(animFrameId);
-      window.removeEventListener("resize", resizeCanvas);
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      window.removeEventListener("resize", handleCanvasResize);
     };
   }, [triggerBurst, spawnSkyRocket, startReload]);
 
-  // Live Nozzle Spark Fountain on the Station (60fps) - lowered down & slightly behind barrels
+  // Live Nozzle Spark Fountain on the Station (60fps - Desktop & Tablet only)
   useEffect(() => {
+    const isDesktopOrTablet = () =>
+      typeof window !== "undefined" && window.innerWidth > 768;
+
+    if (!isDesktopOrTablet()) return;
+
     const canvas = stationCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let fountainAnimId: number;
+    let fountainAnimId: number | null = null;
 
     const FOUNTAIN_COLORS = [
       "#FFF9C4",
@@ -808,6 +881,12 @@ export default function DiwaliFireworks() {
     ];
 
     const renderFountain = () => {
+      // Completely stop RAF execution on mobile to conserve CPU/GPU
+      if (!isDesktopOrTablet()) {
+        fountainAnimId = null;
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.globalCompositeOperation = "lighter";
 
@@ -876,15 +955,35 @@ export default function DiwaliFireworks() {
       fountainAnimId = requestAnimationFrame(renderFountain);
     };
 
-    fountainAnimId = requestAnimationFrame(renderFountain);
+    if (isDesktopOrTablet()) {
+      fountainAnimId = requestAnimationFrame(renderFountain);
+    }
+
+    const handleFountainResize = () => {
+      if (isDesktopOrTablet()) {
+        if (!fountainAnimId) {
+          fountainAnimId = requestAnimationFrame(renderFountain);
+        }
+      } else {
+        if (fountainAnimId) {
+          cancelAnimationFrame(fountainAnimId);
+          fountainAnimId = null;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    window.addEventListener("resize", handleFountainResize);
 
     return () => {
-      cancelAnimationFrame(fountainAnimId);
+      if (fountainAnimId) cancelAnimationFrame(fountainAnimId);
+      window.removeEventListener("resize", handleFountainResize);
     };
   }, []);
 
   // Handle station click: triggers immediate festive salvo from barrels
   const handleStationClick = () => {
+    if (typeof window !== "undefined" && window.innerWidth <= 768) return;
     triggerRocketWave(3);
   };
 

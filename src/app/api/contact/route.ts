@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import prisma from "@/lib/prisma";
-import { readStore, writeStore } from "@/lib/store";
 import { persistFormSubmission } from "@/lib/submissions";
 
 export const runtime = "nodejs";

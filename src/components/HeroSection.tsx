@@ -42,6 +42,16 @@ export default function HeroSection() {
     | "center-sinking"
     | "resetting"
   >("phone-entering");
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(typeof window !== "undefined" && window.innerWidth > 768);
+    };
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop, { passive: true });
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
 
   // Immediate preloading & background GPU decode of all hero acts assets to eliminate lagging and late loading
   useEffect(() => {
@@ -69,14 +79,28 @@ export default function HeroSection() {
   }, []);
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const isOffscreenRef = useRef(false);
+  const clearAllTimersRef = useRef<() => void>(() => {});
+  const runAnimationLoopRef = useRef<(isInitial?: boolean) => void>(() => {});
 
-  // Pause purely decorative infinite animations while the hero is offscreen
+  // Pause purely decorative infinite animations and act timers while the hero is offscreen
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
+    const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+    const rootMargin = isMobile ? "50px 0px 50px 0px" : "350px 0px 350px 0px";
     const io = new IntersectionObserver(
-      ([entry]) => el.classList.toggle("is-offscreen", !entry.isIntersecting),
-      { rootMargin: "120px" }
+      ([entry]) => {
+        const offscreen = !entry.isIntersecting;
+        el.classList.toggle("is-offscreen", offscreen);
+        isOffscreenRef.current = offscreen;
+        if (offscreen) {
+          clearAllTimersRef.current();
+        } else {
+          runAnimationLoopRef.current(false);
+        }
+      },
+      { rootMargin }
     );
     io.observe(el);
     return () => io.disconnect();
@@ -104,6 +128,7 @@ export default function HeroSection() {
 
     const runAnimationLoop = (isInitial = false) => {
       clearAllTimers();
+      if (isOffscreenRef.current) return;
 
       const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
@@ -238,6 +263,12 @@ export default function HeroSection() {
     const startLoopOnSplashDismiss = () => {
       splashListenerAttached = false;
       runAnimationLoop(true);
+    };
+
+    clearAllTimersRef.current = clearAllTimers;
+    runAnimationLoopRef.current = (isInitial = false) => {
+      if (isOffscreenRef.current) return;
+      runAnimationLoop(isInitial);
     };
 
     if (isSplashActive()) {
@@ -1077,32 +1108,34 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Compact Interactive LineSidebar Navigation */}
-            <div
-              className={`hero-social-linesidebar ${
-                isCenterVisible ? "sidebar-active" : ""
-              } ${isCenterSinking ? "sidebar-sinking" : ""}`}
-            >
-              <LineSidebar
-                items={SIDEBAR_ITEMS}
-                accentColor="#D2FD00"
-                textColor="rgba(255, 255, 255, 0.65)"
-                markerColor="rgba(255, 255, 255, 0.22)"
-                showIndex
-                showMarker
-                proximityRadius={75}
-                maxShift={16}
-                falloff="smooth"
-                markerLength={24}
-                markerGap={6}
-                tickScale={0.45}
-                scaleTick
-                itemGap={11}
-                fontSize={0.8}
-                smoothing={80}
-                defaultActive={0}
-              />
-            </div>
+            {/* Compact Interactive LineSidebar Navigation (Desktop only) */}
+            {isDesktop && (
+              <div
+                className={`hero-social-linesidebar ${
+                  isCenterVisible ? "sidebar-active" : ""
+                } ${isCenterSinking ? "sidebar-sinking" : ""}`}
+              >
+                <LineSidebar
+                  items={SIDEBAR_ITEMS}
+                  accentColor="#D2FD00"
+                  textColor="rgba(255, 255, 255, 0.65)"
+                  markerColor="rgba(255, 255, 255, 0.22)"
+                  showIndex
+                  showMarker
+                  proximityRadius={75}
+                  maxShift={16}
+                  falloff="smooth"
+                  markerLength={24}
+                  markerGap={6}
+                  tickScale={0.45}
+                  scaleTick
+                  itemGap={11}
+                  fontSize={0.8}
+                  smoothing={80}
+                  defaultActive={0}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -1208,15 +1241,15 @@ export default function HeroSection() {
           </span>
         </div>
 
-        {/* Diwali Fireworks Launcher Station & Particle Canvas */}
-        <DiwaliFireworks />
+        {/* Diwali Fireworks Launcher Station & Particle Canvas (Visible on desktop/tablet, hidden on mobile via diwali-fireworks.css) */}
+        {isDesktop && <DiwaliFireworks />}
       </div>
 
       {/* Marquee Strip positioned directly beneath hero-wrap */}
       {marquee}
 
-      {/* 2 Festive Animated & Glowing Diyas on the Marquee (Left Side) */}
-      <HeroDiyaDuo />
+      {/* 2 Festive Animated & Glowing Diyas on the Marquee (Visible on desktop/tablet, hidden on mobile via hero-diya-duo.css) */}
+      {isDesktop && <HeroDiyaDuo />}
     </div>
   );
 }

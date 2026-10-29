@@ -351,7 +351,7 @@ export default function WorkInMotionSection() {
                                 <span className="gcard-url">{c3.url}</span>
                               </div>
                               <div className="gcard-browser-body">
-                                <img src={c3.image} onError={(e) => { e.currentTarget.src = c3.fallback; }} alt="" loading="lazy" decoding="async" />
+                                <img src={c3.image} onError={(e) => { e.currentTarget.src = c3.fallback; }} alt="" loading="eager" decoding="async" />
                               </div>
                             </div>
                           </div>
@@ -373,7 +373,7 @@ export default function WorkInMotionSection() {
                                 <span className="gcard-url">{c2.url}</span>
                               </div>
                               <div className="gcard-browser-body">
-                                <img src={c2.image} onError={(e) => { e.currentTarget.src = c2.fallback; }} alt="" loading="lazy" decoding="async" />
+                                <img src={c2.image} onError={(e) => { e.currentTarget.src = c2.fallback; }} alt="" loading="eager" decoding="async" />
                               </div>
                             </div>
                           </div>
@@ -396,7 +396,7 @@ export default function WorkInMotionSection() {
                                 <span className="gcard-url">{c1.url}</span>
                               </div>
                               <div className="gcard-browser-body">
-                                <img src={c1.image} onError={(e) => { e.currentTarget.src = c1.fallback; }} alt="" loading="lazy" decoding="async" />
+                                <img src={c1.image} onError={(e) => { e.currentTarget.src = c1.fallback; }} alt="" loading="eager" decoding="async" />
                               </div>
                             </div>
                           </div>
@@ -433,7 +433,7 @@ export default function WorkInMotionSection() {
                                 <span className="gcard-url">{c0.url}</span>
                               </div>
                               <div className="gcard-browser-body">
-                                <img src={c0.image} onError={(e) => { e.currentTarget.src = c0.fallback; }} alt={c0.title} loading="lazy" decoding="async" />
+                                <img src={c0.image} onError={(e) => { e.currentTarget.src = c0.fallback; }} alt={c0.title} loading="eager" decoding="async" />
                               </div>
                             </div>
                             <div className="gcard-hint-badge" aria-hidden="true">
@@ -537,7 +537,7 @@ export default function WorkInMotionSection() {
                                   src={currentCard.image}
                                   onError={(e) => { e.currentTarget.src = currentCard.fallback; }}
                                   alt={currentCard.title}
-                                  loading="lazy"
+                                  loading="eager"
                                   decoding="async"
                                 />
                               </div>
@@ -556,10 +556,10 @@ export default function WorkInMotionSection() {
             <div className={`wim-world ${activeMode === "mobile" ? "is-visible" : ""}`} aria-hidden={activeMode !== "mobile"}>
               <div className="wim-phone">
                 <span className="wim-phone-notch" aria-hidden="true" />
-                <img src="/assets/mid.webp" onError={(e) => { e.currentTarget.src = "/assets/mid.png"; }} alt="" loading="lazy" decoding="async" />
+                <img src="/assets/mid.webp" onError={(e) => { e.currentTarget.src = "/assets/mid.png"; }} alt="" loading="eager" decoding="async" />
               </div>
               <div className="wim-phone-secondary" aria-hidden="true">
-                <img src="/assets/orange-screen.webp" onError={(e) => { e.currentTarget.src = "/assets/orange-screen.png"; }} alt="" loading="lazy" decoding="async" />
+                <img src="/assets/orange-screen.webp" onError={(e) => { e.currentTarget.src = "/assets/orange-screen.png"; }} alt="" loading="eager" decoding="async" />
               </div>
               <div className="wim-chip-row">
                 <span className="wim-chip">SWIFT</span>
@@ -631,7 +631,7 @@ export default function WorkInMotionSection() {
             <div className={`wim-world ${activeMode === "social" ? "is-visible" : ""}`} aria-hidden={activeMode !== "social"}>
               <div className="wim-phone wim-phone-social">
                 <span className="wim-phone-notch" aria-hidden="true" />
-                <img src="/assets/facebookmock.webp" onError={(e) => { e.currentTarget.src = "/assets/facebookmock.png"; }} alt="" loading="lazy" decoding="async" />
+                <img src="/assets/facebookmock.webp" onError={(e) => { e.currentTarget.src = "/assets/facebookmock.png"; }} alt="" loading="eager" decoding="async" />
               </div>
               <div className="wim-social-orbit" aria-hidden="true">
                 <span className="orbit-chip oc-fb">FB</span>
@@ -659,7 +659,7 @@ export default function WorkInMotionSection() {
                   <span className="wim-url">app.omniflow.ai/pipelines</span>
                 </div>
                 <div className="wim-browser-body">
-                  <img src="/assets/2ndmockup.webp" onError={(e) => { e.currentTarget.src = "/assets/2ndmockup.png"; }} alt="" loading="lazy" decoding="async" />
+                  <img src="/assets/2ndmockup.webp" onError={(e) => { e.currentTarget.src = "/assets/2ndmockup.png"; }} alt="" loading="eager" decoding="async" />
                 </div>
               </div>
               <div className="wim-product-stat" aria-hidden="true">

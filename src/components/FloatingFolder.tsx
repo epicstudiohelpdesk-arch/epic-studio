@@ -11,44 +11,44 @@ export default function FloatingFolder() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Cache the hero node; re-query only if it disappears (route change).
-    let heroEl: Element | null = null;
-    let rafId: number | null = null;
     let lastValue = false;
+    const heroEl = document.querySelector(
+      ".hero-section, .hero, header + section, main > section:first-of-type"
+    );
 
-    const measure = () => {
-      rafId = null;
-      if (!heroEl || !heroEl.isConnected) {
-        heroEl = document.querySelector(
-          ".hero-section, .hero, header + section, main > section:first-of-type"
-        );
-      }
-      let next = false;
-      if (heroEl) {
-        // Show as soon as the hero bottom scrolls near/above viewport middle
-        next = heroEl.getBoundingClientRect().bottom < window.innerHeight * 0.55;
-      } else {
-        next = window.scrollY > 400;
-      }
-      if (next !== lastValue) {
-        lastValue = next;
-        setIsVisible(next);
-      }
+    // High-performance IntersectionObserver avoids synchronous reflows on mobile scroll
+    if (heroEl && typeof IntersectionObserver !== "undefined") {
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          const shouldShow = !entry.isIntersecting;
+          if (shouldShow !== lastValue) {
+            lastValue = shouldShow;
+            setIsVisible(shouldShow);
+          }
+        },
+        { rootMargin: "-45% 0px 0px 0px" }
+      );
+      io.observe(heroEl);
+      return () => io.disconnect();
+    }
+
+    // Passive fallback for browsers without IntersectionObserver
+    let ticking = false;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const next = window.scrollY > 400;
+        if (next !== lastValue) {
+          lastValue = next;
+          setIsVisible(next);
+        }
+      });
     };
 
-    const scheduleMeasure = () => {
-      if (rafId === null) rafId = requestAnimationFrame(measure);
-    };
-
-    window.addEventListener("scroll", scheduleMeasure, { passive: true });
-    window.addEventListener("resize", scheduleMeasure, { passive: true });
-    measure();
-
-    return () => {
-      window.removeEventListener("scroll", scheduleMeasure);
-      window.removeEventListener("resize", scheduleMeasure);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const folderItems = [

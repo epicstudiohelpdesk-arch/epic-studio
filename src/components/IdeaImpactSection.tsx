@@ -88,11 +88,10 @@ export default function IdeaImpactSection() {
             <path d="M1128 48 L1152 60 L1128 72" stroke="#c9ff17" strokeWidth="2" fill="none" strokeLinecap="square" />
           </svg>
 
-          {stages.map((stage, i) => (
+          {stages.map((stage) => (
             <article
               key={stage.num}
               data-reveal
-              style={{ transitionDelay: `${i * 140}ms` }}
               className={`imp-stage imp-stage-${stage.tone}`}
             >
               <div className="imp-stage-top">

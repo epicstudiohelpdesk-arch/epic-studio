@@ -185,10 +185,25 @@ body.contact-drawer-open .line-sidebar {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   margin-top: 2px;
   padding: 0;
+}
+
+.contact-modal-close-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  pointer-events: auto;
 }
 
 .contact-modal-close-btn:hover {
@@ -813,8 +828,10 @@ body.contact-drawer-open .line-sidebar {
   .auto-contact-sheet {
     max-width: 100%;
     height: 92vh !important;
-    min-height: 92vh !important;
-    max-height: 92vh !important;
+    height: 92dvh !important;
+    min-height: 88svh !important;
+    max-height: calc(100dvh - env(safe-area-inset-top, 16px) - 8px) !important;
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
   }
 
   .auto-contact-sheet .contact-hero-modal-shell {
@@ -829,6 +846,40 @@ body.contact-drawer-open .line-sidebar {
   .contact-modal-close-btn {
     width: 32px;
     height: 32px;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .contact-modal-close-btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    pointer-events: auto;
+  }
+
+  .auto-contact-sheet .contact-native-input,
+  .auto-contact-sheet .contact-native-textarea,
+  .auto-contact-sheet .custom-dropdown-trigger {
+    font-size: 16px !important;
+  }
+
+  .auto-contact-sheet .date-selector-card,
+  .auto-contact-sheet .time-slot-btn,
+  .auto-contact-sheet .contact-submit-btn,
+  .auto-contact-sheet .schedule-confirm-btn {
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  .auto-contact-sheet .date-selector-card:active,
+  .auto-contact-sheet .time-slot-btn:active {
+    transform: scale(0.97) !important;
   }
 
   .auto-contact-sheet .hero-section.contact-hero-section {
@@ -842,6 +893,8 @@ body.contact-drawer-open .line-sidebar {
 
   .auto-contact-sheet .contact-card-box {
     padding: 16px 14px !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain !important;
   }
 
   .auto-contact-sheet .contact-grid-3col {
@@ -858,6 +911,32 @@ body.contact-drawer-open .line-sidebar {
 
   .auto-contact-sheet .direct-connect-grid {
     grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .auto-contact-sheet .time-slots-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .auto-contact-sheet .schedule-date-cards {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
+    padding-bottom: 4px !important;
+  }
+
+  .auto-contact-sheet .date-selector-card {
+    min-width: 46px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .auto-contact-sheet .contact-card-box {
+    padding: 12px 10px !important;
+  }
+  .contact-modal-header-hero {
+    padding: 12px 12px 6px 12px;
   }
 }
 

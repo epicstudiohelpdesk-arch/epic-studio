@@ -290,18 +290,13 @@
   }
 }
 
-/* Mobile responsive adjustments */
-@media (max-width: 760px) {
-  .header-brand-wrap {
-    gap: 8px;
-  }
-  .header-light-strip-wrap {
-    width: 16px;
-    height: 32px;
-  }
+/* Mobile responsive adjustments - Hide Diwali Light Strip on mobile */
+@media (max-width: 768px) {
+  .header-light-strip-wrap,
   .header-light-strip-stage {
-    top: -28px;
-    transform: scale(0.78);
-    transform-origin: top left;
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
   }
 }

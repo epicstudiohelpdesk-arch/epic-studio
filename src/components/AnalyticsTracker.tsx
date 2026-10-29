@@ -17,7 +17,7 @@ export default function AnalyticsTracker() {
             referrer: document.referrer,
           }),
         });
-      } catch (e) {
+      } catch {
         // ignore
       }
     };

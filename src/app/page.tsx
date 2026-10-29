@@ -10,6 +10,7 @@ import PrinciplesSection from "@/components/PrinciplesSection";
 import IndustryUniverseSection from "@/components/IndustryUniverseSection";
 import PeopleSection from "@/components/PeopleSection";
 import LetsBuildSection from "@/components/LetsBuildSection";
+import HomeFaq from "@/components/geo/HomeFaq";
 import SiteFooter from "@/components/SiteFooter";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/metadata";
@@ -83,6 +84,9 @@ export default function Home() {
 
       {/* WHO BUILDS IT? */}
       <PeopleSection />
+
+      {/* FREQUENTLY ASKED QUESTIONS */}
+      <HomeFaq />
 
       {/* WHY START A CONVERSATION? */}
       <LetsBuildSection />

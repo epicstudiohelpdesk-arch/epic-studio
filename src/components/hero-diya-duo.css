@@ -384,25 +384,13 @@
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN FOR HERO DIYAS
+   RESPONSIVE DESIGN FOR HERO DIYAS - HIDE ON MOBILE SCREENS
    ========================================================================== */
-@media (max-width: 860px) {
+@media (max-width: 768px) {
   .hero-diya-duo-container {
-    left: clamp(8px, 2vw, 18px);
-    bottom: calc(52 * var(--u, 1px));
-  }
-}
-
-@media (max-width: 520px) {
-  .hero-diya-duo-container {
-    left: 8px;
-    bottom: 24px;
-    transform: rotate(2deg) scale(0.85);
-  }
-  .diya-duo-wrapper {
-    gap: 4px;
-  }
-  .diya-unit-secondary {
-    margin-left: -4px;
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
   }
 }

@@ -10,7 +10,13 @@ export default function useRevealOnScroll(ref: RefObject<HTMLElement | null>) {
     const targets = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
     if (targets.length === 0) return;
 
-    if (!("IntersectionObserver" in window)) {
+    const isMobile =
+      typeof window !== "undefined" &&
+      (window.innerWidth <= 1060 || window.matchMedia("(pointer: coarse)").matches);
+
+    // On mobile devices or browsers without IntersectionObserver, reveal immediately.
+    // This eliminates blank/black screen voids during fast touch scrolling flings.
+    if (isMobile || !("IntersectionObserver" in window)) {
       targets.forEach((el) => el.classList.add("is-inview"));
       return;
     }
@@ -24,7 +30,9 @@ export default function useRevealOnScroll(ref: RefObject<HTMLElement | null>) {
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      // Preemptive 600px margin reveals content well before reaching viewport,
+      // guaranteeing contents load instantly during fast scrolling.
+      { threshold: 0, rootMargin: "600px 0px 600px 0px" }
     );
 
     targets.forEach((el) => observer.observe(el));

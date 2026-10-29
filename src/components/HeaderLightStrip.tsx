@@ -54,6 +54,7 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
   }, [isScrolled]);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth <= 768) return;
     const handleScroll = () => {
       const sy = window.scrollY || document.documentElement.scrollTop;
       const nextScrolled = sy > 20;
@@ -136,8 +137,13 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
     }, 750);
   }, []);
 
-  // Keep target anchor updated on resize & scroll
+  // Keep target anchor updated on resize & scroll (Desktop only - light strip is hidden on mobile)
   useEffect(() => {
+    const isDesktop = () =>
+      typeof window !== "undefined" && window.innerWidth > 768;
+
+    if (!isDesktop()) return;
+
     updateTargetAnchor();
     window.addEventListener("resize", updateTargetAnchor);
     window.addEventListener("scroll", updateTargetAnchor, { passive: true });
@@ -147,12 +153,20 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
     };
   }, [updateTargetAnchor]);
 
-  // 60FPS dual-anchored spring & natural breeze garland physics loop
+  // 60FPS dual-anchored spring & natural breeze garland physics loop (Desktop only)
   useEffect(() => {
-    let animId: number;
+    let animId: number | null = null;
     let t = 0;
+    const isDesktop = () =>
+      typeof window !== "undefined" && window.innerWidth > 768;
 
     const render = () => {
+      // Completely stop RAF execution on mobile to conserve CPU/battery
+      if (!isDesktop()) {
+        animId = null;
+        return;
+      }
+
       // Pause physics calculations when scrolled to conserve CPU/battery
       if (isScrolledRef.current) {
         animId = requestAnimationFrame(render);
@@ -322,8 +336,27 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
       animId = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
-    return () => cancelAnimationFrame(animId);
+    if (isDesktop()) {
+      animId = requestAnimationFrame(render);
+    }
+
+    const handleStripResize = () => {
+      if (isDesktop()) {
+        if (!animId) animId = requestAnimationFrame(render);
+      } else {
+        if (animId) {
+          cancelAnimationFrame(animId);
+          animId = null;
+        }
+      }
+    };
+
+    window.addEventListener("resize", handleStripResize);
+
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleStripResize);
+    };
   }, []);
 
   // Drag interaction handlers

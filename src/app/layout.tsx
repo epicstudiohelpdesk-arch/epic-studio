@@ -37,6 +37,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -148,8 +149,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`scroll-smooth ${bebasNeue.variable} ${syne.variable}`}
-      data-scroll-behavior="smooth"
+      className={`${bebasNeue.variable} ${syne.variable}`}
       data-splash-active="true"
       suppressHydrationWarning
     >

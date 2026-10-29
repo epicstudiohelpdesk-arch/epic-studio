@@ -56,7 +56,7 @@ export default function RopeLantern() {
   }, []);
 
   // Sparkle burst helper
-  const burstSparkles = useCallback((x: number, y: number) => {
+  const burstSparkles = useCallback(() => {
     const chars = ["✦", "✧", "⋆", "•", "✨"];
     const count = 12;
     const newSparkles: Sparkle[] = [];
@@ -80,6 +80,12 @@ export default function RopeLantern() {
   }, []);
 
   useEffect(() => {
+    // Lantern is strictly hidden on mobile screens (display: none !important via CSS);
+    // skip entire Matter.js physics engine setup and 60fps loop on mobile to preserve CPU & memory.
+    if (typeof window !== "undefined" && window.innerWidth <= 768) {
+      return;
+    }
+
     const stage = stageRef.current;
     const pathElm = pathRef.current;
     const handleElm = handleRef.current;
@@ -200,7 +206,7 @@ export default function RopeLantern() {
         hasTriggeredPull = true;
         setIsRadiant((prev) => !prev);
         playChime();
-        burstSparkles(handleBody.position.x, handleBody.position.y);
+        burstSparkles();
         window.dispatchEvent(new CustomEvent("open:converge-modal"));
         if (typeof navigator !== "undefined" && navigator.vibrate) {
           navigator.vibrate(15);
@@ -228,7 +234,7 @@ export default function RopeLantern() {
         });
         setIsRadiant((prev) => !prev);
         playChime();
-        burstSparkles(handleBody.position.x, handleBody.position.y);
+        burstSparkles();
         window.dispatchEvent(new CustomEvent("open:converge-modal"));
       }
     };

@@ -74,7 +74,6 @@ export default function PrinciplesSection() {
             <article
               key={p.num}
               data-reveal
-              style={{ transitionDelay: `${(i % 2) * 90}ms` }}
               className={`prn-row ${i % 2 === 1 ? "is-flipped" : ""}`}
             >
               <span className="prn-row-num" aria-hidden="true">
