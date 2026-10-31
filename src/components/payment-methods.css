@@ -20,10 +20,11 @@
   white-space: nowrap;
 }
 
+.fd-payments-icon,
 .fd-payments-lock {
-  color: #10B981; /* Verified secure emerald green */
+  color: rgba(255, 255, 255, 0.72);
   flex-shrink: 0;
-  filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.35));
+  transition: color 0.2s ease;
 }
 
 .fd-payment-badges {
@@ -121,15 +122,88 @@
   }
 }
 
+/* Dedicated row positioned directly above the large EPIC STUDIO watermark */
+.fd-payment-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 30px 0 20px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 5;
+}
+
+/* Slightly reduced width line positioned above the row with soft fade */
+.fd-payment-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, 80%);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 15%,
+    rgba(255, 255, 255, 0.12) 85%,
+    transparent 100%
+  );
+}
+
+/* Mobile row positioned directly above the EPIC STUDIO brand section */
+.mf-payment-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 0 16px;
+  margin: 16px 0 20px;
+  position: relative;
+  z-index: 5;
+}
+
+.mf-payment-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(320px, 80%);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 15%,
+    rgba(255, 255, 255, 0.12) 85%,
+    transparent 100%
+  );
+}
+
+.mf-payment-row::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(320px, 80%);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 15%,
+    rgba(255, 255, 255, 0.12) 85%,
+    transparent 100%
+  );
+}
+
 @media (max-width: 1100px) {
   .fd-bottom {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: 14px;
-  }
-  .fd-payments-strip:not(.is-mobile) {
-    width: 100%;
-    justify-content: flex-start;
   }
 }

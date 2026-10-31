@@ -309,6 +309,11 @@ export default function SiteFooter() {
             </div>
           </div>
 
+          {/* Payment Assurance Strip Positioned Above Large EPIC STUDIO Watermark */}
+          <div className="fd-payment-row">
+            <PaymentMethodsStrip variant="desktop" />
+          </div>
+
           {/* Watermark */}
           <div className="fd-watermark" aria-hidden="true">
             <div className="fd-wm-inner">
@@ -331,7 +336,6 @@ export default function SiteFooter() {
           {/* Bottom bar */}
           <div className="fd-bottom">
             <span className="fd-copyright">© 2026 EPIC STUDIO. All rights reserved.</span>
-            <PaymentMethodsStrip variant="desktop" />
             <div className="fd-legal">
               <Link href="/privacy">Privacy Policy</Link>
               <Link href="/terms">Terms of Service</Link>

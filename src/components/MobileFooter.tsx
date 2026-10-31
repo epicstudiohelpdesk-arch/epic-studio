@@ -219,6 +219,11 @@ export default function MobileFooter() {
         </div>
       </div>
 
+      {/* Payment Assurance Strip Positioned Above EPIC STUDIO Brand Section */}
+      <div className="mf-payment-row">
+        <PaymentMethodsStrip variant="mobile" />
+      </div>
+
       {/* 3. Brand & Social Section */}
       <div className="mf-brand-section">
         <Link className="mf-brand-title" href="/">
@@ -242,7 +247,6 @@ export default function MobileFooter() {
 
       {/* 4. Footer Bottom Legal */}
       <div className="mf-bottom-legal">
-        <PaymentMethodsStrip variant="mobile" />
         <p>© 2026 EPIC STUDIO Inc. All rights reserved.</p>
         <div className="mf-legal-links">
           <Link href="/privacy">Privacy Policy</Link>

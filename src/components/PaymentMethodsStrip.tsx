@@ -19,21 +19,22 @@ export default function PaymentMethodsStrip({
       aria-label="Accepted payment options and secure checkout methods"
     >
       <div className="fd-payments-caption">
-        {/* Subtle Green Verified Shield */}
+        {/* Professional Monochromatic Card Icon */}
         <svg
-          className="fd-payments-lock"
+          className="fd-payments-icon"
           viewBox="0 0 24 24"
-          width="13"
-          height="13"
+          width="15"
+          height="15"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.2"
+          strokeWidth="1.9"
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden="true"
         >
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <path d="m9 12 2 2 4-4" />
+          <rect x="2" y="5" width="20" height="14" rx="2.5" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+          <line x1="6" y1="15" x2="9.5" y2="15" />
         </svg>
         <span className="fd-payments-text">We accept all major cards &amp; secure payments</span>
       </div>
