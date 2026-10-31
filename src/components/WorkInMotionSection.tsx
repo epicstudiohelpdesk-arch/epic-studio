@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import useRevealOnScroll from "./useRevealOnScroll";
+import AshokaChakra from "./AshokaChakra";
 
 type ModeId = "web" | "mobile" | "ai" | "brand" | "social" | "product";
 
@@ -196,6 +197,81 @@ export default function WorkInMotionSection() {
       id="work-in-motion"
       aria-labelledby="wim-title"
     >
+      {/* Organic Uneven Top Edge with Atmospheric Blend & Rolling Ashoka Chakra */}
+      <div className="wim-top-edge-wrapper" aria-hidden="true">
+        {/* Soft atmospheric gradient blend */}
+        <div className="wim-edge-mist-blend" />
+
+        {/* Sculpted organic wave contour */}
+        <div className="wim-uneven-edge-svg-wrap">
+          <svg
+            className="wim-uneven-edge-svg"
+            viewBox="0 0 1440 96"
+            fill="none"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="wimAtmosphericGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#f8f9fa" stopOpacity="0.95" />
+                <stop offset="55%" stopColor="#f8f9fa" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#0534f2" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="wimCrestGlowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(255, 255, 255, 0.25)" />
+                <stop offset="25%" stopColor="rgba(201, 255, 23, 0.45)" />
+                <stop offset="50%" stopColor="rgba(255, 255, 255, 0.85)" />
+                <stop offset="75%" stopColor="rgba(103, 232, 249, 0.6)" />
+                <stop offset="100%" stopColor="rgba(255, 255, 255, 0.25)" />
+              </linearGradient>
+              <filter id="wimCrestGlowBlur" x="-10%" y="-50%" width="120%" height="200%">
+                <feGaussianBlur stdDeviation="3" />
+              </filter>
+            </defs>
+
+            {/* Atmospheric secondary wave extension */}
+            <path
+              d="M 0 0 L 1440 0 L 1440 58 C 1280 84, 1150 36, 1000 64 C 840 90, 690 32, 530 72 C 370 94, 210 34, 0 52 Z"
+              fill="url(#wimAtmosphericGrad)"
+            />
+
+            {/* Primary sculpted uneven wave filled with preceding section background #f8f9fa */}
+            <path
+              d="M 0 0 L 1440 0 L 1440 44 C 1270 70, 1140 24, 980 50 C 820 76, 700 18, 540 56 C 390 86, 230 22, 0 40 Z"
+              fill="#f8f9fa"
+            />
+
+            {/* Luminous crest glow highlight */}
+            <path
+              d="M 0 40 C 230 22, 390 86, 540 56 C 700 18, 820 76, 980 50 C 1140 24, 1270 70, 1440 44"
+              stroke="rgba(255, 255, 255, 0.35)"
+              strokeWidth="4"
+              fill="none"
+              filter="url(#wimCrestGlowBlur)"
+            />
+
+            {/* Crisp illuminated crest line */}
+            <path
+              d="M 0 40 C 230 22, 390 86, 540 56 C 700 18, 820 76, 980 50 C 1140 24, 1270 70, 1440 44"
+              stroke="url(#wimCrestGlowGrad)"
+              strokeWidth="1.5"
+              fill="none"
+              opacity="0.85"
+            />
+          </svg>
+        </div>
+
+        {/* Rolling Ashoka Chakra traversing horizontally in perpetual rotation */}
+        <div className="wim-chakra-conduit">
+          <div className="wim-chakra-runner">
+            <div className="wim-chakra-halo" />
+            <div className="wim-chakra-spinner">
+              <AshokaChakra size="100%" color="#ffffff" className="wim-chakra-svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="wim-grid-bg" aria-hidden="true" />
       <span className="wim-ring wim-ring-a" aria-hidden="true" />
       <span className="wim-ring wim-ring-b" aria-hidden="true" />
