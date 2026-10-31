@@ -1,0 +1,676 @@
+/* ==========================================================================
+   08 // LET'S BUILD — EXECUTIVE CONTACT SECTION
+   Preserved signature lime background, reduced vertical height, professional
+   icon-only action buttons & exact contact page form design.
+   ========================================================================== */
+
+.bld-section {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(175deg, #d8ff49 0%, #c9ff17 45%, #bdee00 100%);
+  color: #090a0f;
+  padding: clamp(38px, 4.2vw, 56px) clamp(20px, 4vw, 76px);
+  border-top: 1px solid rgba(9, 10, 15, 0.12);
+}
+
+/* Background Technical Accents */
+.bld-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(9, 10, 15, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(9, 10, 15, 0.08) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(130% 110% at 50% 0%, black 40%, transparent 90%);
+  -webkit-mask-image: radial-gradient(130% 110% at 50% 0%, black 40%, transparent 90%);
+}
+
+.bld-cross {
+  position: absolute;
+  font-size: 22px;
+  font-weight: 700;
+  color: rgba(9, 10, 15, 0.35);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.bld-cross-a {
+  top: 32px;
+  left: 3%;
+}
+
+.bld-cross-b {
+  bottom: 32px;
+  right: 3%;
+}
+
+.bld-ring {
+  position: absolute;
+  width: 44rem;
+  height: 44rem;
+  top: -22rem;
+  right: -14rem;
+  border: 1.5px solid rgba(9, 10, 15, 0.12);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* 2-Column Responsive Layout Grid with Reduced Height */
+.bld-layout-grid {
+  position: relative;
+  z-index: 2;
+  max-width: 1360px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(320px, 460px) minmax(0, 1fr);
+  gap: clamp(24px, 3.5vw, 48px);
+  align-items: start;
+}
+
+/* ==========================================================================
+   LEFT COLUMN: BRAND NARRATIVE & ICON-ONLY BUTTONS
+   ========================================================================== */
+.bld-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bld-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bld-section-label {
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: clamp(14px, 1.2vw, 17px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(9, 10, 15, 0.75);
+}
+
+.bld-headline {
+  margin: 0;
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 0.98;
+  text-transform: uppercase;
+  color: #090a0f;
+  letter-spacing: -0.01em;
+}
+
+.bld-headline-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.6px #090a0f;
+}
+
+.bld-narrative {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(14px, 1.15vw, 16px);
+  line-height: 1.5;
+  color: rgba(9, 10, 15, 0.88);
+  font-weight: 500;
+  max-width: 480px;
+}
+
+/* Value Reassurance Specs */
+.bld-trust-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1.5px solid rgba(9, 10, 15, 0.16);
+  border-bottom: 1.5px solid rgba(9, 10, 15, 0.16);
+  max-width: 480px;
+}
+
+.bld-trust-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #090a0f;
+}
+
+.bld-trust-spec-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #090a0f;
+  color: #c9ff17;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Direct Action Channels (Icon-Only Row) */
+.bld-left-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+/* Professional Icon-Only Action Buttons */
+.bld-icon-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bld-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.bld-icon-btn-primary {
+  background: #090a0f;
+  color: #c9ff17;
+  border: 1.5px solid #090a0f;
+  box-shadow: 0 4px 12px rgba(9, 10, 15, 0.2);
+}
+
+.bld-icon-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(9, 10, 15, 0.35);
+  background: #000000;
+  color: #d8ff49;
+}
+
+.bld-icon-btn-secondary {
+  background: rgba(255, 255, 255, 0.75);
+  color: #090a0f;
+  border: 1.5px solid rgba(9, 10, 15, 0.22);
+  box-shadow: 0 2px 8px rgba(9, 10, 15, 0.08);
+}
+
+.bld-icon-btn-secondary:hover {
+  background: #ffffff;
+  border-color: #090a0f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(9, 10, 15, 0.16);
+}
+
+.bld-icon-btn-whatsapp:hover {
+  background: #25d366;
+  border-color: #25d366;
+  color: #ffffff;
+}
+
+.bld-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(9, 10, 15, 0.65);
+  margin-top: 2px;
+}
+
+.bld-meta-row i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(9, 10, 15, 0.45);
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: PROFESSIONAL CONSULTATION CONSOLE (IDENTICAL TO CONTACT PAGE)
+   ========================================================================== */
+.bld-right-col {
+  width: 100%;
+}
+
+.bld-section .contact-console-stack {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Tabs styled for the lime background with pristine contrast */
+.bld-section .contact-mode-toggle {
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 6;
+}
+
+.bld-section .contact-mode-btn {
+  height: 36px;
+  font-size: 12px;
+  min-width: 124px;
+  padding: 0 14px;
+  background: rgba(9, 10, 15, 0.09);
+  color: rgba(9, 10, 15, 0.72);
+  border: 1.5px solid rgba(9, 10, 15, 0.16);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.bld-section .contact-mode-btn:hover {
+  background: rgba(9, 10, 15, 0.15);
+  color: #090a0f;
+}
+
+.bld-section .contact-mode-btn.active {
+  background: #ffffff;
+  color: #090a0f;
+  border: 1.5px solid rgba(9, 10, 15, 0.14);
+  border-bottom: none;
+  font-weight: 800;
+  box-shadow: 0 -4px 14px rgba(9, 10, 15, 0.06);
+}
+
+.bld-section .contact-mode-btn.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background: #ffffff;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Console Card Box */
+.bld-section .contact-card-box {
+  min-height: auto;
+  padding: clamp(16px, 2vw, 22px) clamp(18px, 2.4vw, 26px);
+  border: 1.5px solid rgba(9, 10, 15, 0.14);
+  border-radius: 0 12px 12px 12px;
+  box-shadow:
+    0 20px 48px -12px rgba(9, 10, 15, 0.16),
+    0 2px 6px rgba(9, 10, 15, 0.04);
+}
+
+/* Scoped Overrides for LetsBuildSection to reduce vertical footprint */
+.bld-section .contact-form-layout {
+  gap: 10px;
+}
+
+.bld-section .contact-field-block {
+  gap: 4px;
+}
+
+.bld-section .contact-field-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.bld-section .contact-label-opt {
+  font-size: 10px;
+}
+
+.bld-section .contact-grid-3col {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 10px;
+}
+
+.bld-section .contact-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.bld-section .custom-dropdown-trigger {
+  min-height: 38px;
+  padding: 0 11px;
+  font-size: 12.5px;
+}
+
+.bld-section .custom-dropdown-label {
+  font-size: 12.5px;
+}
+
+.bld-section .contact-input-shell {
+  min-height: 38px;
+  padding: 0 11px;
+}
+
+.bld-section .contact-native-input {
+  font-size: 13px;
+}
+
+.bld-section .contact-phone-input-shell {
+  min-height: 38px;
+}
+
+.bld-section .contact-country-trigger {
+  height: 36px;
+  padding: 0 8px 0 10px;
+  font-size: 13px;
+}
+
+.bld-section .contact-country-flag {
+  font-size: 15px;
+}
+
+.bld-section .contact-country-dial {
+  font-size: 12.5px;
+}
+
+.bld-section .contact-country-divider {
+  height: 18px;
+  margin-right: 8px;
+}
+
+.bld-section .contact-phone-native-input {
+  height: 36px;
+  font-size: 13px;
+}
+
+.bld-section .contact-textarea-shell {
+  padding: 7px 11px;
+}
+
+.bld-section .contact-native-textarea {
+  min-height: 50px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.bld-section .contact-submit-row {
+  margin-top: 0;
+  padding-top: 10px;
+  gap: 10px;
+}
+
+.bld-section .contact-sla-badge {
+  padding: 5px 10px;
+  gap: 6px;
+}
+
+.bld-section .contact-sla-label {
+  font-size: 11.5px;
+}
+
+.bld-section .contact-main-submit-btn {
+  min-height: 38px;
+  padding: 0 16px 0 18px;
+  font-size: 12px;
+}
+
+/* Schedule Call Scoped Adjustments */
+.bld-section .schedule-grid-wrap {
+  gap: 10px;
+}
+
+.bld-section .schedule-meta-bar {
+  padding: 8px 12px;
+  margin-bottom: 2px;
+}
+
+.bld-section .schedule-meta-text {
+  font-size: 12px;
+}
+
+.bld-section .schedule-meta-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+}
+
+.bld-section .schedule-datetime-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 10px;
+}
+
+.bld-section .schedule-date-cards {
+  gap: 6px;
+}
+
+.bld-section .date-selector-card {
+  padding: 6px 8px;
+  min-width: 50px;
+}
+
+.bld-section .date-card-day {
+  font-size: 9.5px;
+}
+
+.bld-section .date-card-num {
+  font-size: 15px;
+}
+
+.bld-section .date-card-month {
+  font-size: 9.5px;
+}
+
+.bld-section .time-slots-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.bld-section .time-slot-btn {
+  padding: 6px 8px;
+  font-size: 11.5px;
+}
+
+/* Direct Contacts Scoped Adjustments */
+.bld-section .direct-connect-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.bld-section .hotline-card {
+  padding: 12px 14px;
+  gap: 10px;
+}
+
+.bld-section .hotline-icon-box {
+  width: 32px;
+  height: 32px;
+}
+
+.bld-section .hotline-text h3 {
+  font-size: 13.5px;
+}
+
+.bld-section .hotline-text p {
+  font-size: 11.5px;
+}
+
+.bld-section .hotline-action-btn {
+  height: 34px;
+  font-size: 11.5px;
+  padding: 0 12px;
+}
+
+/* Error Banner inside Form */
+.bld-error-banner {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #b91c1c;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bld-error-banner span:first-child {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Dispatched Screen Scoped Adjustments */
+.bld-section .contact-dispatched-screen {
+  padding: 24px 14px;
+  gap: 12px;
+}
+
+.bld-section .dispatched-status-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.bld-section .dispatched-headline {
+  font-size: 18px;
+}
+
+.bld-section .dispatched-body {
+  font-size: 13px;
+  max-width: 480px;
+}
+
+.bld-section .dispatched-meta-tag {
+  font-size: 11.5px;
+  padding: 3px 10px;
+}
+
+.bld-section .dispatched-actions {
+  margin-top: 4px;
+  gap: 8px;
+}
+
+.bld-section .dispatched-btn-primary,
+.bld-section .dispatched-btn-secondary {
+  height: 36px;
+  font-size: 12px;
+  padding: 0 16px;
+}
+
+/* Toast Notification for Clipboard Copy */
+.bld-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #090a0f;
+  color: #c9ff17;
+  border: 1px solid rgba(201, 255, 23, 0.4);
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  z-index: 99999;
+  pointer-events: none;
+  animation: bldToastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bldToastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .bld-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .bld-left-col {
+    max-width: 100%;
+  }
+
+  .bld-narrative,
+  .bld-trust-specs {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .bld-section .schedule-datetime-row {
+    grid-template-columns: 1fr;
+  }
+
+  .bld-section .direct-connect-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .bld-section {
+    padding: 30px 16px;
+  }
+
+  .bld-section .contact-grid-3col,
+  .bld-section .contact-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .bld-section .contact-card-box {
+    padding: 16px 14px;
+    border-radius: 0 8px 8px 8px;
+  }
+
+  .bld-section .contact-submit-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .bld-section .contact-sla-badge {
+    justify-content: center;
+  }
+
+  .bld-section .contact-main-submit-btn {
+    width: 100%;
+  }
+
+  .bld-section .contact-mode-btn {
+    min-width: 0;
+    flex: 1;
+    padding: 0 8px;
+    font-size: 11px;
+    gap: 5px;
+  }
+
+  .bld-left-actions {
+    gap: 10px;
+  }
+
+  .bld-icon-actions {
+    justify-content: flex-start;
+  }
+
+  .bld-icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+}

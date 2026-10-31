@@ -1,0 +1,701 @@
+/* ==========================================================================
+   EPIC STUDIO — TRANSPARENT & LEGITIMATE PRICING SECTION
+   - Editorial, sleek & minimalistic architecture matching Section 01
+   - Canvas: Executive light studio (#f8f9fa)
+   - Typography: Impact titles with Georgia italic serif accents in #082fe6
+   - Cards: Pure white (#ffffff) with crisp 1px borders & subtle depth
+   - Segmented controls: Pill switchers for INR (₹) / USD ($) and Sprint / Pod
+   - Legitimacy Protocol: 5 verified trust pillars
+   ========================================================================== */
+
+.prc-minimal-section {
+  position: relative;
+  z-index: 5;
+  background-color: #f8f9fa;
+  color: #090a0f;
+  padding: clamp(72px, 7.5vw, 104px) clamp(24px, 5vw, 86px);
+  overflow: visible;
+  border-top: 1px solid rgba(8, 47, 230, 0.12);
+  border-bottom: 1px solid #eaecf0;
+}
+
+.prc-minimal-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* =========================================================================
+   1. SECTION MASTHEAD & MINIMALIST HUD
+   ========================================================================= */
+.prc-minimal-masthead {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.prc-minimal-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eaecf0;
+}
+
+.prc-minimal-badge {
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: clamp(14px, 1.25vw, 16px);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #090a0f;
+  display: inline-block;
+}
+
+.prc-minimal-coords {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.prc-minimal-hero-split {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.prc-minimal-title-wrap {
+  max-width: 720px;
+}
+
+.prc-minimal-title {
+  margin: 0;
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: clamp(34px, 4.2vw, 56px);
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: #090a0f;
+}
+
+.prc-minimal-title-serif {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: #082fe6;
+  display: inline;
+}
+
+.prc-minimal-lead {
+  margin: 12px 0 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(14.5px, 1.15vw, 16.5px);
+  line-height: 1.6;
+  color: #475569;
+}
+
+/* Minimalist Segmented Controls */
+.prc-minimal-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.prc-seg-group {
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.prc-seg-btn {
+  border: none;
+  background: transparent;
+  color: #64748b;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.prc-seg-btn:hover {
+  color: #090a0f;
+}
+
+.prc-seg-btn.is-active {
+  background: #090a0f;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(9, 10, 15, 0.16);
+}
+
+/* =========================================================================
+   2. EDITORIAL PRICING CARDS (3-COLUMN MINIMALIST GRID)
+   ========================================================================= */
+.prc-minimal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.prc-minimal-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 20px;
+  padding: 34px 28px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.prc-minimal-card:hover {
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  box-shadow: 0 16px 36px -8px rgba(9, 10, 15, 0.08);
+}
+
+/* Popular Card Highlight */
+.prc-minimal-card.is-popular {
+  border: 1.5px solid #082fe6;
+  box-shadow: 0 8px 30px rgba(8, 47, 230, 0.1);
+}
+
+.prc-minimal-card.is-popular:hover {
+  box-shadow: 0 20px 44px -8px rgba(8, 47, 230, 0.18);
+  border-color: #0526bd;
+}
+
+/* Badge Pill */
+.prc-card-pill-wrap {
+  position: absolute;
+  top: -12px;
+  left: 28px;
+}
+
+.prc-card-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #082fe6;
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3.5px 11px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(8, 47, 230, 0.3);
+}
+
+.prc-minimal-card:not(.is-popular) .prc-card-pill {
+  background: #090a0f;
+  color: #f8f8f2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Masthead */
+.prc-card-masthead {
+  margin-top: 4px;
+  margin-bottom: 18px;
+}
+
+.prc-card-title {
+  margin: 0;
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #090a0f;
+}
+
+.prc-card-tagline {
+  margin: 5px 0 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #64748b;
+  min-height: 36px;
+}
+
+/* Price Block */
+.prc-card-price-block {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.prc-card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.prc-card-price {
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: clamp(36px, 3.2vw, 44px);
+  color: #090a0f;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.prc-card-period {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.prc-card-timeline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #082fe6;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.prc-timeline-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #082fe6;
+}
+
+.prc-card-desc {
+  margin: 0 0 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #475569;
+  min-height: 58px;
+}
+
+/* Deliverables Checklist */
+.prc-card-checklist {
+  flex: 1 1 auto;
+  margin-bottom: 24px;
+}
+
+.prc-checklist-heading {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.prc-card-checklist ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.prc-card-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #334155;
+  font-weight: 500;
+}
+
+.prc-check-bullet {
+  color: #082fe6;
+  font-weight: 900;
+  font-size: 13px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+/* Button */
+.prc-card-cta-row {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.prc-minimal-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: Impact, "Arial Narrow", -apple-system, sans-serif;
+  font-size: 13.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.prc-btn-arrow {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.prc-minimal-btn:hover .prc-btn-arrow {
+  transform: translateX(4px);
+}
+
+.prc-minimal-btn.btn-blue {
+  background: linear-gradient(135deg, #082fe6 0%, #0526bd 100%);
+  color: #ffffff;
+  border: 1px solid #082fe6;
+  box-shadow: 0 4px 14px rgba(8, 47, 230, 0.25);
+}
+
+.prc-minimal-btn.btn-blue:hover {
+  background: linear-gradient(135deg, #103bf7 0%, #082fe6 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(8, 47, 230, 0.35);
+}
+
+.prc-minimal-btn.btn-outline {
+  background: #ffffff;
+  color: #090a0f;
+  border: 1.5px solid #090a0f;
+}
+
+.prc-minimal-btn.btn-outline:hover {
+  background: #090a0f;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(9, 10, 15, 0.15);
+}
+
+/* =========================================================================
+   3. BESPOKE ENTERPRISE ARCHITECTURE ROW
+   ========================================================================= */
+.prc-enterprise-row {
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-left: 4px solid #082fe6;
+  border-radius: 16px;
+  padding: 24px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  flex-wrap: wrap;
+}
+
+.prc-ent-left {
+  max-width: 680px;
+}
+
+.prc-ent-kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #082fe6;
+  text-transform: uppercase;
+}
+
+.prc-ent-title {
+  margin: 5px 0 4px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #090a0f;
+  line-height: 1.35;
+}
+
+.prc-ent-desc {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.prc-ent-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.prc-ent-cost {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.prc-ent-cost-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.prc-ent-cost-num {
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: 24px;
+  color: #090a0f;
+  letter-spacing: 0.02em;
+}
+
+.prc-ent-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 9999px;
+  background: #090a0f;
+  color: #ffffff;
+  font-family: Impact, "Arial Narrow", -apple-system, sans-serif;
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.prc-ent-cta:hover {
+  background: #082fe6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(8, 47, 230, 0.25);
+}
+
+/* =========================================================================
+   4. THE LEGITIMACY PROTOCOL: 5 PILLARS OF HIGH CREDIBILITY
+   ========================================================================= */
+.prc-trust-strip {
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 18px;
+  padding: 30px 32px 34px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.prc-trust-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 22px;
+}
+
+.prc-trust-tag {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #082fe6;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.prc-trust-heading {
+  margin: 0;
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: clamp(20px, 2vw, 24px);
+  letter-spacing: 0.02em;
+  color: #090a0f;
+  text-transform: uppercase;
+}
+
+.prc-trust-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #1e293b;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.prc-status-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+
+.prc-trust-items-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.prc-trust-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prc-trust-bullet-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 800;
+  color: #082fe6;
+  letter-spacing: 0.06em;
+}
+
+.prc-trust-item-title {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #090a0f;
+  line-height: 1.35;
+}
+
+.prc-trust-item-desc {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE DESIGN (TABLET & MOBILE)
+   ========================================================================== */
+@media (max-width: 1200px) {
+  .prc-trust-items-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .prc-minimal-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .prc-enterprise-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .prc-ent-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .prc-trust-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .prc-minimal-hero-split {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .prc-minimal-controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .prc-minimal-section {
+    padding: 48px 16px;
+  }
+
+  .prc-trust-items-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .prc-minimal-card {
+    padding: 24px 20px;
+  }
+
+  .prc-card-title {
+    font-size: 22px;
+  }
+
+  .prc-card-price {
+    font-size: 32px;
+  }
+
+  .prc-enterprise-row {
+    padding: 20px 18px;
+  }
+
+  .prc-ent-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .prc-ent-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .prc-trust-strip {
+    padding: 22px 18px;
+  }
+}

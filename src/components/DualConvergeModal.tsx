@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import ModalPullRope from "./ModalPullRope";
+import DiwaliPoster from "./DiwaliPoster";
 import "./dual-converge-modal.css";
 
 export default function DualConvergeModal() {
@@ -13,7 +13,7 @@ export default function DualConvergeModal() {
   const didAutoTriggerRef = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Smooth upward closing animation (slides back up into the ceiling)
+  // Smooth closing animation (slides back out to the left)
   const handleClose = useCallback(() => {
     setIsClosing(true);
     setIsVisible(false);
@@ -59,6 +59,15 @@ export default function DualConvergeModal() {
     });
   }, []);
 
+  const togglePage = useCallback(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+    if (isMounted && isVisible && !isClosing) {
+      handleClose();
+    } else {
+      openPage();
+    }
+  }, [isMounted, isVisible, isClosing, handleClose, openPage]);
+
   const autoTrigger = useCallback(() => {
     if (didAutoTriggerRef.current) return;
     if (typeof window !== "undefined" && window.innerWidth < 768) return;
@@ -67,7 +76,7 @@ export default function DualConvergeModal() {
   }, [openPage]);
 
   useEffect(() => {
-    // Drop-down page glides in from the top after splash screen finishes
+    // Diwali modal glides in from the left side to the right position after splash screen finishes
     const handleSplashClosed = () => {
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
@@ -75,10 +84,16 @@ export default function DualConvergeModal() {
       }, 3500);
     };
 
+    const handleLanternTrigger = () => {
+      togglePage();
+    };
+
     window.addEventListener("splash:closed", handleSplashClosed);
     window.addEventListener("splash:dismiss", handleSplashClosed);
-    window.addEventListener("open:converge-modal", openPage);
+    window.addEventListener("open:converge-modal", handleLanternTrigger);
+    window.addEventListener("toggle:converge-modal", handleLanternTrigger);
     (window as unknown as { openConvergeModal?: () => void }).openConvergeModal = openPage;
+    (window as unknown as { toggleConvergeModal?: () => void }).toggleConvergeModal = togglePage;
 
     const checkInitial = setTimeout(() => {
       const hasSplash = document.querySelector(".splash-overlay:not(.is-exiting)") !== null;
@@ -93,11 +108,12 @@ export default function DualConvergeModal() {
     return () => {
       window.removeEventListener("splash:closed", handleSplashClosed);
       window.removeEventListener("splash:dismiss", handleSplashClosed);
-      window.removeEventListener("open:converge-modal", openPage);
+      window.removeEventListener("open:converge-modal", handleLanternTrigger);
+      window.removeEventListener("toggle:converge-modal", handleLanternTrigger);
       clearTimeout(checkInitial);
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [autoTrigger, openPage]);
+  }, [autoTrigger, togglePage]);
 
   // Lock background scroll while drop-down page is active
   useEffect(() => {
@@ -161,7 +177,7 @@ export default function DualConvergeModal() {
         aria-hidden="true"
       />
 
-      {/* Drop-Down Page Moving in from Top to Bottom with Rounded Bottom Corners */}
+      {/* Festive Diwali Modal Covering Full Left Side to the Middle of the Screen */}
       <div
         className={`converge-dropdown-page ${isVisible && !isClosing ? "is-visible" : ""} ${
           isClosing ? "is-closing" : ""
@@ -170,52 +186,31 @@ export default function DualConvergeModal() {
         aria-modal="true"
         aria-label="EPIC STUDIO Festival Special Page"
       >
-        {/* The Image contained directly inside the page itself, covering the entire modal area */}
-        <div className="converge-page-img-wrap">
-          <img
-            src="/diwali.png"
-            alt="EPIC STUDIO — Diwali Festival Special Offer"
-            className="converge-page-img"
-            draggable={false}
-          />
-        </div>
+        {/* Scalable, Lightweight, Clean Light-Themed CSS Vector Poster */}
+        <DiwaliPoster onClaim={handleRedirectToContact} />
 
-        {/* Short Pull Rope System attached at the bottom rim of the modal (20px gap from corner) */}
-        <ModalPullRope
-          onPullClose={handleClose}
-          isModalVisible={isVisible && !isClosing}
-        />
-
-        {/* Bottom Content Bar (Action CTA) */}
-        <div className="converge-bottom-bar">
-          <button
-            type="button"
-            className="converge-cta-primary"
-            onClick={() => handleRedirectToContact()}
-            aria-label="Claim Diwali Special Offer on our contact page"
+        {/* Sleek Golden Close Button */}
+        <button
+          type="button"
+          className="converge-close-btn"
+          onClick={handleClose}
+          aria-label="Close Diwali offer modal"
+          title="Close modal"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <span className="converge-cta-sparkle" aria-hidden="true">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" />
-              </svg>
-            </span>
-            <span className="converge-cta-text">Claim Offer & Contact</span>
-            <svg
-              className="converge-cta-arrow"
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </button>
-        </div>
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
       </div>
     </>
   );

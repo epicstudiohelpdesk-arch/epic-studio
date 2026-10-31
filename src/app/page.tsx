@@ -5,21 +5,20 @@ import WhoWeAreSection from "@/components/WhoWeAreSection";
 import TechStackStrip from "@/components/TechStackStrip";
 import CapabilitiesSection from "@/components/CapabilitiesSection";
 import WorkInMotionSection from "@/components/WorkInMotionSection";
+import CustomerRatingsStrip from "@/components/CustomerRatingsStrip";
+import PricingSection from "@/components/PricingSection";
 import IdeaImpactSection from "@/components/IdeaImpactSection";
 import PrinciplesSection from "@/components/PrinciplesSection";
 import IndustryUniverseSection from "@/components/IndustryUniverseSection";
 import PeopleSection from "@/components/PeopleSection";
 import LetsBuildSection from "@/components/LetsBuildSection";
-import HomeFaq from "@/components/geo/HomeFaq";
 import SiteFooter from "@/components/SiteFooter";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/metadata";
 import { SERVICES } from "@/lib/services";
-import { HOME_FAQS } from "@/lib/faqs";
 import { SITE } from "@/lib/site";
 import {
   breadcrumbNode,
-  faqNode,
   schemaGraph,
   serviceListSchema,
   webPageNode,
@@ -50,7 +49,6 @@ export default function Home() {
           }),
           breadcrumbNode(crumbs, "/"),
           serviceListSchema(SERVICES),
-          faqNode(HOME_FAQS, "/"),
         ])}
       />
 
@@ -69,6 +67,13 @@ export default function Home() {
       <div id="creative" />
       <WorkInMotionSection />
 
+      {/* VERIFIED CLIENT RATINGS & RESPONSES MARQUEE */}
+      <CustomerRatingsStrip />
+
+      {/* HOW MUCH DOES IT COST? AFFORDABLE & LEGITIMATE PRICING */}
+      <div id="pricing" />
+      <PricingSection />
+
       {/* WHAT CHANGES BECAUSE OF EPIC? */}
       <div id="ai" />
       <div id="cloud" />
@@ -84,9 +89,6 @@ export default function Home() {
 
       {/* WHO BUILDS IT? */}
       <PeopleSection />
-
-      {/* FREQUENTLY ASKED QUESTIONS */}
-      <HomeFaq />
 
       {/* WHY START A CONVERSATION? */}
       <LetsBuildSection />

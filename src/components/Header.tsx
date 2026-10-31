@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, memo } from "react";
+import React, { useState, useRef, useEffect, memo, startTransition } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
@@ -410,7 +410,9 @@ function Header() {
   const [mobileOpenTab, setMobileOpenTab] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDesktopScreen, setIsDesktopScreen] = useState(false);
+  const [isConvergeModalOpen, setIsConvergeModalOpen] = useState(false);
   const leaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const enterTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const headerWrapperRef = useRef<HTMLDivElement | null>(null);
   const mobileMenuPanelRef = useRef<HTMLDivElement | null>(null);
@@ -429,7 +431,49 @@ function Header() {
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
 
-  // Track scroll position to update navbar background state with zero per-frame DOM churn
+  // Cleanup hover timers on unmount
+  useEffect(() => {
+    return () => {
+      if (enterTimeoutRef.current) clearTimeout(enterTimeoutRef.current);
+      if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+    };
+  }, []);
+
+  // Track left-side converge modal state to disable navbar hover & clicks while modal is active
+  useEffect(() => {
+    const onModalOpen = () => {
+      setIsConvergeModalOpen(true);
+      if (enterTimeoutRef.current) {
+        clearTimeout(enterTimeoutRef.current);
+        enterTimeoutRef.current = null;
+      }
+      if (leaveTimeoutRef.current) {
+        clearTimeout(leaveTimeoutRef.current);
+        leaveTimeoutRef.current = null;
+      }
+      setActiveTab(null);
+    };
+
+    const onModalClose = () => {
+      setIsConvergeModalOpen(false);
+    };
+
+    window.addEventListener("converge-modal:open", onModalOpen);
+    window.addEventListener("converge-modal:opened", onModalOpen);
+    window.addEventListener("converge-modal:closed", onModalClose);
+    window.addEventListener("doors:closed", onModalClose);
+
+    return () => {
+      window.removeEventListener("converge-modal:open", onModalOpen);
+      window.removeEventListener("converge-modal:opened", onModalOpen);
+      window.removeEventListener("converge-modal:closed", onModalClose);
+      window.removeEventListener("doors:closed", onModalClose);
+    };
+  }, []);
+
+  // Track scroll position to update navbar background state with zero per-frame DOM churn.
+  // Combines native IntersectionObserver on a top sentinel (compositor-timed on touch devices)
+  // with a passive window scroll fallback for instant mobile background transitions.
   useEffect(() => {
     const updateHeaderClasses = (scrolled: boolean) => {
       const wrapper = headerWrapperRef.current;
@@ -440,27 +484,60 @@ function Header() {
       }
     };
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const nextScrolled = scrollY > 15;
-
-      // Only touch the DOM when the scroll threshold state actually changes
+    const applyScrolledState = (nextScrolled: boolean) => {
       if (isScrolledRef.current !== nextScrolled) {
         isScrolledRef.current = nextScrolled;
         updateHeaderClasses(nextScrolled);
-        setIsScrolled(nextScrolled);
+        startTransition(() => {
+          setIsScrolled(nextScrolled);
+        });
       }
     };
 
+    const handleScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      applyScrolledState(scrollY > 2);
+    };
+
     // Synchronous initial check on mount or tab/menu flip
-    const initialScrolled = (window.scrollY || document.documentElement.scrollTop) > 15;
+    const initialScrolled = (window.scrollY || document.documentElement.scrollTop) > 2;
     isScrolledRef.current = initialScrolled;
     updateHeaderClasses(initialScrolled);
     setIsScrolled(initialScrolled);
 
+    // Dynamic top sentinel for instant compositor-driven intersection detection on touch devices
+    let sentinel = document.getElementById("nav-scroll-sentinel");
+    let createdSentinel = false;
+    if (!sentinel && typeof document !== "undefined") {
+      sentinel = document.createElement("div");
+      sentinel.id = "nav-scroll-sentinel";
+      sentinel.setAttribute("aria-hidden", "true");
+      sentinel.style.cssText =
+        "position:absolute;top:0;left:0;width:1px;height:2px;pointer-events:none;opacity:0;z-index:-9999;";
+      document.body.prepend(sentinel);
+      createdSentinel = true;
+    }
+
+    let observer: IntersectionObserver | null = null;
+    if (sentinel && typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          applyScrolledState(!entry.isIntersecting);
+        },
+        { threshold: 0 }
+      );
+      observer.observe(sentinel);
+    }
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      if (observer) {
+        observer.disconnect();
+      }
+      if (createdSentinel && sentinel && sentinel.parentNode) {
+        sentinel.parentNode.removeChild(sentinel);
+      }
     };
   }, [activeTab, mobileMenuOpen]);
 
@@ -513,16 +590,58 @@ function Header() {
     }
   }, [mobileMenuOpen]);
 
+  // Hover Intent: Delay menu opening slightly so brief cursor swipes don't trigger dropdowns
+  const HOVER_INTENT_DELAY = 180; // ms hover dwell required before list appears
+
   const handleMouseEnter = (key: string) => {
+    // If the left modal is active, do not respond to hover or show any list
+    if (
+      isConvergeModalOpen ||
+      (typeof document !== "undefined" &&
+        (document.body.classList.contains("converge-page-open") ||
+          document.documentElement.classList.contains("converge-page-open")))
+    ) {
+      return;
+    }
+
     if (leaveTimeoutRef.current) {
       clearTimeout(leaveTimeoutRef.current);
       leaveTimeoutRef.current = null;
     }
-    setActiveTab(key);
-    setLastActiveTab(key);
+    if (enterTimeoutRef.current) {
+      clearTimeout(enterTimeoutRef.current);
+      enterTimeoutRef.current = null;
+    }
+
+    // If another dropdown tab is already open, transition quickly (100ms)
+    // If opening from closed state, require intentional hover dwell (180ms)
+    const delay = activeTab ? 100 : HOVER_INTENT_DELAY;
+
+    enterTimeoutRef.current = setTimeout(() => {
+      // Re-verify modal is not open before setting tab active
+      if (
+        typeof document !== "undefined" &&
+        (document.body.classList.contains("converge-page-open") ||
+          document.documentElement.classList.contains("converge-page-open"))
+      ) {
+        return;
+      }
+      setActiveTab(key);
+      setLastActiveTab(key);
+      enterTimeoutRef.current = null;
+    }, delay);
   };
 
   const cancelClose = () => {
+    if (
+      isConvergeModalOpen ||
+      (typeof document !== "undefined" &&
+        (document.body.classList.contains("converge-page-open") ||
+          document.documentElement.classList.contains("converge-page-open")))
+    ) {
+      setActiveTab(null);
+      return;
+    }
     if (leaveTimeoutRef.current) {
       clearTimeout(leaveTimeoutRef.current);
       leaveTimeoutRef.current = null;
@@ -530,12 +649,31 @@ function Header() {
   };
 
   const handleMouseLeave = () => {
+    // If cursor leaves before hover dwell completes, cancel opening
+    if (enterTimeoutRef.current) {
+      clearTimeout(enterTimeoutRef.current);
+      enterTimeoutRef.current = null;
+    }
+
     if (leaveTimeoutRef.current) {
       clearTimeout(leaveTimeoutRef.current);
     }
     leaveTimeoutRef.current = setTimeout(() => {
       setActiveTab(null);
+      leaveTimeoutRef.current = null;
     }, 200);
+  };
+
+  const handleNonDropdownEnter = () => {
+    if (enterTimeoutRef.current) {
+      clearTimeout(enterTimeoutRef.current);
+      enterTimeoutRef.current = null;
+    }
+    if (leaveTimeoutRef.current) {
+      clearTimeout(leaveTimeoutRef.current);
+      leaveTimeoutRef.current = null;
+    }
+    setActiveTab(null);
   };
 
   const currentTab = activeTab || lastActiveTab;
@@ -572,11 +710,13 @@ function Header() {
       hamburgerBtnRef.current.setAttribute("aria-expanded", "false");
     }
     if (headerWrapperRef.current) {
-      const isNowScrolled = (window.scrollY || document.documentElement.scrollTop) > 15;
+      const isNowScrolled = (window.scrollY || document.documentElement.scrollTop) > 2;
       isScrolledRef.current = isNowScrolled;
       headerWrapperRef.current.classList.toggle("header-scrolled", isNowScrolled);
       headerWrapperRef.current.classList.toggle("header-active-white", isNowScrolled);
-      setIsScrolled(isNowScrolled);
+      startTransition(() => {
+        setIsScrolled(isNowScrolled);
+      });
     }
   };
 
@@ -690,7 +830,7 @@ function Header() {
             <Link
               href="/work"
               className={`nav-link-item nav-link-direct ${pathname === "/work" ? "active" : ""}`}
-              onMouseEnter={() => setActiveTab(null)}
+              onMouseEnter={handleNonDropdownEnter}
             >
               <span>Work</span>
               <span className="nav-animated-bar" />
@@ -700,7 +840,7 @@ function Header() {
             <Link
               href="/domains"
               className={`nav-link-item nav-link-direct ${pathname === "/domains" ? "active" : ""}`}
-              onMouseEnter={() => setActiveTab(null)}
+              onMouseEnter={handleNonDropdownEnter}
             >
               <span>Domains</span>
               <span className="nav-animated-bar" />
@@ -720,7 +860,7 @@ function Header() {
             <Link
               href="/contact"
               className="join-pill"
-              onMouseEnter={() => setActiveTab(null)}
+              onMouseEnter={handleNonDropdownEnter}
               aria-label="Join EPIC Studio"
             >
               <span className="join-pill-icon" aria-hidden="true">
@@ -745,7 +885,7 @@ function Header() {
             <Link
               className={`phone-pill ${pathname === "/contact" ? "active" : ""}`}
               href="/contact"
-              onMouseEnter={() => setActiveTab(null)}
+              onMouseEnter={handleNonDropdownEnter}
             >
               <span className="phone-pill-icon" aria-hidden="true">
                 <svg

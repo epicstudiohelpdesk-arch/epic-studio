@@ -1,23 +1,22 @@
 /* ==========================================================================
-   FESTIVE DIWALI DROP-DOWN PAGE (CURVED BOTTOM CORNERS, FULL WIDTH, REDUCED HEIGHT)
-   - Moves in smoothly and slowly from top to bottom like a drop-down page panel.
-   - Full width (100vw), flush with ceiling (top: 0).
-   - Bottom side corners rounded and curved.
-   - Reduced height (clamp(460px, 68vh, 590px)), NOT 100vh.
-   - /diwali.png is contained directly inside the page itself edge-to-edge.
-   - No inner modal box, no top tabular banner, no corner close button.
-   - Upward arrow button at bottom center slides page back UP off-screen.
+   FESTIVE DIWALI MODAL — HALF-SCREEN LEFT SIDE PANEL
+   - Covers the full left side to the middle of the screen (width: 50vw, height: 100vh).
+   - Glides in smoothly from the left side into the middle of the screen on desktop.
+   - Clean curved right edge with golden dividing border and luxury ambient shadow.
+   - /diwali.png is contained seamlessly inside with high-clarity positioning.
+   - Interactive pull rope attached at top-right rim in the middle of the screen.
+   - Clicking the backdrop (right half of screen) or pulling rope closes modal.
    ========================================================================== */
 
-/* Fullscreen Ambient Backdrop (completely clear - zero darkness, zero blur) */
+/* Fullscreen Ambient Backdrop (Soft darkness & blur across the right half of the screen) */
 .converge-backdrop {
   position: fixed;
   inset: 0;
   z-index: 99998;
-  background: transparent; /* No darkness */
-  backdrop-filter: none; /* No blurriness */
-  -webkit-backdrop-filter: none;
-  opacity: 1;
+  background: rgba(6, 8, 14, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
   pointer-events: auto;
   transition: opacity 400ms ease;
 }
@@ -53,28 +52,88 @@ body.converge-page-open .auto-contact-sheet {
 }
 
 /* ==========================================================================
-   THE DROP-DOWN PAGE PANEL (SEAMLESS EDGE-TO-EDGE IMAGE FIT, NO DARK CORNERS)
+   ELEVATE ROPE LANTERN ABOVE BACKDROP WHILE DISABLING NAVBAR INTERACTIONS
+   - Navbar buttons, links & tabs do not respond to hover or clicks when modal is open
+   - Mega-menu flyouts are completely suppressed
+   - Only the Rope Lantern remains active to allow toggling/pulling
+   ========================================================================== */
+body.converge-page-open .header-wrapper {
+  z-index: 99999 !important;
+  pointer-events: none !important;
+}
+
+body.converge-page-open .header-wrapper *:not(.rope-lantern-wrap):not(.rope-lantern-wrap *) {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+body.converge-page-open .header-wrapper .nav-link-item,
+body.converge-page-open .header-wrapper .join-pill,
+body.converge-page-open .header-wrapper .phone-pill,
+body.converge-page-open .header-wrapper .main-nav,
+body.converge-page-open .header-wrapper .site-header,
+body.converge-page-open .header-wrapper .header-actions a,
+body.converge-page-open .header-wrapper .header-actions button:not(.rope-lantern-handle) {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+body.converge-page-open .header-wrapper .nav-animated-bar {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+body.converge-page-open .header-wrapper .nav-link-item:hover,
+body.converge-page-open .header-wrapper .join-pill:hover,
+body.converge-page-open .header-wrapper .phone-pill:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+body.converge-page-open .mega-menu-panel {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ONLY the Rope Lantern remains interactive and functional */
+body.converge-page-open .rope-lantern-wrap,
+body.converge-page-open .rope-lantern-wrap *,
+body.converge-page-open .rope-lantern-stage,
+body.converge-page-open .rope-lantern-handle {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  cursor: grab !important;
+}
+
+/* ==========================================================================
+   THE LEFT-HALF MODAL PANEL (FULL LEFT SIDE TO MIDDLE OF SCREEN)
+   - Square corners (non-curved), flush with top, bottom, and left
    ========================================================================== */
 .converge-dropdown-page {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: clamp(520px, 75vh, 740px); /* Slightly reduced height as requested */
-  z-index: 99999;
-  background: transparent; /* Transparent container - no dark corners peeking through */
-  /* Top flush with window ceiling; bottom side corners curved and rounded */
-  border-radius: 0 0 clamp(32px, 4vw, 48px) clamp(32px, 4vw, 48px);
-  border-bottom: 2.5px solid rgba(255, 215, 0, 0.65);
+  width: 50vw;
+  max-width: 50vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 100000;
+  background: #ffffff;
+  border-radius: 0 !important; /* Non-curved square corners */
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow:
-    0 12px 36px rgba(0, 0, 0, 0.28),
-    0 0 28px rgba(255, 215, 0, 0.2);
-  transform: translate3d(0, calc(-100% - 130px), 0);
+    24px 0 60px rgba(0, 0, 0, 0.26),
+    0 0 40px rgba(0, 0, 0, 0.08);
+  transform: translate3d(calc(-100% - 60px), 0, 0);
   pointer-events: none;
-  overflow: visible; /* Allows short pull rope at bottom rim to hang freely below */
+  overflow: hidden;
   will-change: transform;
-  /* Buttery-smooth slow luxury cinematic glide from top to bottom */
-  transition: transform 1200ms cubic-bezier(0.16, 1, 0.26, 1);
+  /* Buttery-smooth luxury cinematic glide from offscreen left to middle of screen */
+  transition: transform 1050ms cubic-bezier(0.16, 1, 0.26, 1);
 }
 
 .converge-dropdown-page.is-visible {
@@ -83,286 +142,64 @@ body.converge-page-open .auto-contact-sheet {
 }
 
 .converge-dropdown-page.is-closing {
-  transform: translate3d(0, calc(-100% - 130px), 0);
-  /* Slower, graceful glide back UPWARDS into the ceiling */
-  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translate3d(calc(-100% - 60px), 0, 0);
+  /* Graceful glide back out to the left side */
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 
 /* ==========================================================================
-   THE IMAGE: FITS PROPERLY INSIDE THE MODAL COVERING THE ENTIRE AREA
+   MINIMALIST EDITORIAL CLOSE BUTTON (TOP-RIGHT CORNER OF THE LEFT MODAL PANEL)
    ========================================================================== */
-.converge-page-img-wrap {
+.converge-close-btn {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: inherit; /* Clips image cleanly to bottom curved corners */
-  background: transparent;
-}
-
-/* Festive Image covers the entire modal area seamlessly without dark letterboxing */
-.converge-page-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Covers the entire modal area completely */
-  object-position: center 36%; /* Centers the headline, phones, laptop and offer */
-  display: block;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-/* Bottom Content Bar (Action CTA) */
-.converge-bottom-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px clamp(24px, 5vw, 68px) 24px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 16px;
-  z-index: 20;
-  pointer-events: auto;
-}
-
-/* Redesigned Claim Offer & Contact CTA (Modern luxury squircle/rectangular cut, non-circular) */
-.converge-cta-primary {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 26px;
-  border-radius: 12px; /* Non-circular, sleek modern squircle */
-  background: linear-gradient(135deg, #ffe066 0%, #f59e0b 50%, #d97706 100%);
-  color: #1a0c00;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.015em;
-  border: 1.5px solid rgba(255, 255, 255, 0.7);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.85),
-    inset 0 -1.5px 0 rgba(146, 64, 14, 0.45),
-    0 6px 20px rgba(217, 119, 6, 0.42),
-    0 2px 5px rgba(0, 0, 0, 0.18);
-  cursor: pointer;
-  outline: none;
-  overflow: hidden;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  transition:
-    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.22s ease,
-    filter 0.22s ease;
-}
-
-/* Subtle light shimmer sweep reflection */
-.converge-cta-primary::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 70%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.45) 50%,
-    transparent 100%
-  );
-  transform: skewX(-22deg);
-  transition: left 0.75s ease;
-  pointer-events: none;
-}
-
-.converge-cta-primary:hover::before {
-  left: 150%;
-}
-
-.converge-cta-primary:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.06);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1.5px 0 rgba(146, 64, 14, 0.55),
-    0 10px 28px rgba(245, 158, 11, 0.55),
-    0 3px 8px rgba(0, 0, 0, 0.24);
-}
-
-.converge-cta-primary:active {
-  transform: translateY(0);
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.25),
-    0 3px 10px rgba(217, 119, 6, 0.38);
-}
-
-.converge-cta-sparkle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #78350f;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.converge-cta-primary:hover .converge-cta-sparkle {
-  transform: rotate(20deg) scale(1.18);
-  color: #451a03;
-}
-
-.converge-cta-text {
-  position: relative;
-  z-index: 1;
-}
-
-.converge-cta-arrow {
-  display: inline-flex;
-  stroke: currentColor;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.converge-cta-primary:hover .converge-cta-arrow {
-  transform: translateX(4px);
-}
-
-/* ==========================================================================
-   SHORT PULL ROPE (ATTACHED AT BOTTOM OF MODAL, 20PX GAP FROM RIGHT CORNER)
-   ========================================================================== */
-.modal-pull-rope-root {
-  position: absolute;
-  top: calc(100% - 3px); /* Attached directly at the bottom rim of the modal */
-  right: 20px; /* Exactly 20px gap from the right corner */
-  width: 44px;
-  height: 130px;
-  pointer-events: none;
-  z-index: 60;
-  user-select: none;
-  -webkit-user-select: none;
-  overflow: visible;
-}
-
-.modal-pull-rope-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 44px;
-  height: 140px;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.rope-ceiling-mount {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-}
-
-.rope-pull-handle {
-  cursor: grab;
-  pointer-events: auto;
-  outline: none;
-  transition: filter 0.2s ease;
-}
-
-.rope-pull-handle:focus-visible {
-  filter: drop-shadow(0 0 10px #ffd700);
-}
-
-.modal-pull-rope-root.is-pulling .rope-pull-handle {
-  cursor: grabbing;
-  filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.95)) brightness(1.2);
-}
-
-.rope-pull-handle:hover {
-  filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.85));
-}
-
-/* Small downward arrow displayed beside the rope only on hover (standalone golden arrow - NOT encircled) */
-.rope-hover-down-arrow {
-  position: absolute;
-  top: 0;
-  right: 44px; /* Positioned directly beside the pull ring */
+  top: 24px;
+  right: 24px;
+  z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 28px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  color: #ffd700;
-  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 10px rgba(255, 215, 0, 0.95));
-  opacity: 0;
-  pointer-events: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%; /* Modern minimal circular lens */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  color: #18181b;
   cursor: pointer;
-  transform: translate3d(0, 42px, 0);
+  outline: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   transition:
-    opacity 0.22s ease,
-    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.2s ease,
-    color 0.2s ease;
-  user-select: none;
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+  pointer-events: auto;
 }
 
-/* Display downward arrow when hovered over rope */
-.modal-pull-rope-root:hover .rope-hover-down-arrow,
-.modal-pull-rope-root.is-pulling .rope-hover-down-arrow {
-  opacity: 1;
+.converge-close-btn:hover {
+  transform: scale(1.08);
+  background: #09090b;
+  border-color: #09090b;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
 }
 
-.rope-hover-down-arrow:hover {
-  color: #fff6a8;
-  filter: drop-shadow(0 2px 7px rgba(0, 0, 0, 1)) drop-shadow(0 0 16px #ffd700);
-}
-
-.rope-hover-down-arrow svg {
-  animation: arrowBounceDown 1.4s ease-in-out infinite;
-  display: block;
-}
-
-@keyframes arrowBounceDown {
-  0%, 100% {
-    transform: translateY(-2px);
-  }
-  50% {
-    transform: translateY(2px);
-  }
-}
-
-/* Floating sparkle stars when pull triggered */
-.rope-sparkle {
-  position: absolute;
-  pointer-events: none;
-  font-size: 13px;
-  color: #ffd700;
-  text-shadow: 0 0 8px #ffe58f;
-  animation: sparkleFloat 0.7s ease-out forwards;
-}
-
-@keyframes sparkleFloat {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0) scale(0.6);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--tx), var(--ty)) scale(1.3);
-  }
+.converge-close-btn:active {
+  transform: scale(0.92);
 }
 
 /* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
-@media (max-width: 860px) {
+@media (max-width: 1100px) and (min-width: 769px) {
   .converge-dropdown-page {
-    height: clamp(460px, 70vh, 620px);
-    border-radius: 0 0 28px 28px;
+    width: clamp(50vw, 55vw, 60vw);
+    max-width: 60vw;
   }
   .converge-bottom-bar {
-    padding: 14px 22px 18px;
+    padding: 18px 24px 26px;
   }
 }
 

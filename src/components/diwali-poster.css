@@ -1,0 +1,279 @@
+/* ==========================================================================
+   EPIC STUDIO — EDITORIAL JOURNAL POSTER WITH ARCHITECTURAL GRID OVERLAY
+   - Based on reference "While You're Building Your Business..."
+   - Figure positioned gracefully on the left with generous breathing space
+   - Architectural precision grid overlaying the image
+   - Clean, professional, properly scaled 50% offer & DIWALI SPECIAL on right
+   - Claim offer button anchored in the bottom right corner
+   - Pure studio white canvas with museum-grade negative space
+   ========================================================================== */
+
+.journal-poster-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", sans-serif;
+  color: #09090b;
+}
+
+/* ==========================================================================
+   1. ARTWORK LAYER (GRACEFULLY POSITIONED ON THE LEFT)
+   ========================================================================== */
+.journal-art-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -4%;
+  width: clamp(340px, 35vw, 680px);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.journal-art-img {
+  width: 100%;
+  height: 92%;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ==========================================================================
+   2. ARCHITECTURAL GRID OVERLAY (OVERLAYS THE IMAGE)
+   ========================================================================== */
+.journal-grid-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Technical Corner Registration Crosshairs */
+.journal-grid-crosshair {
+  position: absolute;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(75, 72, 105, 0.4);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 3;
+}
+.journal-crosshair-tl { top: 16px; left: 16px; }
+.journal-crosshair-tr { top: 16px; right: 16px; }
+.journal-crosshair-bl { bottom: 16px; left: 16px; }
+.journal-crosshair-br { bottom: 16px; right: 16px; }
+
+/* ==========================================================================
+   3. TOP-LEFT BRANDING BLOCK
+   ========================================================================== */
+.journal-header-block {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(26px, 4.5vh, 44px) clamp(28px, 4.5vw, 52px) 0;
+}
+
+.journal-brand-title {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", sans-serif;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #4b4869; /* Rich indigo matching original palette */
+  line-height: 1;
+  margin: 0;
+}
+
+.journal-brand-subtitle {
+  font-size: clamp(10.5px, 1.15vw, 13px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #716e8d;
+  margin: 6px 0 0 0;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   4. RIGHT PORTION: PROPERLY SCALED & POSITIONED 50% OFFER BLOCK
+   ========================================================================== */
+.journal-offer-right {
+  position: absolute;
+  right: clamp(32px, 4.8vw, 72px);
+  top: 48%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  max-width: clamp(230px, 23vw, 320px);
+}
+
+.journal-offer-upto {
+  font-size: clamp(10.5px, 1.2vw, 13px);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #716e8d;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.journal-offer-num-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  line-height: 0.88;
+}
+
+.journal-offer-large-50 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", sans-serif;
+  font-size: clamp(56px, 7vw, 92px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+  color: #09090b;
+  text-transform: uppercase;
+}
+
+.journal-offer-off-tag {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  font-size: clamp(18px, 2.3vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #4b4869;
+  line-height: 1;
+}
+
+/* DIWALI SPECIAL below the large 50% textual */
+.journal-diwali-special-text {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  font-size: clamp(12.5px, 1.45vw, 16px);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b45309; /* Warm festive amber-gold */
+  margin-top: 10px;
+  line-height: 1.2;
+}
+
+.journal-offer-divider {
+  width: 36px;
+  height: 1.5px;
+  background: #09090b;
+  margin: 14px 0 13px;
+}
+
+.journal-offer-desc {
+  font-size: clamp(10.5px, 1.15vw, 12.5px);
+  font-weight: 500;
+  line-height: 1.5;
+  color: #52525b;
+  margin: 0;
+  max-width: 260px;
+}
+
+/* ==========================================================================
+   5. BOTTOM FOOTER BAR (HANDLE ON LEFT, CLAIM OFFER ON BOTTOM RIGHT)
+   ========================================================================== */
+.journal-footer-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 clamp(32px, 5vw, 64px) clamp(26px, 4.5vh, 42px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.journal-handle-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.journal-handle-text {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", sans-serif;
+  font-size: clamp(16px, 1.9vw, 21px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #4b4869;
+  line-height: 1;
+}
+
+.journal-handle-sub {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #a1a1aa;
+  margin-top: 4px;
+}
+
+/* Bottom Right Claim Offer Button */
+.journal-footer-action {
+  display: flex;
+  align-items: center;
+}
+
+.journal-bottom-claim-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  background: #09090b;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.journal-bottom-claim-btn:hover {
+  background: #1f1f23;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.journal-bottom-claim-btn:active {
+  transform: translateY(0);
+}
+
+.journal-claim-arrow {
+  display: inline-flex;
+  stroke: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.journal-bottom-claim-btn:hover .journal-claim-arrow {
+  transform: translateX(4px);
+}
