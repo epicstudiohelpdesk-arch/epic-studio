@@ -38,7 +38,8 @@
     radial-gradient(circle at 82% 12%, rgba(201, 255, 23, 0.14), transparent 20rem),
     linear-gradient(135deg, #0534f2 0%, #082fe6 55%, #031c9e 100%);
   color: #f8f8f2;
-  padding: clamp(84px, 9vw, 128px) clamp(24px, 5vw, 86px);
+  padding: clamp(124px, 13vw, 168px) clamp(24px, 5vw, 86px) clamp(84px, 9vw, 128px);
+  overflow-x: clip;
 }
 
 /* =====================================================================
@@ -50,7 +51,7 @@
   left: 0;
   right: 0;
   width: 100%;
-  height: clamp(72px, 8vw, 104px);
+  height: clamp(120px, 13.5vw, 164px);
   pointer-events: none;
   z-index: 4;
   overflow: visible;
@@ -62,11 +63,11 @@
   top: 0;
   left: 0;
   right: 0;
-  height: clamp(90px, 10vw, 130px);
+  height: clamp(130px, 14.5vw, 180px);
   background: linear-gradient(
     180deg,
-    rgba(248, 249, 250, 0.4) 0%,
-    rgba(248, 249, 250, 0.15) 35%,
+    rgba(248, 249, 250, 0.5) 0%,
+    rgba(248, 249, 250, 0.2) 35%,
     rgba(5, 52, 242, 0.05) 70%,
     transparent 100%
   );
@@ -99,36 +100,19 @@
   height: 100%;
   z-index: 5;
   pointer-events: none;
+  overflow: visible;
 }
 
 .wim-chakra-runner {
   position: absolute;
   top: 0;
   left: 0;
-  width: clamp(44px, 4.2vw, 58px);
-  height: clamp(44px, 4.2vw, 58px);
+  width: clamp(56px, 5.4vw, 74px);
+  height: clamp(56px, 5.4vw, 74px);
+  margin-left: calc(-1 * clamp(56px, 5.4vw, 74px) / 2);
+  margin-top: calc(-1 * clamp(56px, 5.4vw, 74px) / 2);
   will-change: transform;
-  animation: wimChakraTraverse 20s linear infinite;
-}
-
-.wim-chakra-halo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150%;
-  height: 150%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(103, 232, 249, 0.35) 35%,
-    rgba(201, 255, 23, 0.18) 60%,
-    transparent 78%
-  );
-  filter: blur(8px);
-  pointer-events: none;
-  z-index: 1;
+  animation: wimChakraTraverse 18s linear infinite;
 }
 
 .wim-chakra-spinner {
@@ -147,42 +131,96 @@
   width: 100%;
   height: 100%;
   display: block;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.95))
-         drop-shadow(0 0 20px rgba(103, 232, 249, 0.75))
-         drop-shadow(0 4px 12px rgba(3, 28, 158, 0.65));
+  color: #000000;
+  filter: none;
+  animation: none;
 }
 
-/* Kinetic Traverse with Organic Wave Undulation */
+/* Kinetic Traverse precisely rolling above the uneven curved top edge */
 @keyframes wimChakraTraverse {
   0% {
-    transform: translate3d(-80px, 18px, 0);
+    transform: translate3d(-90px, 62px, 0);
+  }
+  4% {
+    transform: translate3d(calc(4vw), 56px, 0);
+  }
+  8% {
+    transform: translate3d(calc(8vw), 50px, 0);
+  }
+  12% {
+    transform: translate3d(calc(12vw), 45px, 0);
   }
   16% {
-    transform: translate3d(calc(16vw - 10px), 4px, 0);
+    transform: translate3d(calc(16vw), 42px, 0); /* Crest 1 - riding right above curve */
+  }
+  20% {
+    transform: translate3d(calc(20vw), 54px, 0);
+  }
+  24% {
+    transform: translate3d(calc(24vw), 76px, 0);
   }
   28% {
-    transform: translate3d(calc(28vw - 10px), 34px, 0);
+    transform: translate3d(calc(28vw), 102px, 0); /* Trough 1 - riding right above curve */
   }
-  38% {
-    transform: translate3d(calc(38vw - 10px), 22px, 0);
+  32% {
+    transform: translate3d(calc(32vw), 98px, 0);
   }
-  49% {
-    transform: translate3d(calc(49vw - 10px), 2px, 0);
+  36% {
+    transform: translate3d(calc(36vw), 84px, 0);
+  }
+  40% {
+    transform: translate3d(calc(40vw), 70px, 0); /* Inflection */
+  }
+  44% {
+    transform: translate3d(calc(44vw), 54px, 0);
+  }
+  48% {
+    transform: translate3d(calc(48vw), 43px, 0);
+  }
+  50% {
+    transform: translate3d(calc(50vw), 40px, 0); /* Crest 2 - riding right above curve */
+  }
+  54% {
+    transform: translate3d(calc(54vw), 52px, 0);
   }
   58% {
-    transform: translate3d(calc(58vw - 10px), 30px, 0);
+    transform: translate3d(calc(58vw), 82px, 0);
+  }
+  60% {
+    transform: translate3d(calc(60vw), 98px, 0); /* Trough 2 - riding right above curve */
+  }
+  64% {
+    transform: translate3d(calc(64vw), 92px, 0);
   }
   68% {
-    transform: translate3d(calc(68vw - 10px), 20px, 0);
+    transform: translate3d(calc(68vw), 78px, 0);
   }
-  79% {
-    transform: translate3d(calc(79vw - 10px), 6px, 0);
+  72% {
+    transform: translate3d(calc(72vw), 62px, 0);
+  }
+  76% {
+    transform: translate3d(calc(76vw), 50px, 0);
+  }
+  80% {
+    transform: translate3d(calc(80vw), 42px, 0); /* Crest 3 - riding right above curve */
+  }
+  84% {
+    transform: translate3d(calc(84vw), 52px, 0);
   }
   88% {
-    transform: translate3d(calc(88vw - 10px), 28px, 0);
+    transform: translate3d(calc(88vw), 80px, 0);
+  }
+  90% {
+    transform: translate3d(calc(90vw), 96px, 0); /* Trough 3 - riding right above curve */
+  }
+  94% {
+    transform: translate3d(calc(94vw), 84px, 0);
+  }
+  97% {
+    transform: translate3d(calc(97vw), 70px, 0);
   }
   100% {
-    transform: translate3d(calc(100vw + 80px), 18px, 0);
+    transform: translate3d(calc(100vw + 90px), 62px, 0);
   }
 }
 
@@ -209,12 +247,14 @@
 /* Mobile Responsiveness */
 @media (max-width: 640px) {
   .wim-chakra-runner {
-    width: 38px;
-    height: 38px;
-    animation-duration: 15s;
+    width: 46px;
+    height: 46px;
+    margin-left: -23px;
+    margin-top: -23px;
+    animation-duration: 14s;
   }
   .wim-chakra-spinner {
-    animation-duration: 2.2s;
+    animation-duration: 2s;
   }
 }
 

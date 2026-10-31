@@ -52,28 +52,17 @@ body.converge-page-open .auto-contact-sheet {
 }
 
 /* ==========================================================================
-   ELEVATE ROPE LANTERN ABOVE BACKDROP WHILE DISABLING NAVBAR INTERACTIONS
-   - Navbar buttons, links & tabs do not respond to hover or clicks when modal is open
+   KEEP NAVBAR BEHIND DARK BACKDROP WHILE ROPE LANTERN REMAINS IN FRONT
+   - Navbar remains behind the dark ambient backdrop (z-index: 2000 < 99998)
    - Mega-menu flyouts are completely suppressed
-   - Only the Rope Lantern remains active to allow toggling/pulling
+   - Only the independent Rope Lantern remains in front (z-index: 100000)
    ========================================================================== */
 body.converge-page-open .header-wrapper {
-  z-index: 99999 !important;
+  z-index: 2000 !important;
   pointer-events: none !important;
 }
 
-body.converge-page-open .header-wrapper *:not(.rope-lantern-wrap):not(.rope-lantern-wrap *) {
-  pointer-events: none !important;
-  cursor: default !important;
-}
-
-body.converge-page-open .header-wrapper .nav-link-item,
-body.converge-page-open .header-wrapper .join-pill,
-body.converge-page-open .header-wrapper .phone-pill,
-body.converge-page-open .header-wrapper .main-nav,
-body.converge-page-open .header-wrapper .site-header,
-body.converge-page-open .header-wrapper .header-actions a,
-body.converge-page-open .header-wrapper .header-actions button:not(.rope-lantern-handle) {
+body.converge-page-open .header-wrapper * {
   pointer-events: none !important;
   cursor: default !important;
 }
@@ -98,7 +87,12 @@ body.converge-page-open .mega-menu-panel {
   pointer-events: none !important;
 }
 
-/* ONLY the Rope Lantern remains interactive and functional */
+/* ONLY the Rope Lantern remains elevated in front of the dark backdrop */
+body.converge-page-open .independent-rope-lantern-host {
+  z-index: 100000 !important;
+  pointer-events: none !important;
+}
+
 body.converge-page-open .rope-lantern-wrap,
 body.converge-page-open .rope-lantern-wrap *,
 body.converge-page-open .rope-lantern-stage,

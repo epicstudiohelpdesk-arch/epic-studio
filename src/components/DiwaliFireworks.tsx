@@ -180,9 +180,22 @@ export default function DiwaliFireworks() {
   const waveIndexRef = useRef<number>(0);
   const waveTimerRef = useRef<NodeJS.Timeout | null>(null);
   const isComponentMounted = useRef<boolean>(true);
+  const isHeroInViewRef = useRef<boolean>(true);
+  const scheduleNextWaveRef = useRef<(() => void) | null>(null);
 
   // Trigger starburst explosion in the hero background
   const triggerBurst = useCallback((burstX: number, burstY: number) => {
+    // Hard-cap particle array lengths to eliminate memory bloat during extended sessions
+    if (sparkParticlesRef.current.length > 180) {
+      sparkParticlesRef.current.splice(0, sparkParticlesRef.current.length - 120);
+    }
+    if (starburstSpokesRef.current.length > 70) {
+      starburstSpokesRef.current.splice(0, starburstSpokesRef.current.length - 50);
+    }
+    if (flashCoresRef.current.length > 10) {
+      flashCoresRef.current.splice(0, flashCoresRef.current.length - 6);
+    }
+
     const palette =
       BURST_PALETTES[Math.floor(Math.random() * BURST_PALETTES.length)];
 
@@ -353,6 +366,10 @@ export default function DiwaliFireworks() {
 
       const angle = (barrelAngleDeg * Math.PI) / 180;
 
+      if (rocketsRef.current.length > 6) {
+        rocketsRef.current.splice(0, rocketsRef.current.length - 4);
+      }
+
       rocketsRef.current.push({
         id: Date.now() + Math.random(),
         x: startX,
@@ -425,6 +442,9 @@ export default function DiwaliFireworks() {
         { x: 173, y: 114 },
       ];
       const noz = nozzlePositions[chosenIndex] || { x: 148, y: 84 };
+      if (fountainSparksRef.current.length > 40) {
+        fountainSparksRef.current.splice(0, fountainSparksRef.current.length - 24);
+      }
       for (let f = 0; f < 14; f++) {
         fountainSparksRef.current.push({
           x: noz.x + (Math.random() - 0.5) * 8,
@@ -497,29 +517,32 @@ export default function DiwaliFireworks() {
     const scheduleNextWave = () => {
       if (!isComponentMounted.current) return;
       if (!isDesktopOrTablet()) return;
-      const nextDelay = 2000 + Math.random() * 1000;
+      if (!isHeroInViewRef.current || (typeof document !== "undefined" && document.hidden)) return;
+      const nextDelay = 8000 + Math.random() * 4000;
       waveTimerRef.current = setTimeout(() => {
         if (!isComponentMounted.current) return;
+        if (!isHeroInViewRef.current || (typeof document !== "undefined" && document.hidden)) return;
         if (isDesktopOrTablet()) {
           triggerRocketWave();
         }
         scheduleNextWave();
       }, nextDelay);
     };
+    scheduleNextWaveRef.current = scheduleNextWave;
 
     let initialTimer: ReturnType<typeof setTimeout> | null = null;
-    if (isDesktopOrTablet()) {
+    if (isDesktopOrTablet() && isHeroInViewRef.current && (typeof document === "undefined" || !document.hidden)) {
       initialTimer = setTimeout(() => {
-        if (isDesktopOrTablet()) {
+        if (isDesktopOrTablet() && isHeroInViewRef.current && (typeof document === "undefined" || !document.hidden)) {
           triggerRocketWave();
         }
         scheduleNextWave();
-      }, 900);
+      }, 1200);
     }
 
     const handleWindowResize = () => {
       if (isDesktopOrTablet()) {
-        if (!waveTimerRef.current) {
+        if (!waveTimerRef.current && isHeroInViewRef.current && !document.hidden) {
           triggerRocketWave();
           scheduleNextWave();
         }
@@ -536,13 +559,34 @@ export default function DiwaliFireworks() {
       }
     };
 
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (waveTimerRef.current) {
+          clearTimeout(waveTimerRef.current);
+          waveTimerRef.current = null;
+        }
+        rocketsRef.current = [];
+        starburstSpokesRef.current = [];
+        sparkParticlesRef.current = [];
+        flashCoresRef.current = [];
+        fountainSparksRef.current = [];
+      } else if (isHeroInViewRef.current && isDesktopOrTablet()) {
+        if (!waveTimerRef.current) {
+          scheduleNextWave();
+        }
+      }
+    };
+
     window.addEventListener("resize", handleWindowResize);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       isComponentMounted.current = false;
+      scheduleNextWaveRef.current = null;
       if (initialTimer) clearTimeout(initialTimer);
       if (waveTimerRef.current) clearTimeout(waveTimerRef.current);
       window.removeEventListener("resize", handleWindowResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [triggerRocketWave]);
 
@@ -826,8 +870,64 @@ export default function DiwaliFireworks() {
       }
 
       ctx.globalCompositeOperation = "source-over";
-      animFrameId = requestAnimationFrame(render);
+      if (isVisible && !document.hidden) {
+        animFrameId = requestAnimationFrame(render);
+      } else {
+        animFrameId = null;
+      }
     };
+
+    let isVisible = true;
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const inView = entry.isIntersecting;
+          isHeroInViewRef.current = inView;
+          isVisible = inView;
+          if (inView && isDesktopOrTablet() && !document.hidden) {
+            if (!animFrameId) {
+              animFrameId = requestAnimationFrame(render);
+            }
+            if (!waveTimerRef.current) {
+              scheduleNextWaveRef.current?.();
+            }
+          } else {
+            if (animFrameId) {
+              cancelAnimationFrame(animFrameId);
+              animFrameId = null;
+            }
+            if (waveTimerRef.current) {
+              clearTimeout(waveTimerRef.current);
+              waveTimerRef.current = null;
+            }
+            rocketsRef.current = [];
+            starburstSpokesRef.current = [];
+            sparkParticlesRef.current = [];
+            flashCoresRef.current = [];
+            fountainSparksRef.current = [];
+            barrelsRef.current.forEach((b) => {
+              b.state = "loaded";
+              b.yOffset = 0;
+            });
+          }
+        },
+        { rootMargin: "300px" }
+      );
+      observer.observe(canvas);
+    }
+
+    const handleVisChange = () => {
+      if (!document.hidden && isVisible && isDesktopOrTablet()) {
+        if (!animFrameId) {
+          animFrameId = requestAnimationFrame(render);
+        }
+      } else if (document.hidden && animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisChange);
 
     if (isDesktopOrTablet()) {
       animFrameId = requestAnimationFrame(render);
@@ -836,7 +936,7 @@ export default function DiwaliFireworks() {
     const handleCanvasResize = () => {
       resizeCanvas();
       if (isDesktopOrTablet()) {
-        if (!animFrameId) {
+        if (!animFrameId && isVisible) {
           animFrameId = requestAnimationFrame(render);
         }
       } else {
@@ -852,6 +952,8 @@ export default function DiwaliFireworks() {
 
     return () => {
       if (animFrameId) cancelAnimationFrame(animFrameId);
+      if (observer) observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisChange);
       window.removeEventListener("resize", handleCanvasResize);
     };
   }, [triggerBurst, spawnSkyRocket, startReload]);
@@ -952,8 +1054,46 @@ export default function DiwaliFireworks() {
       }
 
       ctx.globalCompositeOperation = "source-over";
-      fountainAnimId = requestAnimationFrame(renderFountain);
+      if (isFountainVisible && !document.hidden) {
+        fountainAnimId = requestAnimationFrame(renderFountain);
+      } else {
+        fountainAnimId = null;
+      }
     };
+
+    let isFountainVisible = true;
+    let fountainObserver: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      fountainObserver = new IntersectionObserver(
+        ([entry]) => {
+          isFountainVisible = entry.isIntersecting;
+          if (isFountainVisible && isDesktopOrTablet() && !document.hidden) {
+            if (!fountainAnimId) {
+              fountainAnimId = requestAnimationFrame(renderFountain);
+            }
+          } else if (!isFountainVisible && fountainAnimId) {
+            cancelAnimationFrame(fountainAnimId);
+            fountainAnimId = null;
+            fountainSparksRef.current = [];
+          }
+        },
+        { rootMargin: "300px" }
+      );
+      fountainObserver.observe(canvas);
+    }
+
+    const handleFountainVisChange = () => {
+      if (!document.hidden && isFountainVisible && isDesktopOrTablet()) {
+        if (!fountainAnimId) {
+          fountainAnimId = requestAnimationFrame(renderFountain);
+        }
+      } else if (document.hidden && fountainAnimId) {
+        cancelAnimationFrame(fountainAnimId);
+        fountainAnimId = null;
+        fountainSparksRef.current = [];
+      }
+    };
+    document.addEventListener("visibilitychange", handleFountainVisChange);
 
     if (isDesktopOrTablet()) {
       fountainAnimId = requestAnimationFrame(renderFountain);
@@ -961,7 +1101,7 @@ export default function DiwaliFireworks() {
 
     const handleFountainResize = () => {
       if (isDesktopOrTablet()) {
-        if (!fountainAnimId) {
+        if (!fountainAnimId && isFountainVisible) {
           fountainAnimId = requestAnimationFrame(renderFountain);
         }
       } else {
@@ -977,6 +1117,8 @@ export default function DiwaliFireworks() {
 
     return () => {
       if (fountainAnimId) cancelAnimationFrame(fountainAnimId);
+      if (fountainObserver) fountainObserver.disconnect();
+      document.removeEventListener("visibilitychange", handleFountainVisChange);
       window.removeEventListener("resize", handleFountainResize);
     };
   }, []);

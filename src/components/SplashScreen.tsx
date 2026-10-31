@@ -4,22 +4,55 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import "./splash.css";
 
-const AUTO_DISMISS_MS = 2200;
-const EXIT_DURATION_MS = 800;
+const AUTO_DISMISS_MS = 1200;
+const EXIT_DURATION_MS = 400;
+const SPLASH_SEEN_KEY = "epic_splash_seen";
+
+const hasSeenSplashInSession = () => {
+  if (typeof window === "undefined") return false;
+  try {
+    return sessionStorage.getItem(SPLASH_SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+};
 
 export default function SplashScreen() {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith("/admin");
-  const [isVisible, setIsVisible] = useState(!isAdmin);
+  const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const hasStartedExit = useRef(false);
   const exitTimer = useRef<number | null>(null);
+  const rafId = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (isAdmin || hasSeenSplashInSession()) {
+      setIsVisible(false);
+      if (typeof document !== "undefined") {
+        document.documentElement.removeAttribute("data-splash-active");
+        document.body.classList.remove("splash-active");
+      }
+      if (typeof window !== "undefined") {
+        (window as unknown as { __SPLASH_ACTIVE__?: boolean }).__SPLASH_ACTIVE__ = false;
+        window.dispatchEvent(new CustomEvent("splash:closed"));
+      }
+      return;
+    }
+    setIsVisible(true);
+  }, [isAdmin]);
 
   const dismissSplash = useCallback(() => {
     if (hasStartedExit.current) return;
 
     hasStartedExit.current = true;
     setIsExiting(true);
+
+    try {
+      sessionStorage.setItem(SPLASH_SEEN_KEY, "1");
+    } catch {
+      // Ignore storage restrictions
+    }
 
     if (typeof document !== "undefined") {
       document.documentElement.removeAttribute("data-splash-active");
@@ -30,7 +63,9 @@ export default function SplashScreen() {
       window.dispatchEvent(new CustomEvent("splash:dismiss"));
     }
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     exitTimer.current = window.setTimeout(
       () => {
         setIsVisible(false);
@@ -69,8 +104,6 @@ export default function SplashScreen() {
     };
   }, [isVisible]);
 
-  if (isAdmin) return null;
-
   useEffect(() => {
     if (!isVisible || isExiting) return;
 
@@ -91,8 +124,6 @@ export default function SplashScreen() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [dismissSplash, isExiting, isVisible]);
-
-  const rafId = useRef<number | null>(null);
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const target = event.currentTarget;
@@ -116,7 +147,7 @@ export default function SplashScreen() {
     };
   }, []);
 
-  if (!isVisible) return null;
+  if (isAdmin || !isVisible) return null;
 
   return (
     <div

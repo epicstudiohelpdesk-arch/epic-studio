@@ -4,6 +4,7 @@ import React, { type CSSProperties } from "react";
 import Link from "next/link";
 import NewsletterForm from "./NewsletterForm";
 import MobileFooter from "./MobileFooter";
+import PaymentMethodsStrip from "./PaymentMethodsStrip";
 
 const footerNav: Record<string, { label: string; href: string }[]> = {
   Company: [
@@ -330,6 +331,7 @@ export default function SiteFooter() {
           {/* Bottom bar */}
           <div className="fd-bottom">
             <span className="fd-copyright">© 2026 EPIC STUDIO. All rights reserved.</span>
+            <PaymentMethodsStrip variant="desktop" />
             <div className="fd-legal">
               <Link href="/privacy">Privacy Policy</Link>
               <Link href="/terms">Terms of Service</Link>

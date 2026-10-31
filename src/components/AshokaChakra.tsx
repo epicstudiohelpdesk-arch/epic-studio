@@ -79,13 +79,13 @@ export default function AshokaChakra({
           <path
             d="M 100 21 L 98.6 85.5 L 100 100 Z"
             fill="currentColor"
-            opacity="0.85"
+            opacity="0.95"
           />
           {/* Right Facet (Subtle shading differential for faceted 3D metal/stone effect) */}
           <path
             d="M 100 21 L 101.4 85.5 L 100 100 Z"
             fill="currentColor"
-            opacity="0.5"
+            opacity="0.75"
           />
           {/* Spoke Center Ridge Line */}
           <line
@@ -94,16 +94,16 @@ export default function AshokaChakra({
             x2="100"
             y2="100"
             stroke="currentColor"
-            strokeWidth="0.6"
-            opacity="0.9"
+            strokeWidth="0.8"
+            opacity="1"
           />
           {/* Spoke Base Triangular Support Foot */}
           <polygon
             points="97.4,82 100,24 102.6,82"
             fill="none"
             stroke="currentColor"
-            strokeWidth="0.5"
-            opacity="0.4"
+            strokeWidth="0.6"
+            opacity="0.6"
           />
         </g>
       ))}
@@ -114,34 +114,36 @@ export default function AshokaChakra({
         cy="100"
         r="16.5"
         stroke="currentColor"
-        strokeWidth="1.1"
+        strokeWidth="1.4"
       />
       <circle
         cx="100"
         cy="100"
         r="13.5"
         stroke="currentColor"
-        strokeWidth="0.75"
+        strokeWidth="0.9"
         strokeDasharray="1.5 1.5"
-        opacity="0.6"
+        opacity="0.75"
       />
       <circle
         cx="100"
         cy="100"
         r="9.5"
         fill="currentColor"
-        opacity="0.85"
+        opacity="0.95"
       />
       <circle
         cx="100"
         cy="100"
-        r="4.5"
-        fill="#f8f9fa"
+        r="5"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        fill="none"
       />
       <circle
         cx="100"
         cy="100"
-        r="1.8"
+        r="2"
         fill="currentColor"
       />
     </svg>

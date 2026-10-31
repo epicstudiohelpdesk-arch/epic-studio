@@ -137,7 +137,7 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
     }, 750);
   }, []);
 
-  // Keep target anchor updated on resize & scroll (Desktop only - light strip is hidden on mobile)
+  // Keep target anchor updated on resize (Desktop only - light strip is hidden on mobile)
   useEffect(() => {
     const isDesktop = () =>
       typeof window !== "undefined" && window.innerWidth > 768;
@@ -146,10 +146,8 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
 
     updateTargetAnchor();
     window.addEventListener("resize", updateTargetAnchor);
-    window.addEventListener("scroll", updateTargetAnchor, { passive: true });
     return () => {
       window.removeEventListener("resize", updateTargetAnchor);
-      window.removeEventListener("scroll", updateTargetAnchor);
     };
   }, [updateTargetAnchor]);
 
@@ -167,9 +165,9 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
         return;
       }
 
-      // Pause physics calculations when scrolled to conserve CPU/battery
+      // Pause physics calculations completely when scrolled to eliminate CPU cycles & scroll lag
       if (isScrolledRef.current) {
-        animId = requestAnimationFrame(render);
+        animId = null;
         return;
       }
 
@@ -333,15 +331,20 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
         wireHighlightRef.current.setAttribute("d", pathD);
       }
 
+      if (typeof document !== "undefined" && document.hidden) {
+        animId = null;
+        return;
+      }
+
       animId = requestAnimationFrame(render);
     };
 
-    if (isDesktop()) {
+    if (isDesktop() && (typeof document === "undefined" || !document.hidden)) {
       animId = requestAnimationFrame(render);
     }
 
     const handleStripResize = () => {
-      if (isDesktop()) {
+      if (isDesktop() && (typeof document === "undefined" || !document.hidden)) {
         if (!animId) animId = requestAnimationFrame(render);
       } else {
         if (animId) {
@@ -351,13 +354,26 @@ export default function HeaderLightStrip({ isScrolled = false }: HeaderLightStri
       }
     };
 
+    const handleVisChange = () => {
+      if (!document.hidden && isDesktop()) {
+        if (!animId) {
+          animId = requestAnimationFrame(render);
+        }
+      } else if (document.hidden && animId) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+    };
+
     window.addEventListener("resize", handleStripResize);
+    document.addEventListener("visibilitychange", handleVisChange);
 
     return () => {
       if (animId) cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleStripResize);
+      document.removeEventListener("visibilitychange", handleVisChange);
     };
-  }, []);
+  }, [scrolledState]);
 
   // Drag interaction handlers
   const handlePointerDown = (e: React.PointerEvent) => {

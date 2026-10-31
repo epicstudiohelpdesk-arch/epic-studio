@@ -24,8 +24,7 @@ import {
   webPageNode,
 } from "@/lib/schema";
 
-import AutoContactDrawer from "@/components/AutoContactDrawer";
-import DualConvergeModal from "@/components/DualConvergeModal";
+import DeferredHomeModals from "@/components/DeferredHomeModals";
 
 export const metadata: Metadata = buildMetadata({
   title: "EPIC STUDIO — Software, Mobile Apps & AI Design Studio",
@@ -93,8 +92,7 @@ export default function Home() {
       {/* WHY START A CONVERSATION? */}
       <LetsBuildSection />
       <SiteFooter />
-      <AutoContactDrawer />
-      <DualConvergeModal />
+      <DeferredHomeModals />
     </main>
   );
 }

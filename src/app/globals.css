@@ -41,8 +41,8 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  html {
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
     scroll-behavior: smooth;
   }
 }
@@ -83,13 +83,6 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Disable hover effects globally while actively scrolling on mouse devices only */
-@media (pointer: fine) and (min-width: 769px) {
-  body.is-scrolling,
-  body.is-scrolling * {
-    pointer-events: none !important;
-  }
-}
 .header-wrapper,
 .header-wrapper *,
 .hamburger-btn {

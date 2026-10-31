@@ -45,26 +45,9 @@ export default function PreventZoom() {
       lastTouchEnd = now;
     };
 
-    // 5. Disable hover effects while actively scrolling (Desktop with mouse only)
-    let scrollTimeout: NodeJS.Timeout | null = null;
     const isTouchDevice =
       typeof window !== "undefined" &&
       (window.innerWidth <= 768 || window.matchMedia("(pointer: coarse)").matches);
-
-    const handleScroll = () => {
-      // Skip on mobile touch screens to prevent style recalibration thrashing during touch flings
-      if (isTouchDevice) return;
-      if (!document.body.classList.contains("is-scrolling")) {
-        document.body.classList.add("is-scrolling");
-      }
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-      scrollTimeout = setTimeout(() => {
-        document.body.classList.remove("is-scrolling");
-        scrollTimeout = null;
-      }, 140);
-    };
 
     window.addEventListener("wheel", preventWheelZoom, { passive: false });
     window.addEventListener("keydown", preventKeyZoom);
@@ -81,7 +64,6 @@ export default function PreventZoom() {
       document.addEventListener("gesturestart", preventGesture, { passive: false });
       document.addEventListener("gesturechange", preventGesture, { passive: false });
       document.addEventListener("gestureend", preventGesture, { passive: false });
-      window.addEventListener("scroll", handleScroll, { passive: true });
     }
 
     return () => {
@@ -92,12 +74,7 @@ export default function PreventZoom() {
         document.removeEventListener("gesturestart", preventGesture);
         document.removeEventListener("gesturechange", preventGesture);
         document.removeEventListener("gestureend", preventGesture);
-        window.removeEventListener("scroll", handleScroll);
       }
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-      }
-      document.body.classList.remove("is-scrolling");
     };
   }, []);
 

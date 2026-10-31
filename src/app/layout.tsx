@@ -159,12 +159,11 @@ export default function RootLayout({
         {/* Preload critical hero assets for lag-free instant rendering */}
         <link rel="preload" href="/assets/mid.webp" as="image" type="image/webp" fetchPriority="high" />
         <link rel="preload" href="/assets/orange-screen.webp" as="image" type="image/webp" fetchPriority="high" />
-        <link rel="preload" href="/assets/pets.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/assets/2ndmockup.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/assets/3rdmockup.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/assets/keyboard-asset.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/assets/facebookmock.webp" as="image" type="image/webp" />
-        <link rel="preload" href="/assets/person.webp" as="image" type="image/webp" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem('epic_splash_seen')==='1'||window.location.pathname.indexOf('/admin')===0){document.documentElement.removeAttribute('data-splash-active');}}catch(e){}`,
+          }}
+        />
         <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
         <meta name="format-detection" content="telephone=no" />
         {/* Never hide primary copy when scripts are unavailable (crawlers, reader modes). */}

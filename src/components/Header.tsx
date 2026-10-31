@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, memo, startTransition } from "react";
+import React, { useState, useRef, useEffect, useCallback, memo, startTransition } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
@@ -421,6 +421,38 @@ function Header() {
   const isScrolledRef = useRef(false);
   const lastToggleRef = useRef(0);
 
+  // Independent Rope Lantern anchor tracking (detached from navbar, aligned to slot beside Join Us)
+  const lanternSlotRef = useRef<HTMLDivElement | null>(null);
+  const lanternLeftRef = useRef<number | null>(null);
+  const [lanternLeft, setLanternLeft] = useState<number | null>(null);
+
+  const updateLanternPosition = useCallback(() => {
+    if (lanternSlotRef.current) {
+      const rect = lanternSlotRef.current.getBoundingClientRect();
+      if ((rect.width > 0 || rect.left > 0) && lanternLeftRef.current !== rect.left) {
+        lanternLeftRef.current = rect.left;
+        setLanternLeft(rect.left);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktopScreen) return;
+    updateLanternPosition();
+    window.addEventListener("resize", updateLanternPosition, { passive: true });
+    const rafId = requestAnimationFrame(updateLanternPosition);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", updateLanternPosition);
+    };
+  }, [isDesktopScreen, updateLanternPosition]);
+
+  // Synchronize lantern anchor when header scrolled state changes (zero per-scroll-tick DOM reflows)
+  useEffect(() => {
+    if (!isDesktopScreen) return;
+    updateLanternPosition();
+  }, [isScrolled, isDesktopScreen, updateLanternPosition]);
+
   // Monitor screen size to mount desktop-only physics components (HeaderLightStrip, RopeLantern)
   useEffect(() => {
     const checkDesktop = () => {
@@ -754,6 +786,20 @@ function Header() {
 
   return (
     <>
+      {/* Independent Free-Hanging Rope Lantern (Anchored to Viewport Ceiling, Completely Detached from Navbar) */}
+      {isDesktopScreen && (
+        <div
+          className="independent-rope-lantern-host"
+          style={{
+            left: lanternLeft != null ? `${lanternLeft}px` : undefined,
+            right: lanternLeft != null ? undefined : "clamp(160px, 15vw, 210px)",
+          }}
+          aria-hidden="true"
+        >
+          <RopeLantern />
+        </div>
+      )}
+
       <div
         ref={headerWrapperRef}
         className={`header-wrapper ${isHeaderWhite ? "header-active-white" : ""} ${isScrolled ? "header-scrolled" : ""} ${isMenuOpen ? "header-hover-active" : ""}`}
@@ -849,11 +895,20 @@ function Header() {
 
           {/* Header Right Actions */}
           <div className="header-actions">
-            {/* Animated Golden Chain Rope Lantern (Tablet & Desktop only) */}
+            {/* Slot placeholder maintaining exact Join Us position without attaching lantern to navbar */}
             {isDesktopScreen && (
-              <div className="hidden md:block">
-                <RopeLantern />
-              </div>
+              <div
+                ref={lanternSlotRef}
+                className="hidden md:block rope-lantern-slot"
+                style={{
+                  width: "calc(36 * var(--u, 1px))",
+                  height: "calc(36 * var(--u, 1px))",
+                  flexShrink: 0,
+                  pointerEvents: "none",
+                  visibility: "hidden",
+                }}
+                aria-hidden="true"
+              />
             )}
 
             {/* Join Us Button */}

@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import ContactPage from "./ContactPage";
+import dynamic from "next/dynamic";
 import "./auto-contact-drawer.css";
+
+const ContactPage = dynamic(() => import("./ContactPage"), {
+  ssr: false,
+});
 
 export default function AutoContactDrawer() {
   const [isMounted, setIsMounted] = useState(false);

@@ -1,0 +1,135 @@
+/* ==========================================================================
+   CLEAN & PROFESSIONAL FOOTER PAYMENT ASSURANCE STRIP
+   ========================================================================== */
+
+.fd-payments-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fd-payments-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 6.5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+}
+
+.fd-payments-lock {
+  color: #10B981; /* Verified secure emerald green */
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.35));
+}
+
+.fd-payment-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.fd-payment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 7px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+  user-select: none;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.fd-payment-badge:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+.fd-payment-icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+.fd-payment-icon-visa {
+  font-size: 26px;
+  color: #ffffff;
+}
+
+.fd-payment-icon-apple {
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.fd-payment-icon-gpay {
+  font-size: 28px;
+  color: #ffffff;
+}
+
+.fd-payment-badge-amex {
+  padding: 0 4px;
+}
+
+.fd-payment-badge-upi {
+  padding: 0 5px;
+}
+
+.fd-payment-badge-wire {
+  padding: 0 5px;
+}
+
+/* Mobile variant overrides */
+.fd-payments-strip.is-mobile {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.fd-payments-strip.is-mobile .fd-payments-caption {
+  font-size: 11px;
+  justify-content: center;
+}
+
+.fd-payments-strip.is-mobile .fd-payment-badges {
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Responsive alignment in the desktop bottom bar */
+@media (max-width: 1320px) {
+  .fd-payments-strip:not(.is-mobile) {
+    gap: 8px;
+  }
+  .fd-payments-caption {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .fd-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .fd-payments-strip:not(.is-mobile) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

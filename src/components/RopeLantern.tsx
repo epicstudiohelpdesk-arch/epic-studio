@@ -95,17 +95,20 @@ export default function RopeLantern() {
     const stageWidth = 160;
     const anchorX = 80;
     const anchorY = 2;
-    const linkCount = 5;
-    const linkSpacing = 6.5;
+    const linkCount = 6;
+    const linkSpacing = 8.5;
 
-    // Create Matter Engine
+    // Create Matter Engine with high numerical stability (zero constraint shudder)
     const engine = Matter.Engine.create({
-      gravity: { x: 0, y: 0.9, scale: 0.001 },
+      gravity: { x: 0, y: 0.98, scale: 0.001 },
+      constraintIterations: 8,
+      positionIterations: 8,
+      velocityIterations: 8,
     });
 
     const ropeGroup = Matter.Body.nextGroup(true);
 
-    // Create Chain Bodies
+    // Create Chain Bodies with realistic mass and low air resistance for genuine pendulum physics
     const rope = Matter.Composites.stack(
       anchorX,
       anchorY,
@@ -116,16 +119,16 @@ export default function RopeLantern() {
       (x: number, y: number) => {
         return Matter.Bodies.circle(x, y, 3.5, {
           collisionFilter: { group: ropeGroup },
-          frictionAir: 0.038,
-          mass: 0.12,
+          frictionAir: 0.007,
+          mass: 0.14,
         });
       }
     );
 
-    // Chain constraints
-    Matter.Composites.chain(rope, 0, 0.4, 0, -0.4, {
-      stiffness: 0.92,
-      damping: 0.22,
+    // Chain constraints: low internal link damping allows natural catenary flexing and swinging
+    Matter.Composites.chain(rope, 0, 0.45, 0, -0.45, {
+      stiffness: 0.97,
+      damping: 0.06,
       length: linkSpacing,
     });
 
@@ -139,32 +142,45 @@ export default function RopeLantern() {
     const fixToAnchor = Matter.Constraint.create({
       bodyA: anchor,
       bodyB: rope.bodies[0],
-      stiffness: 0.95,
+      stiffness: 0.98,
+      damping: 0.08,
       length: 0,
     });
 
-    // The Handle: bottom body
+    // The Handle: bottom body with weighted physical inertia
     const handleBody = rope.bodies[rope.bodies.length - 1];
-    Matter.Body.setMass(handleBody, 2.4);
+    Matter.Body.setMass(handleBody, 3.0);
+    handleBody.frictionAir = 0.009;
 
-    // Mouse / drag constraint
+    // Mouse / drag constraint with smooth elastic spring
+    const restHandleY = anchorY + linkCount * linkSpacing;
     const mouseConstraint = Matter.Constraint.create({
-      pointA: { x: anchorX, y: anchorY + linkCount * linkSpacing },
+      pointA: { x: anchorX, y: restHandleY },
       bodyB: handleBody,
       pointB: { x: 0, y: 0 },
       stiffness: 0.0000000001,
+      damping: 0.35,
       length: 0,
     });
 
     Matter.World.add(engine.world, [anchor, rope, fixToAnchor, mouseConstraint]);
 
-    // Drag interaction tracking
+    // Drag interaction & momentum tracking
     let isDragging = false;
     let pointerStartX = 0;
     let pointerStartY = 0;
     let hasTriggeredPull = false;
     let dragDistanceTotal = 0;
-    let animFrameId: number;
+    let animFrameId: number | null = null;
+    let isSleeping = false;
+    let stillFrames = 0;
+
+    let lastPointerX = 0;
+    let lastPointerY = 0;
+    let pointerVelX = 0;
+    let pointerVelY = 0;
+    let lastPointerTime = 0;
+    let currentTilt = 0;
 
     const getStageCoords = (e: PointerEvent) => {
       const rect = stage.getBoundingClientRect();
@@ -177,16 +193,23 @@ export default function RopeLantern() {
     };
 
     const onPointerDown = (e: PointerEvent) => {
+      wakeUp();
       handleElm.setPointerCapture(e.pointerId);
       isDragging = true;
       hasTriggeredPull = false;
       dragDistanceTotal = 0;
       pointerStartX = e.clientX;
       pointerStartY = e.clientY;
+      lastPointerX = e.clientX;
+      lastPointerY = e.clientY;
+      pointerVelX = 0;
+      pointerVelY = 0;
+      lastPointerTime = performance.now();
 
       const coords = getStageCoords(e);
       mouseConstraint.pointA = { x: coords.x, y: coords.y };
-      mouseConstraint.stiffness = 0.88;
+      mouseConstraint.stiffness = 0.42;
+      mouseConstraint.damping = 0.32;
 
       handleElm.classList.add("is-grabbing");
     };
@@ -194,23 +217,55 @@ export default function RopeLantern() {
     const onPointerMove = (e: PointerEvent) => {
       if (!isDragging) return;
 
+      const now = performance.now();
+      const dt = Math.max(1, now - lastPointerTime);
+      const rawVx = (e.clientX - lastPointerX) / dt;
+      const rawVy = (e.clientY - lastPointerY) / dt;
+      pointerVelX = pointerVelX * 0.3 + rawVx * 0.7;
+      pointerVelY = pointerVelY * 0.3 + rawVy * 0.7;
+      lastPointerX = e.clientX;
+      lastPointerY = e.clientY;
+      lastPointerTime = now;
+
       const deltaX = e.clientX - pointerStartX;
       const deltaY = e.clientY - pointerStartY;
       dragDistanceTotal = Math.hypot(deltaX, deltaY);
 
       const coords = getStageCoords(e);
-      mouseConstraint.pointA = { x: coords.x, y: coords.y };
 
-      // Pull down trigger threshold (e.g. pulled down > 34px)
-      if (deltaY > 34 && !hasTriggeredPull) {
+      // Smooth elastic pull kinematics with natural 2D freedom
+      const rawDeltaX = coords.x - anchorX;
+      const rawDeltaY = coords.y - restHandleY;
+
+      // Soft exponential resistance curve:
+      // Lateral freedom: allows graceful swings up to 60px sideways
+      const maxPullX = 60;
+      const dampedDeltaX =
+        Math.sign(rawDeltaX) *
+        maxPullX *
+        (1 - Math.exp(-Math.abs(rawDeltaX) / 44));
+
+      // Vertical freedom: downward pull up to 52px, gentle upward push resistance up to -14px
+      let dampedDeltaY = 0;
+      if (rawDeltaY >= 0) {
+        const maxPullY = 52;
+        dampedDeltaY = maxPullY * (1 - Math.exp(-rawDeltaY / 32));
+      } else {
+        dampedDeltaY = -14 * (1 - Math.exp(rawDeltaY / 20));
+      }
+
+      mouseConstraint.pointA = {
+        x: anchorX + dampedDeltaX,
+        y: restHandleY + dampedDeltaY,
+      };
+
+      // Intentional pull threshold (smooth trigger)
+      if (dampedDeltaY > 26 && !hasTriggeredPull) {
         hasTriggeredPull = true;
         setIsRadiant((prev) => !prev);
         playChime();
         burstSparkles();
         window.dispatchEvent(new CustomEvent("open:converge-modal"));
-        if (typeof navigator !== "undefined" && navigator.vibrate) {
-          navigator.vibrate(15);
-        }
       }
     };
 
@@ -224,45 +279,137 @@ export default function RopeLantern() {
         // Pointer capture release fallback
       }
 
+      // Detach mouse constraint
       mouseConstraint.stiffness = 0.0000000001;
 
-      // If clicked without significant drag, apply a physical impulse and toggle
+      // Current displacement from rest position
+      const dispX = handleBody.position.x - anchorX;
+      const dispY = handleBody.position.y - restHandleY;
+
+      // Case 1: Click / tap with minimal drag -> gentle, playful pendulum kick
       if (dragDistanceTotal < 6) {
+        const clickDirection = Math.random() > 0.5 ? 1 : -1;
+        const clickForceX = clickDirection * (0.024 + Math.random() * 0.012);
         Matter.Body.applyForce(handleBody, handleBody.position, {
-          x: (Math.random() - 0.5) * 0.02,
-          y: 0.05,
+          x: clickForceX,
+          y: 0.012,
         });
         setIsRadiant((prev) => !prev);
         playChime();
         burstSparkles();
         window.dispatchEvent(new CustomEvent("open:converge-modal"));
+        return;
       }
+
+      // Case 2: Drag / pull release
+      // 1) Carry-over gesture flick momentum
+      const gestureForceX = Math.max(-0.045, Math.min(0.045, pointerVelX * 0.024));
+      const gestureForceY = Math.max(-0.03, Math.min(0.03, pointerVelY * 0.016));
+
+      // 2) Stored elastic tension swing impulse:
+      // When pulled sideways or down, releasing converts tension into natural harmonic pendulum swing
+      let swingKickX = 0;
+      if (Math.abs(dispX) > 6) {
+        // Sideways release: strong harmonic swing back towards center and beyond
+        swingKickX = -Math.sign(dispX) * Math.min(0.042, Math.abs(dispX) * 0.001);
+      } else if (dispY > 8) {
+        // Downward pull release: tension conversion generates an organic pendulum swing
+        const randomDir = Math.random() > 0.5 ? 1 : -1;
+        swingKickX = randomDir * Math.min(0.038, 0.016 + (dispY / 44) * 0.022);
+      }
+
+      Matter.Body.applyForce(handleBody, handleBody.position, {
+        x: swingKickX + gestureForceX,
+        y: gestureForceY,
+      });
     };
 
     handleElm.addEventListener("pointerdown", onPointerDown);
+    handleElm.addEventListener("pointerenter", wakeUp);
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("pointercancel", onPointerUp);
 
-    // Animation Loop
+    // Animation Loop with zero-overhead idle sleep during scrolling
     let time = 0;
-    const render = () => {
-      animFrameId = requestAnimationFrame(render);
-      time += 1;
 
-      // Micro ambient palace breeze when idle
+    function wakeUp() {
+      stillFrames = 0;
+      if (isSleeping || !animFrameId) {
+        isSleeping = false;
+        if (!animFrameId) {
+          animFrameId = requestAnimationFrame(render);
+        }
+      }
+    }
+
+    const render = () => {
+      if (typeof document !== "undefined" && document.hidden) {
+        animFrameId = null;
+        return;
+      }
+
+      time += 1;
+      const bodies = rope.bodies;
+
+      // Track settling when user is not dragging
       if (!isDragging) {
-        const breeze = Math.sin(time * 0.022) * 0.00018;
-        Matter.Body.applyForce(handleBody, handleBody.position, {
-          x: breeze,
-          y: 0,
-        });
+        const velX = handleBody.velocity.x;
+        const velY = handleBody.velocity.y;
+        const dispX = Math.abs(handleBody.position.x - anchorX);
+        const dispY = Math.abs(handleBody.position.y - restHandleY);
+
+        if (
+          Math.abs(velX) < 0.08 &&
+          Math.abs(velY) < 0.08 &&
+          dispX < 0.8 &&
+          dispY < 0.8
+        ) {
+          stillFrames++;
+        } else {
+          stillFrames = 0;
+        }
+
+        // Micro ambient room breeze when idle and active
+        if (stillFrames < 40) {
+          const breeze =
+            (Math.sin(time * 0.018) * 0.000035 +
+             Math.sin(time * 0.031) * 0.00002);
+          Matter.Body.applyForce(handleBody, handleBody.position, {
+            x: breeze,
+            y: 0,
+          });
+        }
       }
 
       Matter.Engine.update(engine, 1000 / 60);
 
+      // Once settled for 60 frames (~1 sec resting still), enter sleep mode to save 100% CPU
+      if (!isDragging && stillFrames > 60) {
+        for (let i = 0; i < bodies.length; i++) {
+          Matter.Body.setPosition(bodies[i], {
+            x: anchorX,
+            y: anchorY + (i + 1) * linkSpacing,
+          });
+          Matter.Body.setVelocity(bodies[i], { x: 0, y: 0 });
+        }
+        currentTilt = 0;
+        handleElm.style.transform = `translate3d(${anchorX - 22}px, ${restHandleY - 4}px, 0) rotate(0deg)`;
+        pathElm.setAttribute("d", `M ${anchorX} ${anchorY} L ${anchorX} ${restHandleY}`);
+        const linkDoms = linkRefs.current;
+        for (let i = 0; i < linkDoms.length && i < bodies.length - 1; i++) {
+          const el = linkDoms[i];
+          if (!el) continue;
+          const my = anchorY + (i + 0.5) * linkSpacing;
+          el.setAttribute("transform", `translate(${anchorX}, ${my}) rotate(0)`);
+        }
+
+        animFrameId = null;
+        isSleeping = true;
+        return;
+      }
+
       // Construct smooth rope path
-      const bodies = rope.bodies;
       let pathD = `M ${anchorX} ${anchorY}`;
 
       for (let i = 0; i < bodies.length; i++) {
@@ -288,8 +435,7 @@ export default function RopeLantern() {
         const p2 = bodies[i + 1].position;
         const mx = (p1.x + p2.x) / 2;
         const my = (p1.y + p2.y) / 2;
-        const angleRad = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-        const deg = (angleRad * 180) / Math.PI + 90;
+        const deg = Math.atan2(p2.x - p1.x, p2.y - p1.y) * (180 / Math.PI);
 
         el.setAttribute(
           "transform",
@@ -301,21 +447,40 @@ export default function RopeLantern() {
       const hx = handleBody.position.x;
       const hy = handleBody.position.y;
       const prevBody = bodies[bodies.length - 2];
-      const segmentAngle = Math.atan2(
-        hx - prevBody.position.x,
-        hy - prevBody.position.y
-      );
-      const tiltDeg = -segmentAngle * (180 / Math.PI) * 0.65;
 
-      // Top suspension ring is at (19, 4) in the 38x90 lantern
-      handleElm.style.transform = `translate3d(${hx - 19}px, ${hy - 4}px, 0) rotate(${tiltDeg}deg)`;
+      // Exact angle of the bottom chain segment connecting to the lantern
+      const bottomLinkDeg =
+        Math.atan2(hx - prevBody.position.x, hy - prevBody.position.y) *
+        (180 / Math.PI);
+
+      // Smooth physical low-pass filter for natural angular inertia during pendulum swings
+      currentTilt += (bottomLinkDeg - currentTilt) * 0.24;
+
+      // Top suspension ring is at (22, 4) in the 44x104 lantern
+      handleElm.style.transform = `translate3d(${hx - 22}px, ${hy - 4}px, 0) rotate(${currentTilt.toFixed(2)}deg)`;
+
+      animFrameId = requestAnimationFrame(render);
     };
+
+    const handleVisChange = () => {
+      if (typeof document !== "undefined" && !document.hidden) {
+        wakeUp();
+      } else if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisChange);
+    window.addEventListener("scroll", wakeUp, { passive: true });
 
     animFrameId = requestAnimationFrame(render);
 
     return () => {
-      cancelAnimationFrame(animFrameId);
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      document.removeEventListener("visibilitychange", handleVisChange);
+      window.removeEventListener("scroll", wakeUp);
       handleElm.removeEventListener("pointerdown", onPointerDown);
+      handleElm.removeEventListener("pointerenter", wakeUp);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", onPointerUp);
@@ -400,7 +565,7 @@ export default function RopeLantern() {
 
           {/* Interlocking Golden Chain Links (React declarative) */}
           <g>
-            {[0, 1, 2, 3].map((i) => (
+            {[0, 1, 2, 3, 4].map((i) => (
               <g
                 key={i}
                 ref={(el) => {

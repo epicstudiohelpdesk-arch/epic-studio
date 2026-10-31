@@ -206,7 +206,7 @@ export default function WorkInMotionSection() {
         <div className="wim-uneven-edge-svg-wrap">
           <svg
             className="wim-uneven-edge-svg"
-            viewBox="0 0 1440 96"
+            viewBox="0 0 1440 160"
             fill="none"
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -214,59 +214,46 @@ export default function WorkInMotionSection() {
             <defs>
               <linearGradient id="wimAtmosphericGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#f8f9fa" stopOpacity="0.95" />
-                <stop offset="55%" stopColor="#f8f9fa" stopOpacity="0.45" />
+                <stop offset="55%" stopColor="#f8f9fa" stopOpacity="0.35" />
                 <stop offset="100%" stopColor="#0534f2" stopOpacity="0" />
               </linearGradient>
-              <linearGradient id="wimCrestGlowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(255, 255, 255, 0.25)" />
-                <stop offset="25%" stopColor="rgba(201, 255, 23, 0.45)" />
-                <stop offset="50%" stopColor="rgba(255, 255, 255, 0.85)" />
-                <stop offset="75%" stopColor="rgba(103, 232, 249, 0.6)" />
-                <stop offset="100%" stopColor="rgba(255, 255, 255, 0.25)" />
+              <linearGradient id="wimCrestCurveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(0, 0, 0, 0.25)" />
+                <stop offset="25%" stopColor="rgba(5, 52, 242, 0.45)" />
+                <stop offset="50%" stopColor="rgba(0, 0, 0, 0.35)" />
+                <stop offset="75%" stopColor="rgba(5, 52, 242, 0.45)" />
+                <stop offset="100%" stopColor="rgba(0, 0, 0, 0.25)" />
               </linearGradient>
-              <filter id="wimCrestGlowBlur" x="-10%" y="-50%" width="120%" height="200%">
-                <feGaussianBlur stdDeviation="3" />
-              </filter>
             </defs>
 
             {/* Atmospheric secondary wave extension */}
             <path
-              d="M 0 0 L 1440 0 L 1440 58 C 1280 84, 1150 36, 1000 64 C 840 90, 690 32, 530 72 C 370 94, 210 34, 0 52 Z"
+              d="M 0 0 L 1440 0 L 1440 110 C 1340 144, 1220 90, 1152 90 C 1070 90, 930 146, 864 146 C 790 146, 650 88, 576 118 C 500 150, 340 150, 230 90 C 140 90, 60 110, 0 110 Z"
               fill="url(#wimAtmosphericGrad)"
             />
 
             {/* Primary sculpted uneven wave filled with preceding section background #f8f9fa */}
             <path
-              d="M 0 0 L 1440 0 L 1440 44 C 1270 70, 1140 24, 980 50 C 820 76, 700 18, 540 56 C 390 86, 230 22, 0 40 Z"
+              d="M 0 0 L 1440 0 L 1440 96 C 1340 130, 1220 76, 1152 76 C 1070 76, 930 132, 864 132 C 790 132, 650 74, 576 104 C 500 136, 340 136, 230 76 C 140 76, 60 96, 0 96 Z"
               fill="#f8f9fa"
             />
 
-            {/* Luminous crest glow highlight */}
+            {/* Distinct curved boundary path traced along the wave */}
             <path
-              d="M 0 40 C 230 22, 390 86, 540 56 C 700 18, 820 76, 980 50 C 1140 24, 1270 70, 1440 44"
-              stroke="rgba(255, 255, 255, 0.35)"
-              strokeWidth="4"
+              d="M 0 96 C 60 96, 140 76, 230 76 C 340 136, 500 136, 576 104 C 650 74, 790 132, 864 132 C 930 132, 1070 76, 1152 76 C 1220 76, 1340 130, 1440 96"
+              stroke="url(#wimCrestCurveGrad)"
+              strokeWidth="1.6"
               fill="none"
-              filter="url(#wimCrestGlowBlur)"
-            />
-
-            {/* Crisp illuminated crest line */}
-            <path
-              d="M 0 40 C 230 22, 390 86, 540 56 C 700 18, 820 76, 980 50 C 1140 24, 1270 70, 1440 44"
-              stroke="url(#wimCrestGlowGrad)"
-              strokeWidth="1.5"
-              fill="none"
-              opacity="0.85"
+              opacity="0.4"
             />
           </svg>
         </div>
 
-        {/* Rolling Ashoka Chakra traversing horizontally in perpetual rotation */}
+        {/* Rolling Black Ashoka Chakra motioning above the curved path */}
         <div className="wim-chakra-conduit">
           <div className="wim-chakra-runner">
-            <div className="wim-chakra-halo" />
             <div className="wim-chakra-spinner">
-              <AshokaChakra size="100%" color="#ffffff" className="wim-chakra-svg" />
+              <AshokaChakra size="100%" color="#000000" className="wim-chakra-svg" />
             </div>
           </div>
         </div>

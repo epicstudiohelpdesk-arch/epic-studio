@@ -76,11 +76,24 @@ export default function IdeaImpactSection() {
   const [activeStep, setActiveStep] = useState<number>(1);
   const [activeNode, setActiveNode] = useState<string | null>("build");
   const [isAutoPlay, setIsAutoPlay] = useState<boolean>(true);
+  const [inView, setInView] = useState<boolean>(false);
 
-  // Auto-cycle through the flowchart steps in logical pipeline order every 3.5s
   useEffect(() => {
-    if (!isAutoPlay) return;
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "100px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Auto-cycle through the flowchart steps in logical pipeline order every 3.5s only while visible
+  useEffect(() => {
+    if (!isAutoPlay || !inView) return;
     const interval = setInterval(() => {
+      if (typeof document !== "undefined" && document.hidden) return;
       setActiveStep((prev) => {
         const next = (prev % 5) + 1;
         // Map step to active station according to architectural flow
@@ -93,7 +106,7 @@ export default function IdeaImpactSection() {
       });
     }, 3500);
     return () => clearInterval(interval);
-  }, [isAutoPlay]);
+  }, [isAutoPlay, inView]);
 
   const selectStep = (stepNum: number) => {
     setActiveStep(stepNum);

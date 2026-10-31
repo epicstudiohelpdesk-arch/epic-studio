@@ -95,6 +95,7 @@ export default function CustomerRatingsStrip() {
   return (
     <section
       className="crs-strip-wrapper"
+      data-anim-scope
       aria-labelledby={headingId}
     >
       <div className="crs-strip-inner">

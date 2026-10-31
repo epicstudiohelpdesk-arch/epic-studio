@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import PaymentMethodsStrip from "./PaymentMethodsStrip";
 
 const footerNav: { heading: string; items: { label: string; href: string }[] }[] = [
   {
@@ -241,6 +242,7 @@ export default function MobileFooter() {
 
       {/* 4. Footer Bottom Legal */}
       <div className="mf-bottom-legal">
+        <PaymentMethodsStrip variant="mobile" />
         <p>© 2026 EPIC STUDIO Inc. All rights reserved.</p>
         <div className="mf-legal-links">
           <Link href="/privacy">Privacy Policy</Link>

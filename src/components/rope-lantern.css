@@ -2,6 +2,47 @@
    Animated Hanging Rope Lantern (Physics-Driven Golden Chain & Fanoos Lamp)
    ========================================================================== */
 
+/* Independent Ceiling Mount Host — Detached from Navbar */
+.independent-rope-lantern-host {
+  position: fixed;
+  top: 0;
+  width: calc(36 * var(--u, 1px));
+  height: calc(36 * var(--u, 1px));
+  z-index: 3500;
+  pointer-events: none;
+  overflow: visible;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.independent-rope-lantern-host .rope-lantern-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.independent-rope-lantern-host .rope-lantern-stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 340px;
+  overflow: visible;
+  pointer-events: none;
+  transition: none;
+}
+
+.rope-lantern-slot {
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
 .rope-lantern-wrap {
   position: relative;
   display: inline-flex;
@@ -17,18 +58,13 @@
 
 .rope-lantern-stage {
   position: absolute;
-  top: calc(-22 * var(--u, 1px));
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 160px;
   height: 340px;
   overflow: visible;
   pointer-events: none;
-  transition: top 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.header-scrolled .rope-lantern-stage {
-  top: calc(-10 * var(--u, 1px));
 }
 
 .rope-lantern-svg {
@@ -43,8 +79,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 38px;
-  height: 90px;
+  width: 44px;
+  height: 104px;
+  transform-origin: 22px 4px;
   pointer-events: auto;
   cursor: grab;
   user-select: none;
@@ -55,11 +92,12 @@
 }
 
 .rope-lantern-handle:hover {
-  filter: drop-shadow(0 0 10px rgba(255, 190, 40, 0.75));
+  filter: drop-shadow(0 0 14px rgba(255, 195, 45, 0.85)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
 }
 
 .rope-lantern-handle.is-grabbing {
   cursor: grabbing !important;
+  filter: drop-shadow(0 0 20px rgba(255, 215, 60, 0.95)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
 }
 
 .rope-lantern-img {
@@ -75,10 +113,10 @@
 /* Ambient Radial Glow Aura */
 .rope-lantern-aura {
   position: absolute;
-  top: 14px;
-  left: -14px;
-  width: 66px;
-  height: 66px;
+  top: 16px;
+  left: -18px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
@@ -87,34 +125,34 @@
     rgba(255, 80, 0, 0) 75%
   );
   pointer-events: none;
-  filter: blur(5px);
+  filter: blur(6px);
   animation: lanternFlicker 3s ease-in-out infinite alternate;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   mix-blend-mode: screen;
 }
 
 .rope-lantern-wrap.is-radiant .rope-lantern-aura {
-  top: 2px;
-  left: -26px;
-  width: 90px;
-  height: 90px;
+  top: 4px;
+  left: -32px;
+  width: 108px;
+  height: 108px;
   background: radial-gradient(
     circle,
     rgba(255, 240, 150, 0.85) 0%,
     rgba(255, 180, 30, 0.5) 45%,
     rgba(255, 100, 0, 0) 75%
   );
-  filter: blur(7px);
+  filter: blur(8px);
   animation: lanternRadiantPulse 2s ease-in-out infinite alternate;
 }
 
 /* Inner Light Core Accent */
 .rope-lantern-core-glow {
   position: absolute;
-  top: 28px;
-  left: 10px;
-  width: 18px;
-  height: 18px;
+  top: 30px;
+  left: 12px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
@@ -130,10 +168,10 @@
 }
 
 .rope-lantern-wrap.is-radiant .rope-lantern-core-glow {
-  width: 22px;
-  height: 22px;
-  top: 26px;
-  left: 8px;
+  width: 26px;
+  height: 26px;
+  top: 28px;
+  left: 9px;
   filter: blur(3px);
   background: radial-gradient(
     circle,
@@ -183,6 +221,7 @@
   stroke-width: 2.2;
 }
 
+.rope-lantern-handle.is-grabbing .rope-lantern-tooltip,
 .rope-lantern-handle.is-grabbing ~ .rope-lantern-tooltip {
   opacity: 0 !important;
 }
@@ -257,7 +296,9 @@
 /* Responsive adjustments - Hide Diwali Lantern on mobile screens */
 @media (max-width: 768px) {
   .rope-lantern-wrap,
-  .rope-lantern-stage {
+  .rope-lantern-stage,
+  .independent-rope-lantern-host,
+  .rope-lantern-slot {
     display: none !important;
     visibility: hidden !important;
     pointer-events: none !important;
